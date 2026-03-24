@@ -13,11 +13,6 @@ function Map(){
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        <Marker position={position}>
-          <Popup>
-            Hello from Bristol!
-          </Popup>
-        </Marker>
       </MapContainer>
     </div>
   );
