@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import fetchWardBoundary from './Fetch'
 import './Sidebar.css'
 
 const dropdownOptions = [
@@ -66,8 +67,7 @@ const ToggleItem = ({label, checked, onChange}) => {
 
 const Sidebar = () => {
     const [dropdowns, setDropdowns] = useState({
-        theme: 'light',
-        fontSize: 'medium'
+        ward: 'none'
     })
 
     const [toggles, setToggles] = useState({
@@ -76,8 +76,14 @@ const Sidebar = () => {
         option3: false,
     });
 
-    const handleDropdown = key => {
-        setDropdowns({...dropdowns,[key]: value,})
+    const handleDropdown = async (key, value) => {
+        setDropdowns({...dropdowns, [key]: value})
+
+        if (value === 'none') return;
+
+        // fetch the boundary
+        const boundaryData = await fetchWardBoundary(value);
+        console.log('Ward boundary:', boundaryData)
     }
 
     const handleToggle = (key) => {
@@ -97,38 +103,40 @@ const Sidebar = () => {
                     onChange={(value) => handleDropdown(dd.key, value)}
                 />
             ))}
+        
+            {dropdowns.ward !== 'none' && (
+                <>
+                    <h2>Ways</h2>
+                    {wayOptions.map((opt) => (
+                        <ToggleItem
+                            key={opt.key}
+                            label={opt.label}
+                            checked={toggles[opt.key]}
+                            onChange={() => handleToggle(opt.key)}
+                        />
+                    ))}
 
-            <h2>Ways</h2>
-            
-            {wayOptions.map((opt) => (
-                <ToggleItem
-                    key={opt.key}
-                    label={opt.label}
-                    checked={toggles[opt.key]}
-                    onChange={() => handleToggle(opt.key)}
-                />
-            ))}
+                    <h2>Crossings</h2>
+                    {crossingOptions.map((opt) => (
+                        <ToggleItem
+                            key={opt.key}
+                            label={opt.label}
+                            checked={toggles[opt.key]}
+                            onChange={() => handleToggle(opt.key)}
+                        />
+                    ))}
 
-            <h2>Crossings</h2>
-            {crossingOptions.map((opt) => (
-                <ToggleItem
-                    key={opt.key}
-                    label={opt.label}
-                    checked={toggles[opt.key]}
-                    onChange={() => handleToggle(opt.key)}
-                />
-            ))}
-
-            <h2>Features</h2>
-
-            {featureOptions.map((opt) => (
-                <ToggleItem
-                    key={opt.key}
-                    label={opt.label}
-                    checked={toggles[opt.key]}
-                    onChange={() => handleToggle(opt.key)}
-                />
-            ))}
+                    <h2>Features</h2>
+                    {featureOptions.map((opt) => (
+                        <ToggleItem
+                            key={opt.key}
+                            label={opt.label}
+                            checked={toggles[opt.key]}
+                            onChange={() => handleToggle(opt.key)}
+                        />
+                    ))}
+                </>
+            )}
         </div>
     );
 };
