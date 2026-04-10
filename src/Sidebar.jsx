@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import fetchWardBoundary from './Fetch'
 import './Sidebar.css'
 
 const dropdownOptions = [
@@ -65,26 +64,20 @@ const ToggleItem = ({label, checked, onChange}) => {
     )
 };
 
-const Sidebar = () => {
-    const [dropdowns, setDropdowns] = useState({
-        ward: 'none'
-    })
+const Sidebar = ({ handleDropdown, boundaryData, dropdowns }) => {
 
     const [toggles, setToggles] = useState({
-        option1: false,
-        option2: false,
-        option3: false,
+        cycleWays: false,
+        sharedUseFootway: false,
+        schoolStreets: false,
+        controlledCrossings: false,
+        uncontrolledCrossings: false,
+        unmarkedCrossings: false,
+        cycleParking: false,
+        benches: false,
+        artwork: false,
+        wayfinding: false,
     });
-
-    const handleDropdown = async (key, value) => {
-        setDropdowns({...dropdowns, [key]: value})
-
-        if (value === 'none') return;
-
-        // fetch the boundary
-        const boundaryData = await fetchWardBoundary(value);
-        console.log('Ward boundary:', boundaryData)
-    }
 
     const handleToggle = (key) => {
         setToggles({...toggles, [key]: !toggles[key]});
@@ -92,8 +85,10 @@ const Sidebar = () => {
 
     return (
         <div className="sidebar">
+
             <h2>Select Ward</h2>
 
+            {/* Create a dropdown feature to select a Ward */}
             {dropdownOptions.map((dd) =>(
                 <DropdownItem
                     key={dd.key}
@@ -103,8 +98,9 @@ const Sidebar = () => {
                     onChange={(value) => handleDropdown(dd.key, value)}
                 />
             ))}
-        
-            {dropdowns.ward !== 'none' && (
+            
+            {/* Show the list of options if a Ward is returned and the Overpass API returned the Ward boundary */}
+            {boundaryData && (
                 <>
                     <h2>Ways</h2>
                     {wayOptions.map((opt) => (

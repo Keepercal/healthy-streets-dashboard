@@ -10,19 +10,21 @@ export default async function fetchWardBoundary(wardName){
 
     const query = `
         [out:json][timeout:25];
-        relation["boundary"="political"]["name"~"${formatWardName(wardName)}"]
+        relation["boundary"="political"]["name"~"${formatWardName(wardName)}"];
         out geom;
     `;
 
     const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
 
-    try{
-        const res = await fetch(url)
-        const data = await res.json();
-        console.log(data); // contains the cordinates of the ward
-        return data;
-    } catch (error){
-        console.error('Error fetching ward boundary:', error);
-        return null;
+    const res = await fetch(url);
+
+    if (!res.ok){
+        throw new Error(`HTTP error: ${res.status}`)
     }
+
+    const data = await res.json();
+
+    console.log("boundary data:", data)
+
+    return data;
 }
