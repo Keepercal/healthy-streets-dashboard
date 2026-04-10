@@ -1,9 +1,9 @@
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import App from '../../App';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 
-function Map(){
+function Map({ wardBoundary }){
   const position = [51.4538, -2.5918]
 
   return(
@@ -13,11 +13,16 @@ function Map(){
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        <Marker position={position}>
-          <Popup>
-            Hello from Bristol!
-          </Popup>
-        </Marker>
+        {wardBoundary && (
+          <GeoJSON
+            data={wardBoundary}
+            style={{
+              color: "red",
+              weight: 2,
+              fillOpacity: 0.05,
+            }}
+          />
+        )}
       </MapContainer>
     </div>
   );

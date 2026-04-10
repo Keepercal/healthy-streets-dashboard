@@ -9,6 +9,10 @@
     padding-left: 20px;
 }
 
+.dropdown-btn{
+    width: 150px;
+}
+
 .toggle-item{
     margin-bottom: 15px;
 }
