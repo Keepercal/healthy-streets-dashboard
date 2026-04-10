@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Map from './Map';
+import Map from './components/Map/Map';
 import Sidebar from'./components/Sidebar/Sidebar';
 import Popup from './components/Popup/Popup'
 import { fetchWardBoundary } from './services/overpass'
