@@ -3,42 +3,77 @@ import Map from './Map';
 import Sidebar from'./Sidebar';
 import Popup from './Popup'
 import fetchWardBoundary from './Fetch'
+import osmtogeojson  from 'osmtogeojson';
 
 export default function App(){
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
   const [boundaryData, setBoundaryData] = useState(null);
-  const [boundaryError, setBoundaryError] = useState(null);
+  const [boundaryGeojson, setBoundaryGeojson] = useState(null);
+
+  const [popup, setPopup] = useState({
+    trigger: false,
+    type: 'loading', // 'loading' | 'error' | 'success'
+    title: '',
+    message: '',
+  });
 
   const [dropdowns, setDropdowns] = useState({
     ward: 'none'
-  })
+  });
 
+  // When an option is selected from the dropdown
   const handleDropdown = async (key, value) => {
     setDropdowns(dropdowns => ({...dropdowns, [key]: value}))
+
+    setBoundaryData(null);
+    setBoundaryGeojson(null);
 
     // if None is selected, clear all variables
     if (value === 'none') {
       setBoundaryData(null);
-      setBoundaryError(null);
-      setShowPopup(false);
+      setPopup(p => ({...p, trigger: false}));
       return;
     }
 
+    // 1. Show LOADING popup
+    setPopup({
+      trigger: true,
+      type: 'loading',
+      title: 'Loading...',
+      message: 'Fetching ward data'
+    });
+
     // fetch the boundary
     try{
-      setBoundaryError(null);
+      const result = await fetchWardBoundary(value); // fetch ward boundary data
 
-      const result = await fetchWardBoundary(value);
+      setBoundaryData(result); // put the boundary result into the result variable
 
-      setBoundaryData(result);
-      setShowPopup(false);
-    } catch (err) {
+      const geojson = osmtogeojson(result) // convert the JSON into a GeoJSON format that Leaflet can read
+      setBoundaryGeojson(geojson)
+
+      // 2. Auto clear when result is found
+      setTimeout(() => {
+        setPopup({
+          trigger: false,
+          type: 'loading',
+          title: '',
+          message: ''
+        }, 1000);
+      })
+
+    } catch (err) { // if an error is encountered when fetching boundary
       console.error(err)
 
-      setBoundaryError(err.message || 'Failed to load boundary data');
       setBoundaryData(null);
-      setShowPopup(true);
+      setBoundaryGeojson(null);
+      
+      // 3. Show ERROR popup
+      setPopup({
+        trigger: true,
+        type: 'error',
+        title: 'Error',
+        message: err.message || 'Failed to load boundary data'
+      });
     }
   };
 
@@ -46,12 +81,20 @@ export default function App(){
     <div className="App">
 
       <Popup 
-        trigger={showPopup}
-        error={boundaryError}
+        trigger={popup.trigger}
+        type={popup.type}
+        title={popup.title}
+        message={popup.message}
+
         onClose={() => {
-          setShowPopup(false);
+          setPopup({
+            trigger: false,
+            type: 'info',
+            title: '',
+            message: ''
+          })
+
           setBoundaryData(null);
-          setBoundaryError(null);
           setDropdowns({ ward: 'none'});
         }}
       />
@@ -64,7 +107,9 @@ export default function App(){
         />
       </div>
       <div className="main-content">
-        <Map />
+        <Map 
+          wardBoundary={boundaryGeojson}
+        />
       </div>
     </div>
   );

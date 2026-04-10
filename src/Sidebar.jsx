@@ -37,7 +37,7 @@ const DropdownItem = ({label, value, options, onChange}) => {
     return (
         <div className="dropdown-item">
             <label>
-                <select value={value} onChange={(e) => onChange(e.target.value)}>
+                <select className="dropdown-btn" value={value} onChange={(e) => onChange(e.target.value)}>
                     {options.map((opt) => (
                         <option key={opt.value} value={opt.value}>
                             {opt.label}

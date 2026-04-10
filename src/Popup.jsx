@@ -1,25 +1,30 @@
 import './popup.css'
 
-function Popup({ trigger, error, onClose, children }) {
-    return trigger ? (
+function Popup({ trigger, type = 'info', title, message, onClose, chilren}) {
+    if (!trigger) return null;
+
+    return (
         <div className="popup">
             <div className="popup-inner">
 
                 <button className="close-btn" onClick={onClose}>
-                    close
+                    Close
                 </button>
 
-                {error ? (
-                    <div className="popup-error">
-                        <h3>Error</h3>
-                        <p>{error}</p>
-                    </div>
-                ) : (
-                    children
+                {/* Header */}
+                {title && <h3 className={`popup-title ${type}`}>{title}</h3>}
+
+                {/* Message */}
+                {message &&(
+                    <p className={`popup-message ${type}`}>
+                        {message}
+                    </p>
                 )}
+
+                {/* Optional custom content */}
             </div>
         </div>
-    ) :  null;
+    );
 }
 
-export default Popup
+export default Popup;
