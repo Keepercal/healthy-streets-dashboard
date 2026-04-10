@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import App from '../../App';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 

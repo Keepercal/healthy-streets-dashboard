@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Map from './Map';
-import Sidebar from'./Sidebar';
-import Popup from './Popup'
-import fetchWardBoundary from './Fetch'
+import Sidebar from'./components/Sidebar/Sidebar';
+import Popup from './components/Popup/Popup'
+import { fetchWardBoundary } from './services/overpass'
 import osmtogeojson  from 'osmtogeojson';
 
 export default function App(){
