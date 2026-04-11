@@ -9,8 +9,9 @@ function Map({ wardBoundary }){
   return(
     <div className="map-container">
       <MapContainer center={position} zoom={13} style={{height: "100vh", width: "100%"}}>
-        <TileLayer attribution='© OpenStreetMap contributors'
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        <TileLayer
+          attribution='© OpenStreetMap contributors'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
         {wardBoundary && (
@@ -27,9 +28,5 @@ function Map({ wardBoundary }){
     </div>
   );
 }
-
-createRoot(document.getElementById('root')).render(
-  <App />
-);
 
 export default Map;

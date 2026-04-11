@@ -9,7 +9,7 @@ export async function fetchWardBoundary(wardName){
     }
 
     const query = `
-        [out:json][timeout:25];
+        [out:json][timeout:100];
         relation["boundary"="political"]["name"~"${formatWardName(wardName)}"];
         out geom;
     `;
@@ -25,6 +25,10 @@ export async function fetchWardBoundary(wardName){
     const data = await res.json();
 
     console.log("boundary data:", data)
+
+    if(!data?.elements?.length){
+        throw new Error(`Bug: Invalid ward value "${wardName}". This mismatch likely caused an empty Overpass result.`)
+    }
 
     return data;
 }

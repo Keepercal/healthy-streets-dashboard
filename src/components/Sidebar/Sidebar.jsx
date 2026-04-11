@@ -10,27 +10,37 @@ const dropdownOptions = [
             { value: 'southville', label: 'Southville' },
             { value: 'bedminster', label: 'Bedminster' },
             { value: 'windmillHill', label: 'Windmill Hill' },
+            { value: 'ashleyDown', label: 'Ashley Down' },
         ],
     },
 ];
 
 const wayOptions = [
-    { key: 'cycleWays', label: 'Cycle Ways'},
-    { key: 'sharedUseFootway', label: 'Shared-Use Footway'},
-    { key: 'schoolStreets', label: 'School Streets'},
+    { tag: 'highway', key: 'cycleway', label: 'Cycle Ways'},
+    { tag: 'highway, bicycle', key: 'footway, yes', label: 'Shared-Use Footways'},
+    { tag: 'traffic_intervention', key: 'school_street', label: 'School Streets'},
 ];
 
-const crossingOptions = [
-    { key: 'controlledCrossings', label: 'Controlled Crossings'},
-    { key: 'uncontrolledCrossings', label: 'Uncontrolled Crossings'},
+/*const crossingOptions = [
+    { tag: 'crossing', key: 'controlled', label: 'Controlled Crossings'},
+    { tag: 'crossing', key: 'uncontrolled', label: 'Uncontrolled Crossings'},
     { key: 'unmarkedCrossings', label: 'Unmarked Crossings'},
+]*/
+
+const crossingOptions = [
+    { tag: 'crossing_ref', key: 'zebra', label: 'Zebra'},
+    { tag: 'crossing_ref', key: 'tiger', label: 'Parallel (Tiger)'},
+    { tag: 'crossing_ref', key: 'pelican', label: 'Pelican'},
+    { tag: 'crossing_ref', key: 'puffin', label: 'Puffin'},
+    { tag: 'crossing_ref', key: 'toucan', label: 'Toucan'},
+    { tag: 'crossing_ref', key: 'pegasus', label: 'Equestrian (Pegasus)'},
 ]
 
 const featureOptions = [
-    { key: 'cycleParking', label: 'Cycle Parking'},
-    { key: 'benches', label: 'Benches'},
-    { key: 'artwork', label: 'Artwork'},
-    { key: 'wayfinding', label: 'Wayfinding'},
+    { tag: 'amenity', key: 'bicycle_parking', label: 'Bicycle Parking'},
+    { tag: 'amenity', key: 'bench', label: 'Benches'},
+    { tag: 'tourism', key: 'artwork', label: 'Artwork'},
+    { tag: 'tourism', key: 'information', label: 'Wayfinding'},
 ];
 
 const DropdownItem = ({label, value, options, onChange}) => {

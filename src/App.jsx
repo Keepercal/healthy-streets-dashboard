@@ -1,6 +1,7 @@
 // npm run dev: Locally host the app for development
 // npm run deploy: Builds and deploys to live GitHub Pages site
 
+import { createRoot } from 'react-dom/client';
 import { useState } from 'react';
 import Map from './components/Map/Map';
 import Sidebar from'./components/Sidebar/Sidebar';
@@ -41,8 +42,8 @@ export default function App(){
     setPopup({
       trigger: true,
       type: 'loading',
-      title: 'Loading...',
-      message: 'Fetching ward data'
+      title: 'Loading',
+      message: 'Fetching ward data...'
     });
 
     // fetch the boundary
@@ -117,3 +118,7 @@ export default function App(){
     </div>
   );
 }
+
+createRoot(document.getElementById('root')).render(
+  <App />
+);
