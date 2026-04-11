@@ -1,3 +1,6 @@
+// npm run dev: Locally host the app for development
+// npm run deploy: Builds and deploys to live GitHub Pages site
+
 import { useState } from 'react';
 import Map from './components/Map/Map';
 import Sidebar from'./components/Sidebar/Sidebar';
