@@ -1,16 +1,6 @@
-# React + Vite
+# Healthy Streets Dashboard
+This web application is build for transport planners, or any public or private sector professionals involved with the built environment for searching for particular features on streets. The application in its current has a pre-set list of features, such as pedestrian crossings and cycle parking, which can be toggled to show or hide on a map pulled from OpenStreetMap using the Overpass API. This application has been inspired by Overpass Turbo, and is intended to be a user friendly version that does not require any prior knowledge of scripting.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Note that this application pulls features from OpenStreetMap and thus may not be 100% accurate.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+You can access to prototype version of the Healthy Streets Dashboard by following this link 👉 https://keepercal.github.io/healthy-streets-dashboard/
