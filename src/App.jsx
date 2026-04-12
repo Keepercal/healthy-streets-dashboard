@@ -15,9 +15,14 @@ function useWardBoundary(){
   const [condition, setCondition] = useState('idle');
   const [error, setError] = useState(null);
 
-  const selectWard = async(key, value) => {
-    //setDropdowns(dropdowns => ({...dropdowns, [key]: value}));
+  const reset = () => {
+    setBoundaryData(null);
+    setBoundaryGeojson(null);
+    setCondition('idle');
+    setError(null);
+  }
 
+  const selectWard = async(value) => {
     setBoundaryData(null);
     setBoundaryGeojson(null);
     setError(null);
@@ -38,8 +43,10 @@ function useWardBoundary(){
       setCondition('success');
 
     } catch(err){
-      setError(err);
+      setBoundaryData(null)
+      setBoundaryGeojson(null)
       setCondition('error')
+      setError(err);
     }
   };
 
@@ -48,7 +55,8 @@ function useWardBoundary(){
     boundaryGeojson,
     selectWard,
     condition,
-    error
+    error,
+    reset
   };
 }
 
@@ -58,12 +66,13 @@ export default function App(){
     boundaryGeojson,
     selectWard,
     condition,
-    error
+    error,
+    reset
   } = useWardBoundary()
 
   const handleDropdown = (key, value) => {
     setDropdowns(prev => ({ ...prev, [key]: value}));
-    selectWard(key, value);
+    selectWard(value);
   }
 
   const [popup, setPopup] = useState({
@@ -139,7 +148,7 @@ export default function App(){
             message: ''
           })
 
-          setBoundaryData(null);
+          reset();
           setDropdowns({ ward: 'none'});
         }}
       />
