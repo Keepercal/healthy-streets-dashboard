@@ -10,7 +10,8 @@ const dropdownOptions = [
             { value: 'southville', label: 'Southville' },
             { value: 'bedminster', label: 'Bedminster' },
             { value: 'windmillHill', label: 'Windmill Hill' },
-            { value: 'ashleyDown', label: 'Ashley Down' },
+            { value: 'bishopston', label: 'Bishopston' },
+            { value: 'whitchurchPark', label: 'Whitchurch Park' },
         ],
     },
 ];
@@ -74,25 +75,7 @@ const ToggleItem = ({label, checked, onChange}) => {
     )
 };
 
-const Sidebar = ({ handleDropdown, boundaryData, dropdowns }) => {
-
-    const [toggles, setToggles] = useState({
-        cycleWays: false,
-        sharedUseFootway: false,
-        schoolStreets: false,
-        controlledCrossings: false,
-        uncontrolledCrossings: false,
-        unmarkedCrossings: false,
-        cycleParking: false,
-        benches: false,
-        artwork: false,
-        wayfinding: false,
-    });
-
-    const handleToggle = (key) => {
-        setToggles({...toggles, [key]: !toggles[key]});
-    };
-
+const Sidebar = ({ handleDropdown, handleToggle, boundaryData, dropdowns, toggles }) => {
     return (
         <div className="sidebar">
 

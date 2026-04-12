@@ -2,88 +2,129 @@
 // npm run deploy: Builds and deploys to live GitHub Pages site
 
 import { createRoot } from 'react-dom/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Map from './components/Map/Map';
 import Sidebar from'./components/Sidebar/Sidebar';
 import Popup from './components/Popup/Popup'
 import { fetchWardBoundary } from './services/overpass'
 import osmtogeojson  from 'osmtogeojson';
 
-export default function App(){
+function useWardBoundary(){
   const [boundaryData, setBoundaryData] = useState(null);
   const [boundaryGeojson, setBoundaryGeojson] = useState(null);
+  const [condition, setCondition] = useState('idle');
+  const [error, setError] = useState(null);
+
+  const selectWard = async(key, value) => {
+    //setDropdowns(dropdowns => ({...dropdowns, [key]: value}));
+
+    setBoundaryData(null);
+    setBoundaryGeojson(null);
+    setError(null);
+
+    if (value == 'none'){
+      setCondition('idle');
+      return;
+    }
+
+    setCondition('loading');
+
+    try{
+      const result = await fetchWardBoundary(value);
+      const geojson = osmtogeojson(result);
+
+      setBoundaryData(result);
+      setBoundaryGeojson(geojson);
+      setCondition('success');
+
+    } catch(err){
+      setError(err);
+      setCondition('error')
+    }
+  };
+
+  return {
+    boundaryData,
+    boundaryGeojson,
+    selectWard,
+    condition,
+    error
+  };
+}
+
+export default function App(){
+  const {
+    boundaryData,
+    boundaryGeojson,
+    selectWard,
+    condition,
+    error
+  } = useWardBoundary()
+
+  const handleDropdown = (key, value) => {
+    setDropdowns(prev => ({ ...prev, [key]: value}));
+    selectWard(key, value);
+  }
 
   const [popup, setPopup] = useState({
-    trigger: false,
-    type: 'loading', // 'loading' | 'error' | 'success'
-    title: '',
-    message: '',
-  });
-
+      trigger: false,
+      type: 'loading', // 'idle' | 'loading' | 'error' | 'success'
+      title: '',
+      message: '',
+  });  
+  
   const [dropdowns, setDropdowns] = useState({
     ward: 'none'
   });
 
-  // When an option is selected from the dropdown
-  const handleDropdown = async (key, value) => {
-    setDropdowns(dropdowns => ({...dropdowns, [key]: value}))
-
-    setBoundaryData(null);
-    setBoundaryGeojson(null);
-
-    // if None is selected, clear all variables
-    if (value === 'none') {
-      setBoundaryData(null);
-      setPopup(p => ({...p, trigger: false}));
-      return;
-    }
-
-    // 1. Show LOADING popup
-    setPopup({
-      trigger: true,
-      type: 'loading',
-      title: 'Loading',
-      message: 'Fetching ward data...'
+  const [toggles, setToggles] = useState({
+        cycleWays: false,
+        sharedUseFootway: false,
+        schoolStreets: false,
+        controlledCrossings: false,
+        uncontrolledCrossings: false,
+        unmarkedCrossings: false,
+        cycleParking: false,
+        benches: false,
+        artwork: false,
+        wayfinding: false,
     });
 
-    // fetch the boundary
-    try{
-      const result = await fetchWardBoundary(value); // fetch ward boundary data
+  useEffect(() => {
+    if (condition === 'loading') {
+      setPopup({
+        trigger: true,
+        type: 'loading',
+        title: 'Loading',
+        message: 'Fetching ward data...'
+      });
+    }
 
-      setBoundaryData(result); // put the boundary result into the result variable
+    if (condition === 'success') {
+      setPopup({
+        trigger: false,
+        type: 'idle',
+        title: '',
+        message: ''
+      });
+    }
 
-      const geojson = osmtogeojson(result) // convert the JSON into a GeoJSON format that Leaflet can read
-      setBoundaryGeojson(geojson)
-
-      // 2. Auto clear when result is found
-      setTimeout(() => {
-        setPopup({
-          trigger: false,
-          type: 'loading',
-          title: '',
-          message: ''
-        }, 1000);
-      })
-
-    } catch (err) { // if an error is encountered when fetching boundary
-      console.error(err)
-
-      setBoundaryData(null);
-      setBoundaryGeojson(null);
-      
-      // 3. Show ERROR popup
+    if (condition === 'error') {
       setPopup({
         trigger: true,
         type: 'error',
         title: 'Error',
-        message: err.message || 'Failed to load boundary data'
+        message: error?.message
       });
     }
+  }, [condition, error]);
+
+  const handleToggle = (key) => {
+    setToggles({...toggles, [key]: !toggles[key]});
   };
 
   return(
     <div className="App">
-
       <Popup 
         trigger={popup.trigger}
         type={popup.type}
@@ -93,7 +134,7 @@ export default function App(){
         onClose={() => {
           setPopup({
             trigger: false,
-            type: 'info',
+            type: 'idle',
             title: '',
             message: ''
           })
@@ -106,8 +147,10 @@ export default function App(){
       <div className="side-bar">
         <Sidebar 
           handleDropdown={handleDropdown}
+          handleToggle={handleToggle}
           boundaryData={boundaryData}
           dropdowns={dropdowns}
+          toggles={toggles}
         />
       </div>
       <div className="main-content">

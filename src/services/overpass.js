@@ -32,3 +32,7 @@ export async function fetchWardBoundary(wardName){
 
     return data;
 }
+
+export async function fetchFeature(wardName){
+    if(!wardName || wardName === 'none') return null;
+}

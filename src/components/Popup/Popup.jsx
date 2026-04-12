@@ -1,6 +1,6 @@
 import './popup.css'
 
-function Popup({ trigger, type = 'info', title, message, onClose, chilren}) {
+function Popup({ trigger, type, title, message, onClose, chilren}) {
     if (!trigger) return null;
 
     return (
