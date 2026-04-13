@@ -1,31 +1,35 @@
 // npm run dev: Locally host the app for development
 // npm run deploy: Builds and deploys to live GitHub Pages site
-
-import { createRoot } from 'react-dom/client';
-import { useState, useEffect } from 'react';
+import osmtogeojson  from 'osmtogeojson';
 import Map from './components/Map/Map';
 import Sidebar from'./components/Sidebar/Sidebar';
-import Popup from './components/Popup/Popup'
-import { fetchWardBoundary } from './services/overpass'
-import osmtogeojson  from 'osmtogeojson';
+import Popup from './components/Popup/Popup';
+import { createRoot } from 'react-dom/client';
+import { useState, useEffect } from 'react';
+import { WARD_MAP } from "./config/wardMap.js" ;
+import { FEATURE_MAP } from "./config/featureMap.js";
+import { fetchWardBoundary, fetchMapFeature } from './services/overpass';
 
+// Fetch ward boundary from OSM
 function useWardBoundary(){
   const [boundaryData, setBoundaryData] = useState(null);
   const [boundaryGeojson, setBoundaryGeojson] = useState(null);
   const [condition, setCondition] = useState('idle');
-  const [error, setError] = useState(null);
+  const [error, setErrorMessage] = useState(null);
 
+  // Helper to reset states
   const reset = () => {
     setBoundaryData(null);
     setBoundaryGeojson(null);
     setCondition('idle');
-    setError(null);
+    setErrorMessage(null);
   }
 
+  // When user clicks on a ward option
   const selectWard = async(value) => {
     setBoundaryData(null);
     setBoundaryGeojson(null);
-    setError(null);
+    setErrorMessage(null);
 
     if (value == 'none'){
       setCondition('idle');
@@ -35,8 +39,8 @@ function useWardBoundary(){
     setCondition('loading');
 
     try{
-      const result = await fetchWardBoundary(value);
-      const geojson = osmtogeojson(result);
+      const result = await fetchWardBoundary(value); // Fetching from Overpass API
+      const geojson = osmtogeojson(result); // Convert to GeoJSON
 
       setBoundaryData(result);
       setBoundaryGeojson(geojson);
@@ -46,7 +50,7 @@ function useWardBoundary(){
       setBoundaryData(null)
       setBoundaryGeojson(null)
       setCondition('error')
-      setError(err);
+      setErrorMessage(err);
     }
   };
 
@@ -60,7 +64,67 @@ function useWardBoundary(){
   };
 }
 
+// Fetch features from OSM
+function useMapFeature(wardName){
+  const [featureData, setFeatureData] = useState(null);
+  const [featureGeojson, setFeatureGeojson] = useState(null);
+  const [condition, setCondition] = useState('idle');
+  const [error, setErrorMessage] = useState(null);
+
+  // Helper to reset states
+  const reset = () => {
+    setFeatureData(null);
+    setFeatureGeojson(null);
+    setCondition('idle');
+    setErrorMessage(null);
+  }
+
+  // When user clicks on a feature toggle
+  const selectMapFeature = async(ward, value) => {
+    setFeatureData(null);
+    setFeatureGeojson(null);
+    setCondition('idle');
+    setErrorMessage(null)
+
+    // If null, hide the popup
+    if (value === null){
+      setCondition('idle');
+      return;
+    }
+
+    // Show the loading popup
+    setCondition('loading');
+
+    try{
+      const result = await fetchMapFeature(ward, value); // Call function which interacts with Overpass API
+      const geojson = osmtogeojson(result); // Convert the result to GeoJSON
+
+      setFeatureData(result); // Store raw result
+      setFeatureGeojson(geojson); // Store result in GeoJSON
+      setCondition('success'); // Hide popup
+    } catch(err){
+      setFeatureData(null);
+      setFeatureGeojson(null);
+      setCondition('error');
+      setErrorMessage(err)
+    }
+  };
+
+  return {
+    featureData,
+    featureGeojson,
+    selectMapFeature,
+    condition,
+    error,
+    reset
+  }
+
+}
+
 export default function App(){
+  const [selectedWard, setSelectedWard] = useState('none'); // Clear the selected ward
+
+  // Deconstruct ward return value
   const {
     boundaryData,
     boundaryGeojson,
@@ -70,37 +134,77 @@ export default function App(){
     reset
   } = useWardBoundary()
 
+  // Deconstruct feature return value
+  const {
+    featureData,
+    featureGeojson,
+    selectMapFeature,
+    condition: featureCondition,
+    error: featureError,
+    reset: resetFeature
+  } = useMapFeature(selectedWard)
+
+  // When an option in the dropdown is clicked
   const handleDropdown = (key, value) => {
-    setDropdowns(prev => ({ ...prev, [key]: value}));
-    selectWard(value);
+    setSelectedWard(prev => ({ ...prev, [key]: value})); // Change the label shown on the dropdown
+    setSelectedWard(value) // Update state with the selected ward
+    selectWard(value); // Call the select ward function to fetch ward from Overpass API
   }
 
+  // When an option from the list of toggles is clicked
+  const handleToggle = (key, value) => {
+    setToggles({...toggles, [key]: !toggles[key]});
+    selectMapFeature(selectedWard, value);
+  };
+
+  // Turn ward options map into an array
+  const wardOptions = [
+    { value: "none", label: "None" },
+    ...Object.entries(WARD_MAP).map(([key, ward]) => ({
+      value: key,
+      label: ward.label
+    }))
+  ]
+
+  // Turn feature options map into an array
+  const featureOptions = [
+    { value: 'none', label: "None" },
+    ...Object.entries(FEATURE_MAP).map(([key, feature]) => ({
+      value: key,
+      tag: feature.tag,
+      label: feature.label,
+      group: feature.group
+    }))
+  ]
+
+  // Set the popup to idle 
   const [popup, setPopup] = useState({
       trigger: false,
-      type: 'loading', // 'idle' | 'loading' | 'error' | 'success'
+      type: 'idle', // 'idle' | 'loading' | 'error' | 'success'
       title: '',
       message: '',
   });  
-  
-  const [dropdowns, setDropdowns] = useState({
-    ward: 'none'
-  });
 
+  // Default feature toggles to False (Off)
   const [toggles, setToggles] = useState({
-        cycleWays: false,
-        sharedUseFootway: false,
-        schoolStreets: false,
-        controlledCrossings: false,
-        uncontrolledCrossings: false,
-        unmarkedCrossings: false,
-        cycleParking: false,
-        benches: false,
+        cycleway: false,
+        footway: false,
+        school_street: false,
+        zebra: false,
+        tiger: false,
+        pelican: false,
+        puffin: false,
+        toucan: false,
+        pegasus: false,
+        bicycle_parking: false,
+        bench: false,
         artwork: false,
-        wayfinding: false,
+        information: false,
     });
-
+  
+  // Handles the popups depending on the type of popup
   useEffect(() => {
-    if (condition === 'loading') {
+    if (condition === 'loading') { // Loading
       setPopup({
         trigger: true,
         type: 'loading',
@@ -109,7 +213,7 @@ export default function App(){
       });
     }
 
-    if (condition === 'success') {
+    if (condition === 'success') { // Success
       setPopup({
         trigger: false,
         type: 'idle',
@@ -118,7 +222,7 @@ export default function App(){
       });
     }
 
-    if (condition === 'error') {
+    if (condition === 'error') { // Error
       setPopup({
         trigger: true,
         type: 'error',
@@ -128,10 +232,6 @@ export default function App(){
     }
   }, [condition, error]);
 
-  const handleToggle = (key) => {
-    setToggles({...toggles, [key]: !toggles[key]});
-  };
-
   return(
     <div className="App">
       <Popup 
@@ -140,7 +240,7 @@ export default function App(){
         title={popup.title}
         message={popup.message}
 
-        onClose={() => {
+        onClose={() => { // When the close button is pressed, change the popup state
           setPopup({
             trigger: false,
             type: 'idle',
@@ -149,7 +249,7 @@ export default function App(){
           })
 
           reset();
-          setDropdowns({ ward: 'none'});
+          setSelectedWard({ ward: 'none' });
         }}
       />
       
@@ -157,8 +257,13 @@ export default function App(){
         <Sidebar 
           handleDropdown={handleDropdown}
           handleToggle={handleToggle}
+
+          wardOptions={wardOptions}
+          featureOptions={featureOptions}
           boundaryData={boundaryData}
-          dropdowns={dropdowns}
+          featureData={featureData}
+
+          selectedWard={selectedWard}
           toggles={toggles}
         />
       </div>

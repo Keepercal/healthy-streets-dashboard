@@ -33,6 +33,21 @@ export async function fetchWardBoundary(wardName){
     return data;
 }
 
-export async function fetchFeature(wardName){
+export async function fetchMapFeature(wardName, feature){
     if(!wardName || wardName === 'none') return null;
+
+    const formatWardName = (wardName) => {
+        if (wardName === 'none') return '';
+
+        const name = wardName.replace(/([A-Z])/g, ' $1');
+        return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
+    }
+
+    const query = `
+        [out:json][timeout:100];
+        relation["boundary"="political"]["name"~"${formatWardName(wardName)}"];
+        out geom;
+    `;
+
+    console.log(formatWardName(wardName))
 }

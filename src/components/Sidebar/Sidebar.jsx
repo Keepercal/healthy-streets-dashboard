@@ -1,48 +1,4 @@
-import React, {useState} from 'react';
-import './Sidebar.css'
-
-const dropdownOptions = [
-    {
-        key: 'ward',
-        label: 'Select Ward',
-        options: [
-            { value: 'none', label: 'None' },
-            { value: 'southville', label: 'Southville' },
-            { value: 'bedminster', label: 'Bedminster' },
-            { value: 'windmillHill', label: 'Windmill Hill' },
-            { value: 'bishopston', label: 'Bishopston' },
-            { value: 'whitchurchPark', label: 'Whitchurch Park' },
-        ],
-    },
-];
-
-const wayOptions = [
-    { tag: 'highway', key: 'cycleway', label: 'Cycle Ways'},
-    { tag: 'highway, bicycle', key: 'footway, yes', label: 'Shared-Use Footways'},
-    { tag: 'traffic_intervention', key: 'school_street', label: 'School Streets'},
-];
-
-/*const crossingOptions = [
-    { tag: 'crossing', key: 'controlled', label: 'Controlled Crossings'},
-    { tag: 'crossing', key: 'uncontrolled', label: 'Uncontrolled Crossings'},
-    { key: 'unmarkedCrossings', label: 'Unmarked Crossings'},
-]*/
-
-const crossingOptions = [
-    { tag: 'crossing_ref', key: 'zebra', label: 'Zebra'},
-    { tag: 'crossing_ref', key: 'tiger', label: 'Parallel (Tiger)'},
-    { tag: 'crossing_ref', key: 'pelican', label: 'Pelican'},
-    { tag: 'crossing_ref', key: 'puffin', label: 'Puffin'},
-    { tag: 'crossing_ref', key: 'toucan', label: 'Toucan'},
-    { tag: 'crossing_ref', key: 'pegasus', label: 'Equestrian (Pegasus)'},
-]
-
-const featureOptions = [
-    { tag: 'amenity', key: 'bicycle_parking', label: 'Bicycle Parking'},
-    { tag: 'amenity', key: 'bench', label: 'Benches'},
-    { tag: 'tourism', key: 'artwork', label: 'Artwork'},
-    { tag: 'tourism', key: 'information', label: 'Wayfinding'},
-];
+import './Sidebar.css';
 
 const DropdownItem = ({label, value, options, onChange}) => {
     return (
@@ -75,55 +31,46 @@ const ToggleItem = ({label, checked, onChange}) => {
     )
 };
 
-const Sidebar = ({ handleDropdown, handleToggle, boundaryData, dropdowns, toggles }) => {
+const renderGroup = (groupName, feature, toggles, handleToggle) => {
+    return (feature ? Object.entries(feature) : [])
+        .filter(([key, feature]) => feature.group === groupName)
+        .map(([key, feature]) => (
+            <ToggleItem
+                key={key}
+                tag={feature.tag}
+                label={feature.label}
+                checked={toggles[key]}
+                onChange={() => handleToggle(key)}
+            />
+    ))
+}
+
+const Sidebar = ({ handleDropdown, handleToggle, boundaryData, selectedWard, toggles, wardOptions, featureOptions }) => {
     return (
         <div className="sidebar">
 
             <h2>Select Ward</h2>
 
             {/* Create a dropdown feature to select a Ward */}
-            {dropdownOptions.map((dd) =>(
-                <DropdownItem
-                    key={dd.key}
-                    label={dd.label}
-                    value={dropdowns[dd.key]}
-                    options={dd.options}
-                    onChange={(value) => handleDropdown(dd.key, value)}
-                />
-            ))}
+            <DropdownItem
+                key={wardOptions.key}
+                label={wardOptions.label}
+                value={selectedWard}
+                options={wardOptions}
+                onChange={(value) => handleDropdown(wardOptions.key, value)}
+            />
             
             {/* Show the list of options if a Ward is returned and the Overpass API returned the Ward boundary */}
             {boundaryData && (
                 <>
                     <h2>Ways</h2>
-                    {wayOptions.map((opt) => (
-                        <ToggleItem
-                            key={opt.key}
-                            label={opt.label}
-                            checked={toggles[opt.key]}
-                            onChange={() => handleToggle(opt.key)}
-                        />
-                    ))}
+                    {renderGroup("ways", featureOptions, toggles, handleToggle)}
 
                     <h2>Crossings</h2>
-                    {crossingOptions.map((opt) => (
-                        <ToggleItem
-                            key={opt.key}
-                            label={opt.label}
-                            checked={toggles[opt.key]}
-                            onChange={() => handleToggle(opt.key)}
-                        />
-                    ))}
+                    {renderGroup("crossings", featureOptions, toggles, handleToggle)}
 
                     <h2>Features</h2>
-                    {featureOptions.map((opt) => (
-                        <ToggleItem
-                            key={opt.key}
-                            label={opt.label}
-                            checked={toggles[opt.key]}
-                            onChange={() => handleToggle(opt.key)}
-                        />
-                    ))}
+                    {renderGroup("features", featureOptions, toggles, handleToggle)}
                 </>
             )}
         </div>
