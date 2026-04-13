@@ -6,32 +6,34 @@ import Sidebar from'./components/Sidebar/Sidebar';
 import Popup from './components/Popup/Popup';
 import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
-import { WARD_MAP } from "./config/wardMap.js" ;
+import { BOUNDARY_MAP } from "./config/boundaryMap.js" ;
 import { FEATURE_MAP } from "./config/featureMap.js";
-import { fetchWardBoundary, fetchMapFeature } from './services/overpass';
+import { fetchBoundary, fetchMapFeature } from './services/overpass';
 
-// Fetch ward boundary from OSM
-function useWardBoundary(){
+// Fetch boundary from OSM
+function useBoundary(){
   const [boundaryData, setBoundaryData] = useState(null);
   const [boundaryGeojson, setBoundaryGeojson] = useState(null);
   const [condition, setCondition] = useState('idle');
   const [error, setErrorMessage] = useState(null);
 
-  // Helper to reset states
-  const reset = () => {
-    setBoundaryData(null);
-    setBoundaryGeojson(null);
-    setCondition('idle');
-    setErrorMessage(null);
+  const clearBoundary = async() => {
+    console.log("ENTER clearBoundary")
+    setBoundaryData(null)
+    setBoundaryGeojson(null)
+    setCondition('idle')
+    setErrorMessage(null)
+
+    console.log({boundaryData, boundaryGeojson, condition})
   }
 
-  // When user clicks on a ward option
-  const selectWard = async(value) => {
-    setBoundaryData(null);
-    setBoundaryGeojson(null);
-    setErrorMessage(null);
+  // When user clicks on a boundary option
+  const loadBoundary = async(value) => {
+    console.log("ENTER loadBoundary", {value})
+    clearBoundary(); // Reset states
 
     if (value == 'none'){
+      console.debug("null")
       setCondition('idle');
       return;
     }
@@ -39,7 +41,8 @@ function useWardBoundary(){
     setCondition('loading');
 
     try{
-      const result = await fetchWardBoundary(value); // Fetching from Overpass API
+      console.log("calling fetchBoundary", {value});
+      const result = await fetchBoundary(value); // Fetching from Overpass API
       const geojson = osmtogeojson(result); // Convert to GeoJSON
 
       setBoundaryData(result);
@@ -57,37 +60,38 @@ function useWardBoundary(){
   return {
     boundaryData,
     boundaryGeojson,
-    selectWard,
+    clearBoundary,
+    loadBoundary,
     condition,
     error,
-    reset
   };
 }
 
 // Fetch features from OSM
-function useMapFeature(wardName){
+function useMapFeature(boundaryName){
   const [featureData, setFeatureData] = useState(null);
   const [featureGeojson, setFeatureGeojson] = useState(null);
   const [condition, setCondition] = useState('idle');
   const [error, setErrorMessage] = useState(null);
 
-  // Helper to reset states
-  const reset = () => {
-    setFeatureData(null);
-    setFeatureGeojson(null);
-    setCondition('idle');
-    setErrorMessage(null);
+  const clearFeatures = async() => {
+    console.log("ENTER clearFeatures")
+    setFeatureData(null)
+    setFeatureGeojson(null)
+    setCondition('idle')
+    setErrorMessage(null)
+
+    console.log({featureData, featureGeojson, condition})
   }
 
   // When user clicks on a feature toggle
-  const selectMapFeature = async(ward, value) => {
-    setFeatureData(null);
-    setFeatureGeojson(null);
-    setCondition('idle');
-    setErrorMessage(null)
+  const loadFeatures = async(boundary, tag, value) => {
+    console.log("ENTER loadFeatures", {boundary, tag, value})
+    clearFeatures();
 
     // If null, hide the popup
     if (value === null){
+      console.log("null")
       setCondition('idle');
       return;
     }
@@ -96,12 +100,14 @@ function useMapFeature(wardName){
     setCondition('loading');
 
     try{
-      const result = await fetchMapFeature(ward, value); // Call function which interacts with Overpass API
+      console.log("calling fetchMapFeature", {boundary, tag, value});
+      const result = await fetchMapFeature(boundary, tag, value); // Call function which interacts with Overpass API
       const geojson = osmtogeojson(result); // Convert the result to GeoJSON
 
       setFeatureData(result); // Store raw result
       setFeatureGeojson(geojson); // Store result in GeoJSON
       setCondition('success'); // Hide popup
+
     } catch(err){
       setFeatureData(null);
       setFeatureGeojson(null);
@@ -113,56 +119,73 @@ function useMapFeature(wardName){
   return {
     featureData,
     featureGeojson,
-    selectMapFeature,
+    loadFeatures,
+    clearFeatures,
     condition,
     error,
-    reset
   }
 
 }
 
 export default function App(){
-  const [selectedWard, setSelectedWard] = useState('none'); // Clear the selected ward
+  const [selectedBoundary, setSelectedBoundary] = useState('none'); // Default the dropdown to None
+  const [toggles, setToggles] = useState({}); // Default the toggles to false (off)
 
-  // Deconstruct ward return value
+  // Deconstruct boundary return value
   const {
     boundaryData,
     boundaryGeojson,
-    selectWard,
-    condition,
-    error,
-    reset
-  } = useWardBoundary()
+    loadBoundary,
+    condition: boundaryCondition,
+    error: boundaryError,
+    reset: resetBoundary
+  } = useBoundary()
 
   // Deconstruct feature return value
   const {
     featureData,
     featureGeojson,
-    selectMapFeature,
+    loadFeatures,
+    clearFeatures,
     condition: featureCondition,
     error: featureError,
-    reset: resetFeature
-  } = useMapFeature(selectedWard)
+  } = useMapFeature(selectedBoundary)
 
-  // When an option in the dropdown is clicked
+  // Update the selected boundary state when a dropdown option is chosen
   const handleDropdown = (key, value) => {
-    setSelectedWard(prev => ({ ...prev, [key]: value})); // Change the label shown on the dropdown
-    setSelectedWard(value) // Update state with the selected ward
-    selectWard(value); // Call the select ward function to fetch ward from Overpass API
+    console.log("ENTER handleDropdown:", {key, value});
+    setSelectedBoundary(value);
+    console.log("calling loadBoundary", {key, value})
+    loadBoundary(value);
   }
 
   // When an option from the list of toggles is clicked
-  const handleToggle = (key, value) => {
-    setToggles({...toggles, [key]: !toggles[key]});
-    selectMapFeature(selectedWard, value);
+  const handleToggle = (key, tag, value) => {
+    console.log("ENTER handleToggle:", {key, tag, value});
+    setToggles(prev => {
+      const nextValue = !(prev[key] ?? false);
+
+      if (nextValue){
+        console.log("calling loadFeatures", {selectedBoundary, key, value})
+        loadFeatures(selectedBoundary, tag, value);
+      } else{
+        console.log("clearing features")
+        clearFeatures();
+      }
+      
+      return {
+        ...prev,
+        [key]: nextValue
+      };
+    });
   };
 
-  // Turn ward options map into an array
-  const wardOptions = [
+  // Turn boundary options map into an array
+  const boundaryOptions = [
     { value: "none", label: "None" },
-    ...Object.entries(WARD_MAP).map(([key, ward]) => ({
+    ...Object.entries(BOUNDARY_MAP).map(([key, boundary]) => ({
       value: key,
-      label: ward.label
+      label: boundary.label
     }))
   ]
 
@@ -185,35 +208,17 @@ export default function App(){
       message: '',
   });  
 
-  // Default feature toggles to False (Off)
-  const [toggles, setToggles] = useState({
-        cycleway: false,
-        footway: false,
-        school_street: false,
-        zebra: false,
-        tiger: false,
-        pelican: false,
-        puffin: false,
-        toucan: false,
-        pegasus: false,
-        bicycle_parking: false,
-        bench: false,
-        artwork: false,
-        information: false,
-    });
-  
   // Handles the popups depending on the type of popup
   useEffect(() => {
-    if (condition === 'loading') { // Loading
+    if (boundaryCondition === 'loading') { // Loading
       setPopup({
         trigger: true,
         type: 'loading',
         title: 'Loading',
-        message: 'Fetching ward data...'
+        message: 'Fetching boundary data...'
       });
     }
-
-    if (condition === 'success') { // Success
+    if (boundaryCondition === 'success') { // Success
       setPopup({
         trigger: false,
         type: 'idle',
@@ -221,16 +226,42 @@ export default function App(){
         message: ''
       });
     }
-
-    if (condition === 'error') { // Error
+    if (boundaryCondition === 'error') { // Error
       setPopup({
         trigger: true,
         type: 'error',
         title: 'Error',
-        message: error?.message
+        message: boundaryError?.message
       });
     }
-  }, [condition, error]);
+  }, [boundaryCondition, boundaryError]);
+
+  useEffect(() => {
+    if (featureCondition === 'loading') { // Loading
+      setPopup({
+        trigger: true,
+        type: 'loading',
+        title: 'Loading',
+        message: 'Fetching feature data...'
+      });
+    }
+    if (featureCondition === 'success') { // Success
+      setPopup({
+        trigger: false,
+        type: 'idle',
+        title: '',
+        message: ''
+      });
+    }
+    if (featureCondition === 'error') { // Error
+      setPopup({
+        trigger: true,
+        type: 'error',
+        title: 'Error',
+        message: featureError?.message
+      });
+    }
+  }, [featureCondition, featureError]);
 
   return(
     <div className="App">
@@ -247,9 +278,6 @@ export default function App(){
             title: '',
             message: ''
           })
-
-          reset();
-          setSelectedWard({ ward: 'none' });
         }}
       />
       
@@ -258,18 +286,20 @@ export default function App(){
           handleDropdown={handleDropdown}
           handleToggle={handleToggle}
 
-          wardOptions={wardOptions}
-          featureOptions={featureOptions}
+          boundaryOptions={boundaryOptions} // Boundary map
+          featureOptions={featureOptions} // Feature map
+
           boundaryData={boundaryData}
           featureData={featureData}
 
-          selectedWard={selectedWard}
+          selectedBoundary={selectedBoundary}
           toggles={toggles}
         />
       </div>
       <div className="main-content">
         <Map 
-          wardBoundary={boundaryGeojson}
+          boundary={boundaryGeojson} // The boundary in GeoJSON format
+          features={featureGeojson}
         />
       </div>
     </div>

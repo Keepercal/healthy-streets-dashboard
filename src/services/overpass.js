@@ -1,53 +1,91 @@
-export async function fetchWardBoundary(wardName){
-    if (!wardName || wardName === 'none') return null;
+export async function fetchBoundary(boundaryName){
+    try{
+        console.log("ENTER fetchBoundary", {boundaryName})
+        if (!boundaryName || boundaryName === 'none') return null;
 
-    const formatWardName = (wardName) => {
-        if (wardName === 'none') return '';
+        const formatBoundaryName = (boundaryName) => {
+            if (boundaryName === 'none') return '';
 
-        const name = wardName.replace(/([A-Z])/g, ' $1');
-        return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
+            const name = boundaryName.replace(/([A-Z])/g, ' $1');
+            return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
+        }
+
+        const query = `
+            [out:json][timeout:60];
+            relation["boundary"="political"]["name"~"${formatBoundaryName(boundaryName)}"];
+            out geom;
+        `;
+
+        const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+        console.log(`fetching "${formatBoundaryName(boundaryName)}" boundary from Overpass...`)
+
+        const res = await fetch(url);
+        console.log("HTTP Status", res.status)
+
+        if (!res.ok){
+            throw new Error(`HTTP Error: ${res.status} (${res.statusText}), try selecting the boundary again`)
+        }
+
+        const data = await res.json();
+        console.log("Boundary data:", data)
+
+        if(!data?.elements?.length){
+            throw new Error(`Bug: Invalid boundary value "${boundaryName}". This mismatch likely caused an empty Overpass result.`)
+        }
+
+        return data;
+    }catch(err){
+        console.error("fetchBoundary failed:", err);
+        throw err;
     }
-
-    const query = `
-        [out:json][timeout:100];
-        relation["boundary"="political"]["name"~"${formatWardName(wardName)}"];
-        out geom;
-    `;
-
-    const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-
-    const res = await fetch(url);
-
-    if (!res.ok){
-        throw new Error(`HTTP Error: ${res.status} (${res.statusText}), try selecting the ward again`)
-    }
-
-    const data = await res.json();
-
-    console.log("boundary data:", data)
-
-    if(!data?.elements?.length){
-        throw new Error(`Bug: Invalid ward value "${wardName}". This mismatch likely caused an empty Overpass result.`)
-    }
-
-    return data;
 }
 
-export async function fetchMapFeature(wardName, feature){
-    if(!wardName || wardName === 'none') return null;
+export async function fetchMapFeature(boundaryName, tag, value){
+    try{
+        console.log("ENTER fetchMapFeature", { boundaryName, tag, value })
+        if(!boundaryName || boundaryName === 'none') return null;
 
-    const formatWardName = (wardName) => {
-        if (wardName === 'none') return '';
+        const formatBoundaryName = (boundaryName) => {
+            if (boundaryName === 'none') return '';
 
-        const name = wardName.replace(/([A-Z])/g, ' $1');
-        return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
+            const name = boundaryName.replace(/([A-Z])/g, ' $1');
+            return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
+        }
+
+        const query = `
+            [out:json][timeout:60];
+
+            relation
+                ["boundary"="political"]
+                ["name"~"${formatBoundaryName(boundaryName)}", i]->.rels;
+            .rels map_to_area -> .area;
+
+            node(area.area)["${tag}"="${value}"];
+
+            out tags geom;
+            `;
+
+        const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
+        console.log("Fetching features from Overpass...")
+
+        const res = await fetch(url);
+        console.log("HTTP Status", res.status)
+
+        if (!res.ok){
+            throw new Error(`HTTP Error: ${res.status} (${res.statusText}), try selecting the feature again`)
+        }
+
+        const data = await res.json();
+        console.log("Feature data:", data)
+
+        if(!data?.elements?.length){
+            throw new Error(`Overpass API returned an empty result`)
+        }
+
+        return data;
+    } catch(err){
+        console.error("fetchMapFeature failed:", err)
+        throw err;
     }
 
-    const query = `
-        [out:json][timeout:100];
-        relation["boundary"="political"]["name"~"${formatWardName(wardName)}"];
-        out geom;
-    `;
-
-    console.log(formatWardName(wardName))
 }

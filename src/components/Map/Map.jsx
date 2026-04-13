@@ -2,8 +2,9 @@ import { createRoot } from 'react-dom/client';
 import App from '../../App';
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
+import L from "leaflet";
 
-function Map({ wardBoundary }){
+function Map({ boundary, features }){
   const position = [51.4538, -2.5918]
 
   return(
@@ -14,13 +15,21 @@ function Map({ wardBoundary }){
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        {wardBoundary && (
+        {boundary && (
           <GeoJSON
-            data={wardBoundary}
+            data={boundary}
             style={{
               color: "red",
               weight: 2,
               fillOpacity: 0.05,
+            }}
+          />
+        )}
+        {features && (
+          <GeoJSON
+            data={features}
+            pointToLayer={(feature, latlng) => {
+              return L.marker(latlng);
             }}
           />
         )}

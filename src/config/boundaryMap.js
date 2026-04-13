@@ -1,4 +1,4 @@
-export const WARD_MAP = {
+export const BOUNDARY_MAP = {
     southville: {
         label: "Southville",
         query: "Southville Ward"
