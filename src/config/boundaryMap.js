@@ -1,4 +1,8 @@
 export const BOUNDARY_MAP = {
+    cabot: {
+        label: "Cabot",
+        query: "Cabot Ward"
+    },
     southville: {
         label: "Southville",
         query: "Southville Ward"
@@ -10,5 +14,9 @@ export const BOUNDARY_MAP = {
     windmill_hill: {
         label: "Windmill Hill",
         query: "Windmill Hill Ward"
-    }
+    },
+    lockleaze: {
+        label: "Lockleaze",
+        query: "Lockleaze Ward"
+    },
 }

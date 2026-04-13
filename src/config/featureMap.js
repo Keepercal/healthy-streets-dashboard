@@ -36,6 +36,12 @@ export const FEATURE_MAP = {
         type: "node"
     },
 
+    lcn: {
+        tag: "network",
+        label: "Local Cycling Network",
+        group: "ways",
+        type: "way"
+    },
     cycleway: {
         tag: "highway",
         label: "Cycle Ways",

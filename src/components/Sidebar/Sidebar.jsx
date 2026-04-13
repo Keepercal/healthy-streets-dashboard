@@ -39,8 +39,9 @@ const renderGroup = (groupName, featureOptions, toggles, handleToggle) => {
                 key={key}
                 tag={featureOptions.tag}
                 label={featureOptions.label}
+                type={featureOptions.type}
                 checked={toggles[key]}
-                onChange={() => handleToggle(key, featureOptions.tag, featureOptions.value)}
+                onChange={() => handleToggle(key, featureOptions.tag, featureOptions.value, featureOptions.type)}
             />
     ))
 }

@@ -10,6 +10,8 @@ export async function fetchBoundary(boundaryName){
             return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
         }
 
+        const formattedBoundaryName = formatBoundaryName(boundaryName);
+
         const query = `
             [out:json][timeout:60];
             relation["boundary"="political"]["name"~"${formatBoundaryName(boundaryName)}"];
@@ -17,7 +19,7 @@ export async function fetchBoundary(boundaryName){
         `;
 
         const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
-        console.log(`fetching "${formatBoundaryName(boundaryName)}" boundary from Overpass...`)
+        console.log(`fetching "${formattedBoundaryName}" boundary from Overpass...`)
 
         const res = await fetch(url);
         console.log("HTTP Status", res.status)
@@ -40,9 +42,9 @@ export async function fetchBoundary(boundaryName){
     }
 }
 
-export async function fetchMapFeature(boundaryName, tag, value){
+export async function fetchMapFeature(boundaryName, tag, value, type){
     try{
-        console.log("ENTER fetchMapFeature", { boundaryName, tag, value })
+        console.log("ENTER fetchMapFeature", { boundaryName, tag, value, type })
         if(!boundaryName || boundaryName === 'none') return null;
 
         const formatBoundaryName = (boundaryName) => {
@@ -52,15 +54,17 @@ export async function fetchMapFeature(boundaryName, tag, value){
             return name.replace(/^./, str => str.toUpperCase()) + ' Ward';
         }
 
+        const formattedBoundaryName = formatBoundaryName(boundaryName);
+
         const query = `
             [out:json][timeout:60];
 
             relation
                 ["boundary"="political"]
-                ["name"~"${formatBoundaryName(boundaryName)}", i]->.rels;
+                ["name"~"${formattedBoundaryName}", i]->.rels;
             .rels map_to_area -> .area;
 
-            node(area.area)["${tag}"="${value}"];
+            ${type}(area.area)["${tag}"="${value}"];
 
             out tags geom;
             `;
