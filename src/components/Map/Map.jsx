@@ -6,7 +6,7 @@ import { MapContainer, TileLayer, GeoJSON, useMap, Marker, Popup } from 'react-l
 import L from "leaflet";
 
 var pinIcon = L.icon({
-  iconUrl: './src/assets/pinGreen.svg',
+  iconUrl: './assets/pins/pinGreen.svg',
 
   iconSize: [30, 30],
   iconAnchor: [15, 30],
