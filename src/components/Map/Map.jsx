@@ -4,6 +4,13 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import L from "leaflet";
 
+var pinIcon = L.icon({
+  iconUrl: './src/assets/pinGreen.svg',
+
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+})
+
 function Map({ boundary, features }){
   const position = [51.4538, -2.5918]
 
@@ -13,8 +20,15 @@ function Map({ boundary, features }){
         <TileLayer
           attribution='© OpenStreetMap contributors'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        />
-
+        />  
+        {features && (
+          <GeoJSON
+            data={features}
+            pointToLayer={(feature, latlng) => {
+              return L.marker(latlng, {icon:pinIcon});
+            }}
+          />
+        )}
         {boundary && (
           <GeoJSON
             data={boundary}
@@ -22,14 +36,6 @@ function Map({ boundary, features }){
               color: "red",
               weight: 2,
               fillOpacity: 0.05,
-            }}
-          />
-        )}
-        {features && (
-          <GeoJSON
-            data={features}
-            pointToLayer={(feature, latlng) => {
-              return L.marker(latlng);
             }}
           />
         )}

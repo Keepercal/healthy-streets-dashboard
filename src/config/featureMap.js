@@ -1,4 +1,31 @@
-export const FEATURE_MAP = {
+export const FEATURE_MAP = {    
+    // WAYS
+    lcn: {
+        tag: "network",
+        label: "Local Cycling Network",
+        group: "ways",
+        type: "way"
+    },
+    cycleway: {
+        tag: "highway",
+        label: "Cycle Ways",
+        group: "ways",
+        type: "way"
+    },
+    shared_footway: {
+        tag: "highway",
+        label: "Shared-Use Footways",
+        group: "ways",
+        type: "way"
+    },
+    school_street: {
+        tag: "traffic_intervention",
+        label: "School Streets",
+        group: "ways",
+        type: "way"
+    },
+
+    // CROSSINGS
     zebra: {
         tag: "crossing_ref",
         label: "Zebra",
@@ -36,31 +63,13 @@ export const FEATURE_MAP = {
         type: "node"
     },
 
-    lcn: {
-        tag: "network",
-        label: "Local Cycling Network",
-        group: "ways",
-        type: "way"
-    },
-    cycleway: {
+    // STREET FURNITURE
+    bus_stop: {
         tag: "highway",
-        label: "Cycle Ways",
-        group: "ways",
-        type: "way"
+        label: "Bus Stops",
+        group: "streetFurniture",
+        type: "node"
     },
-    shared_footway: {
-        tag: "highway",
-        label: "Shared-Use Footways",
-        group: "ways",
-        type: "way"
-    },
-    school_street: {
-        tag: "traffic_intervention",
-        label: "School Streets",
-        group: "ways",
-        type: "way"
-    },
-
     bicycle_parking: {
         tag: "amenity",
         label: "Bicycle Parking",

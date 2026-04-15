@@ -179,6 +179,7 @@ export default function App(){
   // When an option from the list of toggles is clicked
   const handleToggle = (key, tag, value, type) => {
     console.log("ENTER handleToggle:", {key, tag, value, type});
+    setToggles({});
     setToggles(prev => {
       const nextValue = !(prev[key] ?? false);
 
