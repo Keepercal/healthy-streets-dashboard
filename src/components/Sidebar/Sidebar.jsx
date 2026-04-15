@@ -48,32 +48,36 @@ const renderGroup = (groupName, featureOptions, toggles, handleToggle) => {
 
 const Sidebar = ({ handleDropdown, handleToggle, boundaryData, selectedBoundary, toggles, boundaryOptions, featureOptions }) => {
     return (
-        <div className="sidebar">
+        <div className="sidebar"> 
+            <div className="sidebar-content">
+                <h1 className="sidebar-title">Healthy Streets Dashboard</h1>
+                <p className="version-tag">v0.1.0-alpha</p>
 
-            <h2>Select Boundary</h2>
+                <h2>Select Boundary</h2>
 
-            {/* Create a dropdown feature to select a Boundary */}
-            <DropdownItem
-                key={selectedBoundary}
-                label={boundaryOptions.label}
-                value={selectedBoundary}
-                options={boundaryOptions}
-                onChange={(key) => handleDropdown(boundaryOptions.key, key)}
-            />
-            
-            {/* Show the list of options if a Boundary is returned and the Overpass API returned the Ward boundary */}
-            {boundaryData && (
-                <>
-                    <h3>Ways</h3>
-                    {renderGroup("ways", featureOptions, toggles, handleToggle)}
+                {/* Create a dropdown feature to select a Boundary */}
+                <DropdownItem
+                    key={selectedBoundary}
+                    label={boundaryOptions.label}
+                    value={selectedBoundary}
+                    options={boundaryOptions}
+                    onChange={(key) => handleDropdown(boundaryOptions.key, key)}
+                />
+                
+                {/* Show the list of options if a Boundary is returned and the Overpass API returned the Ward boundary */}
+                {boundaryData && (
+                    <>
+                        <h3>Ways</h3>
+                        {renderGroup("ways", featureOptions, toggles, handleToggle)}
 
-                    <h3>Crossings</h3>
-                    {renderGroup("crossings", featureOptions, toggles, handleToggle)}
+                        <h3>Crossings</h3>
+                        {renderGroup("crossings", featureOptions, toggles, handleToggle)}
 
-                    <h3>Street Furniture</h3>
-                    {renderGroup("streetFurniture", featureOptions, toggles, handleToggle)}
-                </>
-            )}
+                        <h3>Street Furniture</h3>
+                        {renderGroup("streetFurniture", featureOptions, toggles, handleToggle)}
+                    </>
+                )}
+            </div>
         </div>
     );
 };
