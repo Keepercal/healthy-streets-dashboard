@@ -81,7 +81,7 @@ function useMapFeature(boundaryName){
   const [error, setErrorMessage] = useState(null);
 
   const clearFeatures = () => {
-    console.log("clearing all states relating to features...")
+    console.log("ENTER clearFeatures")
     setFeatureData(null)
     setFeatureGeojson(null)
     setCondition('idle')
@@ -179,23 +179,21 @@ export default function App(){
   // When an option from the list of toggles is clicked
   const handleToggle = (key, tag, value, type) => {
     console.log("ENTER handleToggle:", {key, tag, value, type});
-    setToggles({});
-    setToggles(prev => {
-      const nextValue = !(prev[key] ?? false);
+    setToggles({})
+    const nextValue = !toggles[key];
 
-      if (nextValue){
-        console.log("calling loadFeatures", {selectedBoundary, tag, value, type})
-        loadFeatures(selectedBoundary, tag, value, type);
-      } else{
-        clearFeatures();
-      }
-      
-      return {
-        ...prev,
-        [key]: nextValue
-      };
-    });
-  };
+    setToggles(prev => ({
+      ...prev,
+      [key]: nextValue
+    }));
+
+    if (nextValue){
+      console.log("calling loadFeatures", {selectedBoundary, tag, value, type})
+      loadFeatures(selectedBoundary, tag, value, type);
+    } else{
+      clearFeatures();
+    }
+  }
 
   // Turn boundary options map into an array
   const boundaryOptions = [

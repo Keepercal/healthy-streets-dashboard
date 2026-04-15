@@ -1,4 +1,8 @@
 export const BOUNDARY_MAP = {
+    avonmouth: {
+        label: "Avonmouth",
+        query: "Avonmouth Ward"
+    },
     cabot: {
         label: "Cabot",
         query: "Cabot Ward"
