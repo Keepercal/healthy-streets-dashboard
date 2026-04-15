@@ -20,12 +20,12 @@ const ToggleItem = ({label, checked, onChange}) => {
     return(
         <div className="toggle-item">
             <label>
-                {label}
                 <input 
                     type="checkbox"
                     checked={!!checked}
                     onChange={onChange}
                 />
+                {label}
             </label>
         </div>
     )
@@ -56,7 +56,7 @@ const Sidebar = ({ handleDropdown, handleToggle, boundaryData, selectedBoundary,
             <DropdownItem
                 key={selectedBoundary}
                 label={boundaryOptions.label}
-                //value={selectedBoundary}
+                value={selectedBoundary}
                 options={boundaryOptions}
                 onChange={(key) => handleDropdown(boundaryOptions.key, key)}
             />
@@ -64,13 +64,13 @@ const Sidebar = ({ handleDropdown, handleToggle, boundaryData, selectedBoundary,
             {/* Show the list of options if a Boundary is returned and the Overpass API returned the Ward boundary */}
             {boundaryData && (
                 <>
-                    <h2>Ways</h2>
+                    <h3>Ways</h3>
                     {renderGroup("ways", featureOptions, toggles, handleToggle)}
 
-                    <h2>Crossings</h2>
+                    <h3>Crossings</h3>
                     {renderGroup("crossings", featureOptions, toggles, handleToggle)}
 
-                    <h2>Street Furniture</h2>
+                    <h3>Street Furniture</h3>
                     {renderGroup("streetFurniture", featureOptions, toggles, handleToggle)}
                 </>
             )}

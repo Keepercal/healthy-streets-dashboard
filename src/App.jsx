@@ -1,3 +1,5 @@
+// v0.1.0-alpha
+
 // npm run dev: Locally host the app for development
 // npm run deploy: Builds and deploys to live GitHub Pages site
 import osmtogeojson  from 'osmtogeojson';
@@ -170,7 +172,6 @@ export default function App(){
   const handleDropdown = (key, value) => {
     console.log("ENTER handleDropdown:", {key, value});
     clearFeatures();
-    //clearBoundary();
     setSelectedBoundary(value);
     console.log("calling loadBoundary", {key, value})
     loadBoundary(value);
@@ -318,11 +319,11 @@ export default function App(){
           boundaryOptions={boundaryOptions} // Boundary map
           featureOptions={featureOptions} // Feature map
 
-          boundaryData={boundaryData}
-          featureData={featureData}
+          boundaryData={boundaryData} // Pass along data relating to the boundary
+          featureData={featureData} // Pass along data relating to features
 
           selectedBoundary={selectedBoundary}
-          toggles={toggles}
+          toggles={toggles} // Menu options
         />
       </div>
       <div className="main-content">
