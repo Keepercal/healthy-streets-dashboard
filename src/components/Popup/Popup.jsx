@@ -1,4 +1,5 @@
-import './popup.css'
+import './popup.css';
+import {BarLoader} from "react-spinners";
 
 function Popup({ trigger, type, title, message, onClose, chilren}) {
     if (!trigger) return null;
@@ -19,6 +20,10 @@ function Popup({ trigger, type, title, message, onClose, chilren}) {
                     <p className={`popup-message ${type}`}>
                         {message}
                     </p>
+                )}
+
+                {type === 'loading' &&(
+                    <BarLoader/>
                 )}
 
                 {/* Optional custom content */}
