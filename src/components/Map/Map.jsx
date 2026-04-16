@@ -40,7 +40,7 @@ function Map({ boundary, features }){
       <MapContainer center={position} zoom={13} style={{height: "100vh", width: "100%", position: 'fixed'}}>
         <TileLayer
           attribution='© OpenStreetMap contributors'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />  
         {features && (
           <GeoJSON

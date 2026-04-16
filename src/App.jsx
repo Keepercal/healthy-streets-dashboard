@@ -2,151 +2,30 @@
 
 // npm run dev: Locally host the app for development
 // npm run deploy: Builds and deploys to live GitHub Pages site
-import osmtogeojson  from 'osmtogeojson';
 import Map from './components/Map/Map';
-import Sidebar from'./components/Sidebar/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import Popup from './components/Popup/Popup';
+
 import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
-import { BOUNDARY_MAP } from "./config/boundaryMap.js" ;
-import { FEATURE_MAP } from "./config/featureMap.js";
 import { fetchBoundary, fetchMapFeature } from './services/overpass';
+import { useBoundary, useMapFeature } from './hooks/useMapData.js'
 
-// Fetch boundary from OSM
-function useBoundary(){
-  const [boundaryData, setBoundaryData] = useState(null);
-  const [boundaryGeojson, setBoundaryGeojson] = useState(null);
-  const [condition, setCondition] = useState('idle');
-  const [error, setErrorMessage] = useState(null);
+import { BOUNDARY_MAP } from "./config/boundaryMap.js";
+import { FEATURE_MAP } from "./config/featureMap.js";
 
-  let currentRequest = 0;
-
-  const clearBoundary = () => {
-    console.log("clearing all states relating to boundaries...")
-    setBoundaryData(null)
-    setBoundaryGeojson(null)
-    setCondition('idle')
-    setErrorMessage(null)
-
-    console.log({boundaryData, boundaryGeojson, condition})
-  }
-
-  // When user clicks on a boundary option
-  const loadBoundary = async(value) => {
-    console.log("ENTER loadBoundary", {value})
-    clearBoundary(); // Reset states
-    const requestID = ++currentRequest;
-
-    if (value == 'none'){
-      console.debug("null")
-      setCondition('idle');
-      return;
-    }
-
-    setCondition('loading');
-
-    try{
-      console.log("calling fetchBoundary", {value});
-      const result = await fetchBoundary(value); // Fetching from Overpass API
-      if(requestID !== currentRequest) return;
-
-      const geojson = osmtogeojson(result); // Convert to GeoJSON
-
-      setBoundaryData(result);
-      setBoundaryGeojson(geojson);
-      setCondition('success');
-
-    } catch(err){
-      if (requestID !== currentRequest) return;
-      setBoundaryData(null)
-      setBoundaryGeojson(null)
-      setCondition('error')
-      setErrorMessage(err);
-    }
-  };
-
-  return {
-    boundaryData,
-    boundaryGeojson,
-    clearBoundary,
-    loadBoundary,
-    condition,
-    error,
-  };
-}
-
-// Fetch features from OSM
-function useMapFeature(boundaryName){
-  const [featureData, setFeatureData] = useState(null);
-  const [featureGeojson, setFeatureGeojson] = useState(null);
-  const [condition, setCondition] = useState('idle');
-  const [error, setErrorMessage] = useState(null);
-
-  const clearFeatures = () => {
-    console.log("ENTER clearFeatures")
-    setFeatureData(null)
-    setFeatureGeojson(null)
-    setCondition('idle')
-    setErrorMessage(null)
-
-    console.log({featureData, featureGeojson, condition})
-  }
-
-  // When user clicks on a feature toggle
-  const loadFeatures = async(boundary, tag, value, type) => {
-    console.log("ENTER loadFeatures", {boundary, tag, value, type})
-    clearFeatures();
-
-    // If null, hide the popup
-    if (value === null){
-      console.log("null")
-      setCondition('idle');
-      return;
-    }
-
-    // Show the loading popup
-    setCondition('loading');
-
-    try{
-      console.log("calling fetchMapFeature", {boundary, tag, value, type});
-      const result = await fetchMapFeature(boundary, tag, value, type); // Call function which interacts with Overpass API
-      const geojson = osmtogeojson(result); // Convert the result to GeoJSON
-
-      setFeatureData(result); // Store raw result
-      setFeatureGeojson(geojson); // Store result in GeoJSON
-      setCondition('success'); // Hide popup
-
-    } catch(err){
-      setFeatureData(null);
-      setFeatureGeojson(null);
-      setCondition('error');
-      setErrorMessage(err)
-    }
-  };
-
-  return {
-    featureData,
-    featureGeojson,
-    loadFeatures,
-    clearFeatures,
-    condition,
-    error,
-  }
-
-}
-
-export default function App(){
+export default function App() {
   const [selectedBoundary, setSelectedBoundary] = useState('none'); // Default the dropdown to None
   const [toggles, setToggles] = useState({}); // Default the toggles to false (off)
 
   // Set the popup to idle 
   const [popup, setPopup] = useState({
-      trigger: false,
-      type: 'idle', // 'idle' | 'loading' | 'error' | 'success'
-      source: null, // 'boundary' | 'feature'
-      title: '',
-      message: '',
-  });  
+    trigger: false,
+    type: 'idle', // 'idle' | 'loading' | 'error' | 'success'
+    source: null, // 'boundary' | 'feature'
+    title: '',
+    message: '',
+  });
 
   // Deconstruct boundary return value
   const {
@@ -170,16 +49,16 @@ export default function App(){
 
   // Update the selected boundary state when a dropdown option is chosen
   const handleDropdown = (key, value) => {
-    console.log("ENTER handleDropdown:", {key, value});
+    console.log("ENTER handleDropdown:", { key, value });
     clearFeatures();
-    setSelectedBoundary(value);
-    console.log("calling loadBoundary", {key, value})
     loadBoundary(value);
+    console.log("calling loadBoundary", { key, value })
+    setSelectedBoundary(value);
   }
 
   // When an option from the list of toggles is clicked
   const handleToggle = (key, tag, value, type) => {
-    console.log("ENTER handleToggle:", {key, tag, value, type});
+    console.log("ENTER handleToggle:", { key, tag, value, type });
     setToggles({})
     const nextValue = !toggles[key];
 
@@ -188,10 +67,10 @@ export default function App(){
       [key]: nextValue
     }));
 
-    if (nextValue){
-      console.log("calling loadFeatures", {selectedBoundary, tag, value, type})
+    if (nextValue) {
+      console.log("calling loadFeatures", { selectedBoundary, tag, value, type })
       loadFeatures(selectedBoundary, tag, value, type);
-    } else{
+    } else {
       clearFeatures();
     }
   }
@@ -278,24 +157,21 @@ export default function App(){
     }
   }, [featureCondition, featureError]);
 
-  return(
+  return (
     <div className="App">
-      <Popup 
+      <Popup
         trigger={popup.trigger}
         type={popup.type}
         title={popup.title}
         message={popup.message}
 
         onClose={() => { // When the close button is pressed, change the popup state
-          setPopup({
-            trigger: false,
-            type: 'idle',
-            source: null,
-            title: '',
-            message: ''
-          })
+          setPopup(prev => ({
+            ...prev,
+            trigger: false
+          }));
 
-          if (popup.source === 'boundary'){
+          if (popup.source === 'boundary') {
             // Reset everything related to boundary
             setSelectedBoundary('none');
             clearBoundary();
@@ -303,16 +179,16 @@ export default function App(){
             setToggles({});
           }
 
-          if (popup.source === 'feature'){
+          if (popup.source === 'feature') {
             // Only reset feature related states
             clearFeatures();
             setToggles({});
           }
         }}
       />
-      
+
       <div className="side-bar">
-        <Sidebar 
+        <Sidebar
           handleDropdown={handleDropdown}
           handleToggle={handleToggle}
 
@@ -327,7 +203,7 @@ export default function App(){
         />
       </div>
       <div className="main-content">
-        <Map 
+        <Map
           boundary={boundaryGeojson} // The boundary in GeoJSON format
           features={featureGeojson}
         />
