@@ -4,8 +4,8 @@ import './Map.css'
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup } from 'react-leaflet';
 import L from "leaflet";
 
-import Boundary from './Boundary'
-import MapFeature from './MapFeature'
+import BoundaryLayer from './BoundaryLayer'
+import FeatureLayer from './FeatureLayer'
 import FitBounds from './FitBounds'
 
 function Map({ boundary, features }) {
@@ -19,11 +19,11 @@ function Map({ boundary, features }) {
           url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
         {features && (
-          <MapFeature features={features} />
+          <FeatureLayer features={features} />
         )}
         {boundary && (
           <>
-            <Boundary boundary={boundary} />
+            <BoundaryLayer boundary={boundary} />
             <FitBounds boundary={boundary} />
           </>
         )}

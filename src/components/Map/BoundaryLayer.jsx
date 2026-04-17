@@ -1,6 +1,6 @@
 import { GeoJSON } from 'react-leaflet'
 
-export default function Boundary({ boundary }) {
+export default function BoundarLayer({ boundary }) {
     return (
         <GeoJSON
             data={boundary}

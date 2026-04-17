@@ -2,7 +2,7 @@ import { GeoJSON } from 'react-leaflet'
 import { timeAgo } from '../../utils/timeAgo'
 import L from "leaflet";
 
-export default function MapFeature({ features }) {
+export default function FeatureLayer({ features }) {
     const exclude = new Set([
         "id",
         "timestamp",
