@@ -8,8 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
 import { useBoundary, useMapFeature } from './hooks/useMapData.js'
 
-import { BOUNDARY_MAP } from "./config/boundaryMap.js";
-import { FEATURE_MAP } from "./config/featureMap.js";
+import { BOUNDARY_MAP } from "./config/osmBoundaryMap.js";
+import { FEATURE_MAP } from "./config/osmFeatureMap.js";
 
 export default function App() {
   const [selectedBoundary, setSelectedBoundary] = useState('none'); // Default the dropdown to None
