@@ -40,7 +40,7 @@ export function useBoundary() {
             const result = await fetchBoundary(value); // Fetching from Overpass API
             if (requestID !== currentRequest.current) return;
 
-            const geojson = osmtogeojson(result); // Convert to GeoJSON
+            const geojson = osmtogeojson(result, {meta: true}); // Convert to GeoJSON
 
             setBoundaryData(result);
             setBoundaryGeojson(geojson);
@@ -104,7 +104,7 @@ export function useMapFeature(boundaryName) {
             const result = await fetchMapFeature(boundary, tag, value, type); // Call function which interacts with Overpass API
             if (requestID !== currentRequest.current) return;
 
-            const geojson = osmtogeojson(result); // Convert the result to GeoJSON
+            const geojson = osmtogeojson(result, { meta: true }); // Convert the result to GeoJSON
 
             setFeatureData(result); // Store raw result
             setFeatureGeojson(geojson); // Store result in GeoJSON

@@ -198,14 +198,14 @@ export default function App() {
           boundaryData={boundaryData} // Pass along data relating to the boundary
           featureData={featureData} // Pass along data relating to features
 
-          selectedBoundary={selectedBoundary}
+          selectedBoundary={selectedBoundary} // Flag containing the selected boundary
           toggles={toggles} // Menu options
         />
       </div>
       <div className="main-content">
         <Map
           boundary={boundaryGeojson} // The boundary in GeoJSON format
-          features={featureGeojson}
+          features={featureGeojson} // The features in GeoJSON format
         />
       </div>
     </div>

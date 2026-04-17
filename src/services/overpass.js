@@ -25,7 +25,7 @@ export async function fetchBoundary(boundaryName){
         const query = `
             [out:json][timeout:60];
             relation["boundary"="political"]["name"~"${formatBoundaryName(boundaryName)}"];
-            out geom;
+            out geom meta;
         `;
 
         const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
@@ -87,7 +87,7 @@ export async function fetchMapFeature(boundaryName, tag, value, type){
 
             ${type}(area.area)["${tag}"="${value}"];
 
-            out tags geom;
+            out tags geom meta;
             `;
 
         const url = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`;
