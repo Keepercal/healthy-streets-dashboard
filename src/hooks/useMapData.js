@@ -1,5 +1,5 @@
 import osmtogeojson from 'osmtogeojson';
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { fetchBoundary, fetchMapFeature } from '../services/overpass';
 
 // Fetch boundary from OSM

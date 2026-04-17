@@ -1,5 +1,3 @@
-// v0.1.0-alpha
-
 // npm run dev: Locally host the app for development
 // npm run deploy: Builds and deploys to live GitHub Pages site
 import Map from './components/Map/Map';
@@ -8,7 +6,6 @@ import Popup from './components/Popup/Popup';
 
 import { createRoot } from 'react-dom/client';
 import { useState, useEffect } from 'react';
-import { fetchBoundary, fetchMapFeature } from './services/overpass';
 import { useBoundary, useMapFeature } from './hooks/useMapData.js'
 
 import { BOUNDARY_MAP } from "./config/boundaryMap.js";
@@ -54,6 +51,7 @@ export default function App() {
     loadBoundary(value);
     console.log("calling loadBoundary", { key, value })
     setSelectedBoundary(value);
+    setToggles({});
   }
 
   // When an option from the list of toggles is clicked

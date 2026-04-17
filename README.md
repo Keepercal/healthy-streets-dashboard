@@ -10,4 +10,14 @@ There are a number of selectable options such as pedestrian crossings and cycle 
 <br>*Overpass API repo* 👉 https://github.com/drolbr/Overpass-API
 <br>*Overpass Turbo* 👉 https://overpass-turbo.eu/
 
+## What's new?
+### v0.2.0-alpha 
+
+### Added
+- Feature popups on map click, showing you tags and last edits
+
+### Changes
+- Renamed application to "Streets Dashboard", a WIP name
+- Some house keeping to move components into their own files
+
 
