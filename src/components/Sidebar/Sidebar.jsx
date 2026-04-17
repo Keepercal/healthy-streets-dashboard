@@ -50,8 +50,8 @@ const Sidebar = ({ handleDropdown, handleToggle, boundaryData, selectedBoundary,
     return (
         <div className="sidebar"> 
             <div className="sidebar-content">
-                <h1 className="sidebar-title">Healthy Streets Dashboard</h1>
-                <p className="version-tag">v0.1.0-alpha</p>
+                <h1 className="sidebar-title">{ window.APP_NAME }</h1>
+                <p className="version-tag">{ window.APP_VERSION }</p>
 
                 <h2>Select Boundary</h2>
 

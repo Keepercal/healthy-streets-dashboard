@@ -26,6 +26,12 @@ export const FEATURE_MAP = {
     },
 
     // CROSSINGS
+    unmarked: {
+        tag: "crossing",
+        label: "Unmarked Crossings",
+        group: "crossings",
+        type: "node"
+    },
     zebra: {
         tag: "crossing_ref",
         label: "Zebra",
@@ -64,6 +70,12 @@ export const FEATURE_MAP = {
     },
 
     // STREET FURNITURE
+    toilets: {
+        tag: "amenity",
+        label: "Public Toilets",
+        group: "streetFurniture",
+        type: "node"
+    },
     bus_stop: {
         tag: "highway",
         label: "Bus Stops",
