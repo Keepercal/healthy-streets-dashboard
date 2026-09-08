@@ -41,7 +41,7 @@ export default function App() {
 	const [isDirty, setIsDirty] = useState(false);
 	const [basemap, setBasemap] = useState('carto');
 	const [displayMode, setDisplayMode] = useState('default');
-	const [selectedBoundaryKey, setSelectedBoundaryKey] = useState('none');
+	const [selectedBoundaryID, setSelectedBoundaryID] = useState('none');
 
 	// UI
 	const [activeDrawer, setActiveDrawer] = useState(null);
@@ -76,7 +76,6 @@ export default function App() {
 		// boundary data
 		boundaryData,
 		boundaryGeojson,
-		boundaryName = boundaryData?.name ?? 'None', // human readable name
 
 		// boundary
 		boundaryResults,
@@ -84,7 +83,7 @@ export default function App() {
 		clearBoundaryResults,
 
 		// boundary handling
-		loadBoundary,
+		setBoundary,
 		clearBoundary,
 		restoreBoundary,
 		//exportBoundary,
@@ -143,11 +142,11 @@ export default function App() {
 	 */
 	const boundaryState = useMemo(
 		() => ({
-			selectedBoundaryKey,
+			selectedBoundaryID,
 			data: boundaryData,
 			geojson: boundaryGeojson,
 		}),
-		[selectedBoundaryKey, boundaryData, boundaryGeojson]
+		[selectedBoundaryID, boundaryData, boundaryGeojson]
 	);
 
 	// ─────────────────────────────────────────
@@ -186,8 +185,8 @@ export default function App() {
 		// restore workspace settings
 		setBasemap(sessionData.settings?.basemap ?? 'carto');
 		setDisplayMode(sessionData.settings?.displayMode ?? 'default');
-		setSelectedBoundaryKey(
-			sessionData.boundary?.selectedBoundaryKey ?? 'none'
+		setSelectedBoundaryID(
+			sessionData.boundary?.selectedBoundaryID ?? 'none'
 		);
 
 		restoreBoundary(sessionData.boundary);
@@ -215,7 +214,7 @@ export default function App() {
 		clearLayers();
 		clearCache();
 
-		setSelectedBoundaryKey('none');
+		setSelectedBoundaryID('none');
 
 		setBasemap('carto');
 		setDisplayMode('default');
@@ -245,7 +244,7 @@ export default function App() {
 			basemap,
 			displayMode,
 
-			selectedBoundaryKey,
+			selectedBoundaryID,
 			boundaryData,
 			boundaryGeojson,
 
@@ -356,6 +355,7 @@ export default function App() {
 	const hasSavedProjects = Object.keys(projects).length > 0;
 	const filteredLayers = useFilteredLayers(featureLayers);
 
+	const boundaryName = boundaryData?.name ?? 'None'; // human readable name
 	const projectName = project?.metadata.name;
 
 	// ─────────────────────────────────────────
@@ -386,10 +386,10 @@ export default function App() {
 		renameLayer,
 		handleAddLayer,
 	} = useWorkspaceActions({
-		selectedBoundaryKey,
-		setSelectedBoundaryKey,
+		selectedBoundaryID,
+		setSelectedBoundaryID,
 
-		loadBoundary,
+		setBoundary,
 		clearBoundary,
 
 		clearLayers,
@@ -472,7 +472,7 @@ export default function App() {
 				toggleLayerVisibility={toggleLayerVisibility}
 				renameLayer={renameLayer}
 				updateLayerFilters={updateLayerFilters}
-				selectedBoundaryKey={selectedBoundaryKey}
+				selectedBoundaryID={selectedBoundaryID}
 				loadBoundaryResults={loadBoundaryResults}
 				handleSelectBoundary={handleSelectBoundary}
 				boundaryResults={boundaryResults}

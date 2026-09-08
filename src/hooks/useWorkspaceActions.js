@@ -3,9 +3,9 @@ import MODALS from '@/config/modalTypes.js';
 
 export default function useWorkspaceActions({
 	// boundary
-	selectedBoundaryKey,
-	setSelectedBoundaryKey,
-	loadBoundary,
+	selectedBoundaryID,
+	setSelectedBoundaryID,
+	setBoundary,
 	clearBoundary,
 
 	// layers
@@ -22,29 +22,16 @@ export default function useWorkspaceActions({
 	/**
 	 * Handle input for boundary search
 	 */
-	const handleSelectBoundary = (result) => {
-		console.log('[DEBUG] handleSelectBoundary ENTER:', result);
-
-		const boundaryData = result;
-
-		const {
-			osm_id: boundaryID,
-			//osm_type: boundaryType,
-			//display_name: boundaryName,
-			geojson: boundaryGeojson,
-		} = result;
-
-		setSelectedBoundaryKey(boundaryID);
-
-		//loadBoundary(boundaryID, boundaryType, boundaryName, boundaryGeojson);
-		loadBoundary(boundaryData, boundaryID, boundaryGeojson);
+	const handleSelectBoundary = (boundaryData) => {
+		setSelectedBoundaryID(boundaryData.osm_id);
+		setBoundary(boundaryData);
 	};
 
 	/**
 	 * Handle resetting boundary and wiping features
 	 */
 	const handleClearBoundary = () => {
-		setSelectedBoundaryKey('none');
+		setSelectedBoundaryID('none');
 		clearBoundary();
 		clearLayers();
 	};
@@ -69,12 +56,12 @@ export default function useWorkspaceActions({
 		featureLabel
 	) => {
 		console.log(
-			`Calling loadLayer with boundary key: ${selectedBoundaryKey}`
+			`Calling loadLayer with boundary key: ${selectedBoundaryID}`
 		);
 
 		const preparedLayer = await loadLayer({
 			featureKey,
-			boundaryKey: selectedBoundaryKey,
+			boundaryID: selectedBoundaryID,
 			featureTag,
 			featureValue,
 			featureType,

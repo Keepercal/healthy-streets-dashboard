@@ -19,7 +19,7 @@ export function createSession(overrides = {}) {
 			},
 
 			boundary: {
-				selectedBoundaryKey: 'none',
+				selectedBoundaryID: 'none',
 				data: null,
 				geojson: null,
 			},

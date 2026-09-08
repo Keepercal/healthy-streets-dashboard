@@ -18,7 +18,7 @@ function Drawer({
 
 	updateLayerFilters,
 
-	selectedBoundaryKey,
+	selectedBoundaryID,
 	loadBoundaryResults,
 	handleSelectBoundary,
 	boundaryResults,
@@ -67,7 +67,7 @@ function Drawer({
 						clearLayers={clearLayers}
 
 						boundaryResults={boundaryResults}
-						selectedBoundaryKey={selectedBoundaryKey}
+						selectedBoundaryID={selectedBoundaryID}
 						handleSelectBoundary={handleSelectBoundary}
 					/>
 				)}

@@ -68,10 +68,10 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 	 */
 
 	/* Load boundary by fetching from Overpass API */
-	/*const loadBoundary = async (boundaryID, boundaryType, boundaryName) => {
+	/*const setBoundary = async (boundaryID, boundaryType, boundaryName) => {
 		clearBoundary();
 
-		console.log('[DEBUG] loadBoundary ENTER:', {
+		console.log('[DEBUG] setBoundary ENTER:', {
 			boundaryID,
 			boundaryType,
 			boundaryName,
@@ -114,29 +114,18 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		}
 	};*/
 
-	const loadBoundary = async (boundaryData, boundaryID, boundaryGeojson) => {
+	const setBoundary = (boundaryData) => {
 		clearBoundary();
 
-		if (boundaryID === 'none') {
-			console.error('[DEBUG] BoundaryID is empty:', boundaryID);
+		if (boundaryData.osm_id === 'none') {
+			console.error('[DEBUG] BoundaryID is empty:', boundaryData.osm_id);
 			return;
 		}
 
-		setStatus('loading');
+		setBoundaryData(boundaryData);
+		setBoundaryGeojson(boundaryData.geojson);
 
-		try {
-			setBoundaryData(boundaryData);
-			setBoundaryGeojson(boundaryGeojson);
-			setStatus('success');
-		} catch (err) {
-			console.error(err);
-
-			setBoundaryData(null);
-			setBoundaryGeojson(null);
-
-			setStatus('error');
-			setError(err);
-		}
+		setStatus('success');
 	};
 
 	/* Clear the current boundary  from state */
@@ -184,7 +173,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		clearBoundaryResults,
 
 		// boundary handling
-		loadBoundary,
+		setBoundary,
 		clearBoundary,
 		restoreBoundary,
 		exportBoundary,

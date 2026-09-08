@@ -25,7 +25,7 @@ import BASEMAPS from './config/basemaps';
 
 function Map({
 	boundary,
-	boundaryKey,
+	boundaryID,
 	featureLayers,
 	displayMode,
 	basemap,
@@ -50,7 +50,7 @@ function Map({
 	return (
 		<>
 			<MapContainer
-				key={boundaryKey}
+				key={boundaryID}
 				center={position}
 				//zoom={13} // Bristol
 				zoom={6} // UK

@@ -36,7 +36,7 @@ export default function AppLayout({
 	toggleLayerVisibility,
 	renameLayer,
 	updateLayerFilters,
-	selectedBoundaryKey,
+	selectedBoundaryID,
 	loadBoundaryResults,
 	handleSelectBoundary,
 	boundaryResults,
@@ -106,7 +106,7 @@ export default function AppLayout({
 
 					updateLayerFilters={updateLayerFilters}
 
-					selectedBoundaryKey={selectedBoundaryKey}
+					selectedBoundaryID={selectedBoundaryID}
 
 					loadBoundaryResults={loadBoundaryResults}
 					handleSelectBoundary={handleSelectBoundary}
@@ -123,7 +123,7 @@ export default function AppLayout({
 					handleClearBoundary={handleClearBoundary}
 					removeLayer={removeLayer}
 					clearLayers={clearLayers}
-					cachedFeatures={getCachedFeatures(selectedBoundaryKey)}
+					cachedFeatures={getCachedFeatures(selectedBoundaryID)}
 				/>
 
 				<div className="main-content">
@@ -135,7 +135,7 @@ export default function AppLayout({
 						<Map
 							// boundary
 							boundary={boundaryGeojson}
-							boundaryKey={selectedBoundaryKey}
+							boundaryID={selectedBoundaryID}
 
 							// features
 							featureLayers={filteredLayers}

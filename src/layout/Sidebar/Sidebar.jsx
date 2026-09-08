@@ -45,6 +45,7 @@ const Sidebar = ({
 			<div className="sidebar-content">
 				<SidebarButton
 					label="Boundary"
+					title="Search for a OSM boundary"
 					icon={<Map />}
 					isCollapsed={collapsed}
 					active={activeDrawer === 'boundary'}
@@ -53,6 +54,7 @@ const Sidebar = ({
 
 				<SidebarButton
 					label="Add Layers"
+					title="Load an OSM feature onto the map"
 					icon={<LayersPlus />}
 					isCollapsed={collapsed}
 					disabled={!hasBoundary}
@@ -64,6 +66,7 @@ const Sidebar = ({
 
 				<SidebarButton
 					label="Manage Layers"
+					title="Manage the feature layers within the project"
 					icon={<Layers />}
 					isCollapsed={collapsed}
 					disabled={!hasBoundary}
@@ -75,6 +78,7 @@ const Sidebar = ({
 
 				<SidebarButton
 					label="Display"
+					title="Alter the display settings of the project"
 					icon={<MonitorCog />}
 					isCollapsed={collapsed}
 					active={activeDrawer === 'display'}
