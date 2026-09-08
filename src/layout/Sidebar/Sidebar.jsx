@@ -3,8 +3,6 @@ import './Sidebar.css';
 /* UI COMPONENTS */
 import SidebarButton from './components/SidebarButton';
 
-import BoundaryIndicator from '../../components/BoundaryIndicator/BoundaryIndicator';
-
 /* CONSTANTS */
 import GROUP_LABELS from '../Drawer/panels/AddLayersPanel/constants/featureGroups';
 
@@ -28,7 +26,7 @@ import {
  * - Load features from a preselect list
  */
 const Sidebar = ({
-	boundaryData,
+	hasBoundary,
 	featureLayers,
 
 	activeDrawer,
@@ -40,8 +38,6 @@ const Sidebar = ({
 	const openDrawer = (name) => {
 		setActiveDrawer((prev) => (prev === name ? null : name));
 	};
-
-	const hasBoundary = !!boundaryData;
 	//const hasFeatures =  featureLayers && Object.keys(featureLayers).length > 0;
 
 	return (

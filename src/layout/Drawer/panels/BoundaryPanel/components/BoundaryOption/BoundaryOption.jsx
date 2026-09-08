@@ -4,7 +4,7 @@ import { Ghost } from 'lucide-react';
 const BoundaryOption = ({
 	boundaryResults,
 	selectedBoundaryKey,
-	onSelectBoundary,
+	handleSelectBoundary,
 	clearLayers,
 }) => {
 	return boundaryResults?.length > 0 ? (
@@ -15,7 +15,7 @@ const BoundaryOption = ({
 					selectedBoundaryKey === result.osm_id ? 'selected' : ''
 				}`}
 				onClick={() => {
-					onSelectBoundary(result);
+					handleSelectBoundary(result);
 					clearLayers();
 				}}
 			>

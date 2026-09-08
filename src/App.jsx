@@ -76,7 +76,7 @@ export default function App() {
 		// boundary data
 		boundaryData,
 		boundaryGeojson,
-		boundaryName = boundaryData?.elements?.[0]?.tags?.name ?? 'None', // human readable name
+		boundaryName = boundaryData?.name ?? 'None', // human readable name
 
 		// boundary
 		boundaryResults,
@@ -350,7 +350,8 @@ export default function App() {
 	// Derived state
 	// ─────────────────────────────────────────
 
-	const hasBoundary = Object.keys(boundaryData ?? {}).length > 0; // Flag to check if boundary exists
+	//const hasBoundary = Object.keys(boundaryData ?? {}).length > 0; // Flag to check if boundary exists
+	const hasBoundary = !!boundaryGeojson;
 	const hasFeatures = Object.keys(featureLayers).length > 0; // Flag to check if features exist
 	const hasSavedProjects = Object.keys(projects).length > 0;
 	const filteredLayers = useFilteredLayers(featureLayers);

@@ -80,7 +80,7 @@ export default function AppLayout({
 				className={`app-body ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}
 			>
 				<Sidebar
-					boundaryData={boundaryData}
+					hasBoundary={hasBoundary}
 					featureLayers={featureLayers}
 
 					activeDrawer={activeDrawer}

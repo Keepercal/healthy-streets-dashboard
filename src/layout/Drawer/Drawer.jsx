@@ -68,7 +68,7 @@ function Drawer({
 
 						boundaryResults={boundaryResults}
 						selectedBoundaryKey={selectedBoundaryKey}
-						onSelectBoundary={handleSelectBoundary}
+						handleSelectBoundary={handleSelectBoundary}
 					/>
 				)}
 

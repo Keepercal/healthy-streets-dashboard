@@ -27,7 +27,7 @@ const BoundaryPanel = ({
 
 	boundaryResults,
 	selectedBoundaryKey,
-	onSelectBoundary,
+	handleSelectBoundary,
 }) => {
 	const [hasSearched, setHasSearched] = useState(false);
 
@@ -54,7 +54,7 @@ const BoundaryPanel = ({
 					<div className="boundary-results">
 						<BoundaryOption
 							boundaryResults={boundaryResults}
-							onSelectBoundary={onSelectBoundary}
+							handleSelectBoundary={handleSelectBoundary}
 							selectedBoundaryKey={selectedBoundaryKey}
 							clearLayers={clearLayers}
 						/>

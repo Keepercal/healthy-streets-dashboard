@@ -54,9 +54,8 @@ export default function OpenProjectModal({
 
 										<div className="project-meta">
 											<span>
-												{project?.boundary.data
-													.elements?.[0]?.tags
-													?.name ?? 'None'}
+												{project?.boundary?.data
+													?.display_name ?? 'None'}
 											</span>
 										</div>
 

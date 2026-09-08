@@ -63,8 +63,12 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setBoundaryResults([]);
 	};
 
+	/*
+	 * THIS COMMENTED SECTION OF CODE RETURNS A BOUNDARY RELATION FROM THE OVERPASS API.
+	 */
+
 	/* Load boundary by fetching from Overpass API */
-	const loadBoundary = async (boundaryID, boundaryType, boundaryName) => {
+	/*const loadBoundary = async (boundaryID, boundaryType, boundaryName) => {
 		clearBoundary();
 
 		console.log('[DEBUG] loadBoundary ENTER:', {
@@ -100,6 +104,31 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		} catch (err) {
 			if (currentId !== requestId.current) return;
 
+			console.error(err);
+
+			setBoundaryData(null);
+			setBoundaryGeojson(null);
+
+			setStatus('error');
+			setError(err);
+		}
+	};*/
+
+	const loadBoundary = async (boundaryData, boundaryID, boundaryGeojson) => {
+		clearBoundary();
+
+		if (boundaryID === 'none') {
+			console.error('[DEBUG] BoundaryID is empty:', boundaryID);
+			return;
+		}
+
+		setStatus('loading');
+
+		try {
+			setBoundaryData(boundaryData);
+			setBoundaryGeojson(boundaryGeojson);
+			setStatus('success');
+		} catch (err) {
 			console.error(err);
 
 			setBoundaryData(null);

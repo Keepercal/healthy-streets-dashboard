@@ -5,6 +5,7 @@ export default async function searchBoundaries(boundaryName) {
 			q: boundaryName,
 			format: 'jsonv2',
 			limit: 10,
+			polygon_geojson: 1,
 		});
 
 	const res = await fetch(url, {
@@ -20,7 +21,5 @@ export default async function searchBoundaries(boundaryName) {
 
 	const data = await res.json();
 
-	const filtered = data.filter((item) => item.osm_type !== 'node');
-
-	return filtered;
+	return data.filter((item) => item.osm_type !== 'node');
 }
