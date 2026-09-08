@@ -1,0 +1,36 @@
+.modal-nav {
+	display: flex;
+	flex-direction: column;
+
+	border-right: 1px solid #ddd;
+
+	padding: 12px;
+	gap: 6px;
+}
+
+/* =========================
+    BUTTON
+========================= */
+
+.modal-nav button {
+	border: none;
+	background: none;
+
+	text-align: left;
+
+	padding: 10px 8px;
+	border-radius: 6px;
+
+	cursor: pointer;
+	font-family: var(--default-font);
+	font-size: 12px;
+}
+
+.modal-nav button:hover {
+	background: var(--colour-button-secondary-hover);
+}
+
+.modal-nav button.active {
+	background: var(--colour-button-primary-bg);
+	color: var(--colour-button-primary-text);
+}

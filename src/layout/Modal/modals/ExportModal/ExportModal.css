@@ -1,0 +1,17 @@
+.export-format-btns {
+	display: flex;
+	align-self: center;
+	justify-content: center;
+
+	gap: 12px;
+	width: 100%;
+}
+
+.export-radio label {
+	color: black;
+	font-size: 16px;
+}
+
+.export-checkbox label {
+	color: black;
+}

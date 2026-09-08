@@ -7,52 +7,52 @@
  * Returns true only if all filters pass.
  */
 export default function evaluateFeature(feature, filters) {
-    const tags = feature?.properties ?? {};
+	const tags = feature?.properties ?? {};
 
-    if(!filters.length){
-        return true;
-    }
+	if (!filters.length) {
+		return true;
+	}
 
-    return filters.reduce((result, filter, index) => {
-        const value = tags[filter.key];
+	return filters.reduce((result, filter, index) => {
+		const value = tags[filter.key];
 
-        const normalisedValue = String(value ?? "");
+		const normalisedValue = String(value ?? '');
 
-        let matches;
+		let matches;
 
-        switch (filter.operator) {
-            case "equals":
-                matches = normalisedValue === filter.value;
-                break;
+		switch (filter.operator) {
+			case 'equals':
+				matches = normalisedValue === filter.value;
+				break;
 
-            case "not_equals":
-                matches = normalisedValue !== filter.value;
-                break;
+			case 'not_equals':
+				matches = normalisedValue !== filter.value;
+				break;
 
-            case "exists":
-                matches = value !== undefined;
-                break;
+			case 'exists':
+				matches = value !== undefined;
+				break;
 
-            case "missing":
-                matches = value === undefined;
-                break;
+			case 'missing':
+				matches = value === undefined;
+				break;
 
-            default:
-                // Unknown operators are treated as non-blocking
-                matches = true;
-        }
+			default:
+				// Unknown operators are treated as non-blocking
+				matches = true;
+		}
 
-        // First filter establishes the starting value
-        if (index === 0){
-            return matches;
-        }
+		// First filter establishes the starting value
+		if (index === 0) {
+			return matches;
+		}
 
-        //Combine with previous result
-        if (filter.join === "OR"){
-            return result || matches;
-        }
+		//Combine with previous result
+		if (filter.join === 'OR') {
+			return result || matches;
+		}
 
-        // Default behaviour = AND
-        return result && matches
-    }, true);
+		// Default behaviour = AND
+		return result && matches;
+	}, true);
 }

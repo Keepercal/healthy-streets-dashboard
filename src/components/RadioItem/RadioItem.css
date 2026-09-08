@@ -1,81 +1,79 @@
 .radio-item {
-    width: 100%;
+	width: 100%;
 }
 
 .radio-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 
-    padding: 8px 12px;
+	padding: 8px 12px;
 
-    color: #ecf0f1;
-    font-size: 14px;
+	color: #ecf0f1;
+	font-size: 14px;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    border-radius: 6px;
+	border-radius: 6px;
 
-    transition:
-        background-color 0.2s ease,
-        color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
 }
 
 .radio-label:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+	background-color: rgba(255, 255, 255, 0.08);
 }
-
 
 /* Hide default radio */
 .radio-checkbox {
-    appearance: none;
-    -webkit-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
 
-    width: 16px;
-    height: 16px;
+	width: 16px;
+	height: 16px;
 
-    border: 2px solid #9aa8b5;
-    border-radius: 50%;
+	border: 2px solid #9aa8b5;
+	border-radius: 50%;
 
-    display: grid;
-    place-content: center;
+	display: grid;
+	place-content: center;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    transition:
-        border-color 0.2s ease,
-        background-color 0.2s ease;
+	transition:
+		border-color 0.2s ease,
+		background-color 0.2s ease;
 }
-
 
 /* Inner dot */
 .radio-checkbox::before {
-    content: "";
+	content: '';
 
-    width: 8px;
-    height: 8px;
+	width: 8px;
+	height: 8px;
 
-    border-radius: 50%;
+	border-radius: 50%;
 
-    background-color: #4fc3f7;
+	/*background-color: #4fc3f7;*/
+	background-color: #e29f00;
 
-    transform: scale(0);
+	transform: scale(0);
 
-    transition: transform 0.15s ease;
+	transition: transform 0.15s ease;
 }
-
 
 /* Selected state */
 .radio-checkbox:checked {
-    border-color: #4fc3f7;
+	border-color: #e29f00;
 }
 
 .radio-checkbox:checked::before {
-    transform: scale(1);
+	transform: scale(1);
 }
-
 
 /* Selected row */
 .radio-label:has(.radio-checkbox:checked) {
-    background-color: rgba(79, 194, 247, 0.203);
+	/*background-color: rgba(79, 194, 247, 0.203);*/
+	background-color: #e29e0037;
 }

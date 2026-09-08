@@ -2,15 +2,51 @@
     SIDEBAR LAYOUT
 ========================= */
 
+.sidebar {
+	grid-column: 1;
+	position: relative;
+	display: flex;
+	width: var(--sidebar-width);
+
+	transition: width 0.25s ease;
+
+	z-index: 1000;
+	box-sizing: border-box;
+
+	background-color: var(--colour-sidebar-bg);
+	color: #ecf0f1;
+}
+
+.sidebar.collapsed {
+	width: var(--sidebar-collapsed-width);
+}
+
 .sidebar-content {
-    width: 100%;
-    height: 100%;
-    margin: 12px;
+	width: 100%;
+	height: 100%;
+	margin: 12px 6px;
 
-    overflow-y: auto;
+	overflow-y: auto;
 
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-    box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.close-sidebar-button {
+	background-color: var(--colour-sidebar-bg);
+	color: white;
+
+	border: none;
+
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.close-sidebar-button:hover {
+	background-color: var(--colour-header-bg);
+	transition: background-color 0.25s ease;
+	cursor: pointer;
 }

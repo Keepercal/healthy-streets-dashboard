@@ -1,25 +1,25 @@
-.filter-join{
-    display: flex;
-    justify-content: center;
+.filter-join {
+	display: flex;
+	justify-content: center;
 
-    margin-bottom: 8px;
+	margin-bottom: 8px;
 }
 
-.filter-join select{
-    padding: 3px 10px;
+.filter-join select {
+	padding: 3px 10px;
 
-    border-radius: 12px;
-    border: 1px solid #ccc;
+	border-radius: 12px;
+	border: 1px solid #ccc;
 
-    background: white;
-    font-size: 12px;
-    font-weight: 600;
+	background: white;
+	font-size: 12px;
+	font-weight: 600;
 
-    color: #555;
+	color: #555;
 
-    cursor: pointer;
+	cursor: pointer;
 }
 
-.filter-join seelect:hover{
-    border-color: #888;
+.filter-join seelect:hover {
+	border-color: #888;
 }

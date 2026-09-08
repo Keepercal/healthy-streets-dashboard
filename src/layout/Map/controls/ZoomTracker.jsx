@@ -1,4 +1,4 @@
-import { useMapEvent } from "react-leaflet";
+import { useMapEvent } from 'react-leaflet';
 
 /**
  * ZoomTracker
@@ -7,11 +7,11 @@ import { useMapEvent } from "react-leaflet";
  * back to parent state via `onZoom`.
  */
 export default function ZoomTracker({ onZoom }) {
-    useMapEvent("zoomend", (e) => {
-        if (!onZoom) return;
+	useMapEvent('zoomend', (e) => {
+		if (!onZoom) return;
 
-        onZoom(e.target.getZoom());
-    });
+		onZoom(e.target.getZoom());
+	});
 
-    return null;
+	return null;
 }

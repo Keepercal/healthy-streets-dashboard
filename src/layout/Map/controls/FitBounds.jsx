@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
-import L from "leaflet";
+import { useEffect } from 'react';
+import { useMap } from 'react-leaflet';
+import L from 'leaflet';
 
 /**
  * FitBounds
@@ -9,23 +9,22 @@ import L from "leaflet";
  *
  * Triggers whenever `boundary` changes.
  */
-export default function FitBounds({ boundary }) {
-    const map = useMap();
+export default function FitBounds({ boundary, trigger }) {
+	const map = useMap();
 
-    useEffect(() => {
-        if (!boundary) return;
+	useEffect(() => {
+		if (!boundary) return;
 
-        // Create bounds directly from GeoJSON without rendering a layer
-        const geoJsonLayer = L.geoJSON(boundary);
-        const bounds = geoJsonLayer.getBounds();
+		// Create bounds directly from GeoJSON without rendering a layer
+		const bounds = L.geoJSON(boundary).getBounds();
 
-        if (bounds.isValid()) {
-            map.fitBounds(bounds, {
-                padding: [20, 20],
-                maxZoom: 16,
-            });
-        }
-    }, [boundary, map]);
+		if (bounds.isValid()) {
+			map.fitBounds(bounds, {
+				padding: [20, 20],
+				maxZoom: 16,
+			});
+		}
+	}, [boundary, trigger, map]);
 
-    return null;
+	return null;
 }

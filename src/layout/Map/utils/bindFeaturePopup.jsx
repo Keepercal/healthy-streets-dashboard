@@ -1,5 +1,5 @@
-import { createRoot } from "react-dom/client"
-import FeaturePopup from "../components/FeaturePopup/FeaturePopup";
+import { createRoot } from 'react-dom/client';
+import FeaturePopup from '../components/FeaturePopup/FeaturePopup';
 
 /**
  * bindFeaturePopup
@@ -8,17 +8,12 @@ import FeaturePopup from "../components/FeaturePopup/FeaturePopup";
  */
 
 export default function bindFeaturePopup(feature, layer, exclude) {
-    const container = document.createElement("div");
-    const root = createRoot(container);
+	const container = document.createElement('div');
+	const root = createRoot(container);
 
-    root.render(
-        <FeaturePopup
-            feature={feature}
-            exclude={exclude}
-        />
-    );
+	root.render(<FeaturePopup feature={feature} exclude={exclude} />);
 
-    layer.bindPopup(container, {
-        //maxHeight: 400
-    });
+	layer.bindPopup(container, {
+		//maxHeight: 400
+	});
 }

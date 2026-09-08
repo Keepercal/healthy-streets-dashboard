@@ -3,68 +3,61 @@
 ========================= */
 
 .sidebar-button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 
-    width: 100%;
+	width: 100%;
 
-    padding: 10px;
-    margin-bottom: 8px;
+	padding: 10px;
+	margin-bottom: 8px;
 
-    border: none;
-    border-radius: 6px;
+	border: none;
+	border-radius: 6px;
 
-    background: transparent;
+	background: transparent;
 
-    color: #ecf0f1;
+	color: #ecf0f1;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    font-size: 14px;
+	font-size: 14px;
+	font-family: var(--default-font);
 
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease;
 }
 
-.sidebar-button-label{
-    display: flex;
-    text-align: left;
-    font-family: var(--default-font);
+.sidebar-button-label {
+	display: flex;
+	text-align: left;
 }
 
 .sidebar-button:hover {
-    background: rgba(255,255,255,0.08);
+	background: rgba(255, 255, 255, 0.08);
 }
-
 
 /* Drawer currently open */
 .sidebar-button.active {
+	background: rgba(226, 159, 0, 0.15);
 
-    background: rgba(226,159,0,0.15);
+	color: #ffffff;
 
-    color: #ffffff;
-
-    border-right: 3px solid #e29f00;
+	border-right: 3px solid #e29f00;
 }
-
 
 /* Optional icon emphasis */
 .sidebar-button.active svg {
-    color: #e29f00;
+	color: #e29f00;
 }
-
 
 .sidebar-button.disabled {
+	opacity: 0.35;
 
-    opacity: 0.35;
-
-    cursor: not-allowed;
+	cursor: not-allowed;
 }
 
-
 .sidebar-button.disabled:hover {
-
-    background: transparent;
+	background: transparent;
 }

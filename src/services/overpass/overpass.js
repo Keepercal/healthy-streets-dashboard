@@ -1,4 +1,4 @@
-const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
+const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
 
 /**
  * callOverpass
@@ -8,12 +8,12 @@ const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
  * Handles only transport-level concerns (fetch + status logging).
  */
 async function callOverpass(query) {
-    console.log("[DEBUG] callOverpass ENTER with query:", query)
-    const url = `${OVERPASS_URL}?data=${encodeURIComponent(query)}`;
+	console.log('[DEBUG] callOverpass ENTER with query:', query);
+	const url = `${OVERPASS_URL}?data=${encodeURIComponent(query)}`;
 
-    const res = await fetch(url);
+	const res = await fetch(url);
 
-    return res;
+	return res;
 }
 
 /**
@@ -25,94 +25,109 @@ async function callOverpass(query) {
  * - Throws consistent errors for HTTP failures
  * - Validates payload shape
  */
-async function handleOverpassResponse(res, retryFn) {
-    if (res.status === 504) {
-        return retryFn();
-    }
+async function handleOverpassResponse(res, retryFn, retries) {
+	if (res.status === 504) {
+		if (retries <= 0) {
+			throw new Error('Overpass timed out after multiple retries');
+		}
 
-    if (!res.ok) {
-        if (res.status === 429) {
-            throw new Error(
-                `HTTP ${res.status}: Too Many Requests - wait before retrying`
-            );
-        }
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        throw new Error(
-            `HTTP ${res.status} (${res.statusText})`
-        );
-    }
+		return retryFn();
+	}
 
-    const data = await res.json();
+	if (!res.ok) {
+		if (res.status === 429) {
+			throw new Error(
+				`HTTP ${res.status}: Too Many Requests - wait before retrying`
+			);
+		}
 
-    if (!data?.elements?.length) {
-        throw new Error("Overpass returned an empty result");
-    }
+		throw new Error(`HTTP ${res.status} (${res.statusText})`);
+	}
 
-    console.log("[DEBUG] Overpass API returned a result", data);
+	const data = await res.json();
 
-    return data;
+	if (!data?.elements?.length) {
+		throw new Error('Overpass returned an empty result');
+	}
+
+	console.log('[DEBUG] Overpass API returned a result', data);
+
+	return data;
 }
 
 /**
- * fetchBoundary
+ * fetchOSMBoundary
  * -------------
  * Fetches a boundary relation from Overpass by name.
  */
-export async function fetchBoundary(boundaryID, boundaryType) {
-    if (!boundaryID || boundaryID === "none") return null;
+export async function fetchOSMBoundary(boundaryID, boundaryType, retries = 3) {
+	if (!boundaryID || boundaryID === 'none') return null;
 
-    console.log('[DEBUG] fetchBoundary ENTER:', {
-        boundaryID, boundaryType
-    })
+	console.log('[DEBUG] fetchOSMBoundary ENTER:', {
+		boundaryID,
+		boundaryType,
+	});
 
-    let query;
+	let query;
 
-    query = `
+	query = `
         [out:json][timeout:60];
         relation(${boundaryID});
         out geom meta;
     `;
 
-    const res = await callOverpass(query);
+	const res = await callOverpass(query);
 
-    return handleOverpassResponse(res, () =>
-        fetchBoundary(boundaryID, boundaryType)
-    );
+	return handleOverpassResponse(
+		res,
+		() => fetchOSMBoundary(boundaryID, boundaryType, retries - 1),
+		retries
+	);
 }
 
 /**
- * fetchMapFeature
+ * fetchOSMFeature
  * ---------------
  * Fetches OSM features inside a boundary area using tag filters.
  */
-export async function fetchMapFeature(
-    boundaryID,
-    featureTag,
-    featureValue,
-    featureType
+export async function fetchOSMFeature(
+	boundaryID,
+	featureTag,
+	featureValue,
+	featureType
 ) {
-    if (!boundaryID || boundaryID === "none") return null;
+	if (!boundaryID || boundaryID === 'none') return null;
 
-    console.log('[DEBUG] ENTER fetchFeatures:', {
-        boundaryID, featureTag, featureValue, featureType
-    })
+	console.log('[DEBUG] ENTER fetchFeatures:', {
+		boundaryID,
+		featureTag,
+		featureValue,
+		featureType,
+	});
 
-    const query = `
-        [out:json][timeout:60];
+	const query = `
+		[out:json][timeout:60];
 
-        relation(${boundaryID})->.rels;
-        .rels map_to_area -> .area;
+		relation(${boundaryID})->.rels;
+		.rels map_to_area -> .area;
 
-        nwr(area.area)["${featureTag}"="${featureValue}"];
+		nwr(area.area)["${featureTag}"="${featureValue}"]->.features;
 
-        out tags geom meta;
-    `;
+		(
+			.features;
+			node(r.features);
+		);
 
-    const res = await callOverpass(query);
+		out tags geom meta;
+	`;
 
-    console.log(res)
+	const res = await callOverpass(query);
 
-    return handleOverpassResponse(res, () =>
-        fetchMapFeature(boundaryID, featureTag, featureValue, featureType)
-    );
+	console.log(res);
+
+	return handleOverpassResponse(res, () =>
+		fetchOSMFeature(boundaryID, featureTag, featureValue, featureType)
+	);
 }

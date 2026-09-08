@@ -7,29 +7,29 @@
  * Returns true only if all filters pass.
  */
 export default function useEvaluateFeature(feature, filters) {
-    const tags = feature?.properties ?? {};
+	const tags = feature?.properties ?? {};
 
-    return filters.every((filter) => {
-        const value = tags[filter.key];
+	return filters.every((filter) => {
+		const value = tags[filter.key];
 
-        const normalisedValue = String(value ?? "");
+		const normalisedValue = String(value ?? '');
 
-        switch (filter.operator) {
-            case "equals":
-                return normalisedValue === filter.value;
+		switch (filter.operator) {
+			case 'equals':
+				return normalisedValue === filter.value;
 
-            case "not_equals":
-                return normalisedValue !== filter.value;
+			case 'not_equals':
+				return normalisedValue !== filter.value;
 
-            case "exists":
-                return value !== undefined;
+			case 'exists':
+				return value !== undefined;
 
-            case "missing":
-                return value === undefined;
+			case 'missing':
+				return value === undefined;
 
-            default:
-                // Unknown operators are treated as non-blocking
-                return true;
-        }
-    });
+			default:
+				// Unknown operators are treated as non-blocking
+				return true;
+		}
+	});
 }

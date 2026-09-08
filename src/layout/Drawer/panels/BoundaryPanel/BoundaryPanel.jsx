@@ -1,10 +1,10 @@
-import './BoundaryPanel.css'
+import './BoundaryPanel.css';
 
 import { useState } from 'react';
-import { Trash2 } from "lucide-react"
+import { Trash2 } from 'lucide-react';
 
 /* UI Components */
-import InputItem from './components/InputItem/InputItem'
+import InputItem from './components/InputItem/InputItem';
 import BoundaryOption from './components/BoundaryOption/BoundaryOption';
 import BoundaryIndicator from '../../../../components/BoundaryIndicator/BoundaryIndicator';
 import DeleteButton from '../../../../components/DeleteButton/DeleteButton.jsx';
@@ -19,47 +19,50 @@ import DeleteButton from '../../../../components/DeleteButton/DeleteButton.jsx';
 
  */
 const BoundaryPanel = ({
-    hasBoundary,
-    loadBoundaryResults,
-    handleClearBoundaryResults,
-    handleClearBoundary,
-    clearFeatures,
+	hasBoundary,
+	loadBoundaryResults,
+	clearBoundaryResults,
+	handleClearBoundary,
+	clearLayers,
 
-    boundaryResults,
-    selectedBoundaryKey,
-    onSelectBoundary,
+	boundaryResults,
+	selectedBoundaryKey,
+	onSelectBoundary,
 }) => {
-    const [hasSearched, setHasSearched] = useState(false);
+	const [hasSearched, setHasSearched] = useState(false);
 
-    return (
-        <>
-            <DeleteButton
-                    icon={<Trash2 size={18}/>}
-                    label="Remove Boundary"
-                    onClick={handleClearBoundary}
-                    disabled={!hasBoundary}
-            />
-            <InputItem
-                onSearch={loadBoundaryResults}
-                setHasSearched={setHasSearched}
+	return (
+		<>
+			<div className="panel-header">
+				<DeleteButton
+					icon={<Trash2 size={18} />}
+					label="Remove Boundary"
+					onClick={handleClearBoundary}
+					disabled={!hasBoundary}
+				/>
+				<InputItem
+					onSearch={loadBoundaryResults}
+					setHasSearched={setHasSearched}
 
-                handleClearBoundaryResults={handleClearBoundaryResults}
-                clearFeatures={clearFeatures}
-            />
-            <div className="panel-body">
-                {hasSearched ? (
-                    <div className="boundary-results">
-                        <BoundaryOption
-                            boundaryResults={boundaryResults}
-                            onSelectBoundary={onSelectBoundary}
-                            selectedBoundaryKey={selectedBoundaryKey}
-                            clearFeatures={clearFeatures}
-                        />
-                    </div>
-                ) : null}
-            </div>
-        </>
-    )
-}
+					clearBoundaryResults={clearBoundaryResults}
+					clearLayers={clearLayers}
+				/>
+			</div>
+
+			<div className="panel-body">
+				{hasSearched ? (
+					<div className="boundary-results">
+						<BoundaryOption
+							boundaryResults={boundaryResults}
+							onSelectBoundary={onSelectBoundary}
+							selectedBoundaryKey={selectedBoundaryKey}
+							clearLayers={clearLayers}
+						/>
+					</div>
+				) : null}
+			</div>
+		</>
+	);
+};
 
 export default BoundaryPanel;

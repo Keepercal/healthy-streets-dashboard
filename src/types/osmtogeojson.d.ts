@@ -1,5 +1,5 @@
-declare module "osmtogeojson" {
-    function osmtogeojson(data: any): any;
+declare module 'osmtogeojson' {
+	function osmtogeojson(data: any): any;
 
-    export = osmtogeojson;
+	export = osmtogeojson;
 }

@@ -1,6 +1,8 @@
-###### v0.9.1-alpha
+###### v1.0.0-beta
+
 # Streets Dashboard
-This web application is build for transport planners, engineers, or any public or private sector professionals involved with the built environment to search for particular features on streets. 
+
+This web application is build for transport planners, engineers, or any public or private sector professionals involved with the built environment to search for particular features on streets.
 
 Load features onto a map and export them for use within applications such as ArcGIS. Gain insight into an area you are auditing for transportation projects like pubs with wheelchair accessibility or pedestrian crossings missing tactile paving. Future features will include deeper interrogation of map data.
 
@@ -8,9 +10,6 @@ All data is from OpenStreetMap, an open-source map of the world powered powered 
 
 **NOTE! The data shown within this application is sourced from OpenStreetMap and therefore may not be 100% accurate.**
 
-*Live prototype* 👉 https://keepercal.github.io/streets-dashboard/
-<br>*Overpass API repo* 👉 https://github.com/drolbr/Overpass-API
-<br>*Overpass Turbo* 👉 https://overpass-turbo.eu/
-
-
-
+_Live prototype_ 👉 https://keepercal.github.io/streets-dashboard/
+<br>_Overpass API repo_ 👉 https://github.com/drolbr/Overpass-API
+<br>_Overpass Turbo_ 👉 https://overpass-turbo.eu/

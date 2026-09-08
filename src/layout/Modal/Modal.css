@@ -1,0 +1,291 @@
+/* =========================
+    MODAL OVERLAY
+========================= */
+
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: var(--colour-overlay);
+
+	z-index: 9999;
+}
+
+/* =========================
+    MODAL CONTAINER & VAREINTS
+========================= */
+
+.modal {
+	width: 100%;
+	max-width: 640px;
+
+	background: var(--colour-modal-bg);
+
+	border-radius: 10px;
+
+	box-shadow: 0 10px 30px var(--colour-box-shadow);
+
+	overflow: hidden;
+
+	display: flex;
+	flex-direction: column;
+}
+
+/* =========================
+    MODAL HEADER
+========================= */
+
+.modal-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	padding: 14px 20px;
+
+	border-bottom: 1px solid var(--colour-divider);
+}
+
+.modal-header h3 {
+	margin: 0;
+}
+
+/* =========================
+    MODAL CONTENT
+========================= */
+
+.modal-content {
+	padding: 16px 20px;
+}
+
+/* =========================
+    MODAL LAYOUT
+========================= */
+
+.modal-section {
+	display: flex;
+	flex-direction: column;
+
+	gap: 12px;
+}
+
+.modal-section p {
+	margin: 0;
+}
+
+.modal-section h3 {
+	margin: 6px 0;
+
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.modal-metadata {
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-actions {
+	display: flex;
+	justify-content: flex-end;
+
+	gap: 12px;
+
+	margin-top: 16px;
+	padding-top: 16px;
+	border-top: 1px solid var(--colour-divider);
+}
+
+.modal-actions button {
+	padding: 9px 18px;
+	border-radius: 8px;
+
+	font-size: 0.9rem;
+	font-weight: 600;
+
+	cursor: pointer;
+
+	transition:
+		background 0.2s ease,
+		transform 0.1s ease;
+}
+
+.modal-actions button:active {
+	transform: scale(0.98);
+}
+
+/* =========================
+    TITLE & STATES
+========================= */
+
+.modal-title {
+	margin: 0;
+}
+
+.modal-title.error {
+	color: var(--colour-danger);
+}
+
+.modal-title.loading {
+	color: #333;
+}
+
+/* =========================
+    NAV MODAL VARIENT
+========================= */
+
+.modal--nav {
+	max-width: 62vw;
+	height: 80vh;
+	max-height: 90vh;
+
+	display: flex;
+	flex-direction: column;
+}
+
+.modal--nav .modal-content {
+	padding: 10px 0;
+
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+
+	display: flex;
+}
+
+.modal-nav-layout {
+	display: grid;
+	grid-template-columns: 140px 1fr;
+
+	flex: 1;
+	min-height: 0;
+}
+
+.modal-nav-content {
+	padding: 0px 20px;
+
+	min-height: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.modal-nav-content h2 {
+	margin-top: 0px;
+}
+
+.modal-nav-content h3 {
+	font-size: 18px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	color: var(--colour-text-h3);
+}
+
+.modal-nav-content p {
+	font-size: 15px;
+}
+
+.modal-nav-content a {
+	text-decoration: none;
+}
+
+.modal-nav-content strong {
+	color: var(--colour-text-strong);
+}
+
+.modal-nav-content img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+
+	margin: 1rem auto;
+
+	border-radius: 8px;
+}
+
+/* =========================
+    LOADING SPINNER
+========================= */
+
+.spinner {
+	width: 30px;
+	height: 30px;
+
+	margin-top: 10px;
+
+	border: 4px solid #ccc;
+	border-top-color: #333;
+
+	border-radius: 50%;
+
+	animation: spin 1s linear infinite;
+}
+
+/* =========================
+    ANIMATION
+========================= */
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* =========================
+    MASTER BUTTON STYLING
+========================= */
+
+.close-btn {
+	border: none;
+
+	background: transparent;
+
+	font-size: 24px;
+	line-height: 1;
+
+	cursor: pointer;
+
+	color: #555;
+
+	transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+	color: #000;
+}
+
+.primary-btn {
+	background: var(--colour-button-primary-bg);
+	border: 1px solid var(--colour-button-primary-bg);
+	color: var(--colour-button-primary-text);
+}
+
+.primary-btn:hover {
+	background: var(--colour-button-primary-hover);
+}
+
+.secondary-btn {
+	background: var(--colour-button-secondary-bg);
+	border: 1px solid var(--colour-button-secondary-border);
+	color: var(--colour-button-secondary-text);
+}
+
+.secondary-btn:hover {
+	background: var(--colour-button-secondary-hover);
+}
+
+.primary-btn.discard {
+	color: var(--colour-button-danger-text);
+	border: none;
+	background-color: var(--colour-button-danger-bg);
+}
+
+.primary-btn.discard:hover {
+	background-color: var(--colour-button-danger-hover);
+}
+
+.secondary-btn.warning:hover {
+	background-color: var(--colour-button-warning-hover);
+}

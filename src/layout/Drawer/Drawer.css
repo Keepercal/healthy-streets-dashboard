@@ -3,78 +3,82 @@
 ========================= */
 
 .drawer {
-    position: absolute;
-    left: var(--sidebar-width);
-    top: 0;
-    bottom: 0;
+	position: absolute;
+	left: var(--sidebar-width);
+	top: 0;
+	bottom: 0;
 
-    width: var(--drawer-width);
+	width: var(--drawer-width);
 
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-    background: var(--drawer-bg);
+	background: var(--colour-drawer-bg);
 
-    transform: translateX(-100%);
-    transition: transform .25s ease;
+	transform: translateX(-100%);
+	transition: transform 0.25s ease;
 
-    z-index: 500;
+	z-index: 500;
 
-    box-shadow: 4px 0 4px rgba(0,0,0,.25);
+	box-shadow: 4px 0 4px var(--colour-box-shadow);
 
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .drawer.open {
-    transform:translateX(0);
+	transform: translateX(0);
+}
+
+.app-body.sidebar-collapsed .drawer {
+	left: var(--sidebar-collapsed-width);
 }
 
 /* =========================
     DRAWER HEADER AND CLOSE BUTTON
 ========================= */
 
-.drawer-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.drawer-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-    color: white;
-    flex-shrink: 0;
-    padding: 12px;
+	color: white;
+	flex-shrink: 0;
+	padding: 12px;
 }
 
-.drawer-header h2{
-    margin: 0px;
+.drawer-header h2 {
+	margin: 0px;
 }
 
 .drawer-close {
-    border: none;
-    background: transparent;
+	border: none;
+	background: transparent;
 
-    color: white;
-    font-size: 28px;
+	color: white;
+	font-size: 28px;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    line-height: 1;
+	line-height: 1;
 }
 
 .drawer-close:hover {
-    opacity: 0.75;
+	opacity: 0.75;
 }
 
 .drawer-content {
-    flex: 1;
-    min-height: 0;   /* Important! */
+	flex: 1;
+	min-height: 0; /* Important! */
 
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-    padding: 0px 12px;
+	padding: 0px 12px;
 
-    overflow-y: auto;
+	overflow-y: auto;
 
-    color: #ecf0f1;
+	color: #ecf0f1;
 }
 
 /* =========================
@@ -82,11 +86,11 @@
 ========================= */
 
 .panel-body {
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+	flex: 1;
+	height: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 
-    box-sizing: border-box;
-    color: white;
+	box-sizing: border-box;
+	color: white;
 }

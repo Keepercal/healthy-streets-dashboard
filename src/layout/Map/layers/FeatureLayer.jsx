@@ -1,22 +1,50 @@
 // Creates a new feature point to be placed on the map
 // Feature position is derived from Overpass feature's metadata
-import { GeoJSON } from 'react-leaflet'
-import L from "leaflet";
-import React from "react";
 
-import bindFeaturePopup from '../utils/bindFeaturePopup.jsx'
-import { createFeatureMarker, stylePolygon } from '../utils/featureRendering'
+import { GeoJSON } from 'react-leaflet';
+import React from 'react';
+
+import bindFeaturePopup from '../utils/bindFeaturePopup.jsx';
+import { createFeatureMarker, stylePolygon } from '../utils/featureRendering';
+
+import createOverviewFeatures from '../utils/createOverviewFeatures.js';
 
 // Fields not displayed in the popup
 const EXCLUDE_KEYS = new Set([
-    "type",
-    "id",
-    "timestamp",
-    "version",
-    "changeset",
-    "user",
-    "uid",
+	'type',
+	'id',
+	'timestamp',
+	'version',
+	'changeset',
+	'user',
+	'uid',
 ]);
+
+/**
+ * Forces Leaflet to refresh polygon styles
+ */
+function StyledGeoJSON({ data, styleFunction, ...props }) {
+	const geoJsonRef = React.useRef();
+
+	React.useEffect(() => {
+		if (!geoJsonRef.current) return;
+
+		geoJsonRef.current.eachLayer((layer) => {
+			if (layer.feature) {
+				layer.setStyle(styleFunction(layer.feature));
+			}
+		});
+	}, [data, styleFunction]);
+
+	return (
+		<GeoJSON
+			ref={geoJsonRef}
+			data={data}
+			style={styleFunction}
+			{...props}
+		/>
+	);
+}
 
 /**
  * FeatureLayer
@@ -25,124 +53,116 @@ const EXCLUDE_KEYS = new Set([
  *
  * Features:
  * - Displays polygons and points
- * - Converts polygons to centroid markers when zoomed out
- * - Applies dynamic styling based on filter state (_matchesFilters)
- * - Binds popup content to each feature
+ * - Converts small polygons to overview dots
+ * - Updates styling when filters change
+ * - Binds popup content
  */
-export default function FeatureLayer({ 
-    featureLayers, 
-    zoom, 
-    displayMode,
-}) {
-    if (!featureLayers || Object.keys(featureLayers).length === 0){
-        return null;
-    };
-    
-    return (
-        <>
-            {Object.entries(featureLayers)
-            .filter(([featureKey, layer]) => layer.visible)
-            .map(([featureKey, layer]) => {
-                
-                const features = layer.geojson;
+export default function FeatureLayer({ featureLayers, zoom, displayMode }) {
+	if (!featureLayers || Object.keys(featureLayers).length === 0) {
+		return null;
+	}
 
-                if (!features?.features) return null;
+	return (
+		<>
+			{Object.entries(featureLayers)
 
-                /*const featuresWithLayer = {
-                    ...features,
-                    features: features.features.map(feature => ({
-                        ...feature,
-                        properties: {
-                            ...feature.properties,
-                            _layer: featureKey
-                        }
-                    }))
-                };*/
+				.filter(([_, layer]) => layer.visible)
 
-                const overviewFeatures = {
-                    type: "FeatureCollection",
-                    features: features.features
-                        .filter(f =>
-                            f.geometry?.type !== "Point" &&
-                            f.geometry?.type !== "LineString" &&
-                            f.geometry?.type !== "MultiLineString"
-                        )
-                        .map(f =>{
-                            const bounds = L.geoJSON(f).getBounds();
-                            const centre = bounds.getCenter();
+				.map(([featureKey, layer]) => {
+					const features = layer.geojson;
 
-                            return {
-                                ...f,
-                                geometry: {
-                                    type: "Point",
-                                    coordinates: [
-                                        centre.lng,
-                                        centre.lat
-                                    ]
-                                }
-                            };
-                        })
-                };
+					if (!features?.features) {
+						return null;
+					}
 
-                const handleEachFeature = (feature, layer) => {
-                    bindFeaturePopup(feature, layer, EXCLUDE_KEYS);
-                };
+					/*
+					 * Create a new GeoJSON reference.
+					 * This forces React Leaflet to notice filter changes.
+					 */
+					const filteredFeatures = {
+						...features,
 
-                const filterKey = JSON.stringify(
-                    features.features.map(f => f._matchesFilters)
-                );
+						features: features.features.map((feature) => ({
+							...feature,
+							_matchesFilters: feature._matchesFilters,
+						})),
+					};
 
-                return (
-                    <React.Fragment key={featureKey}>
+					/*
+					 * Used to rebuild layers when filters change
+					 */
+					const filterKey = features.features
+						.map(
+							(feature) =>
+								`${feature.id}-${feature._matchesFilters}`
+						)
+						.join('|');
 
-                        <GeoJSON
-                            data={features}
+					/*
+					 * Create overview dots only for
+					 * matching small polygons
+					 */
+					const overviewFeatures = createOverviewFeatures(
+						{
+							...filteredFeatures,
 
-                            key={`${featureKey}-${filterKey}-${displayMode}-${layer.colour}`}
+							features: filteredFeatures.features.filter(
+								(feature) => feature._matchesFilters !== false
+							),
+						},
+						zoom
+					);
 
-                            style={(feature) =>
-                                stylePolygon(
-                                    feature, 
-                                    displayMode,
-                                    layer.colour,
-                                )
-                            }
+					const handleEachFeature = (feature, layer) => {
+						bindFeaturePopup(feature, layer, EXCLUDE_KEYS);
+					};
 
-                            pointToLayer={(feature, latlng) =>
-                                createFeatureMarker(
-                                    feature,
-                                    latlng,
-                                    displayMode,
-                                    layer.colour
-                                )
-                            }
+					return (
+						<React.Fragment
+							key={`${featureKey}-${filterKey}-${zoom < 15}`}
+						>
+							{/* Main features */}
+							<StyledGeoJSON
+								data={filteredFeatures}
+								key={`${featureKey}-${filterKey}-${displayMode}-${layer.colour}`}
+								styleFunction={(feature) =>
+									stylePolygon(
+										feature,
+										displayMode,
+										layer.colour
+									)
+								}
+								pointToLayer={(feature, latlng) =>
+									createFeatureMarker(
+										feature,
+										latlng,
+										displayMode,
+										layer.colour
+									)
+								}
+								onEachFeature={handleEachFeature}
+							/>
 
-                            onEachFeature={handleEachFeature}
-                        />
-
-                        {/* Add a pin to a polygon if the user is zoomed out */}
-                        {zoom < 15 && (
-                            <GeoJSON
-                                data={overviewFeatures}
-
-                                key={`${featureKey}-overview-${filterKey}-${displayMode}-${layer.colour}`}
-
-                                pointToLayer={(feature, latlng) =>
-                                    createFeatureMarker(
-                                        feature,
-                                        latlng,
-                                        displayMode,
-                                        layer.colour,
-                                        true
-                                    )
-                                }
-
-                                onEachFeature={handleEachFeature}
-                            />
-                        )}
-                    </React.Fragment>
-                )
-            })}
-        </>
-    );
+							{/* Overview dots */}
+							{zoom < 15 && (
+								<GeoJSON
+									data={overviewFeatures}
+									key={`${featureKey}-overview-${filterKey}-${displayMode}-${layer.colour}`}
+									pointToLayer={(feature, latlng) =>
+										createFeatureMarker(
+											feature,
+											latlng,
+											displayMode,
+											layer.colour,
+											true
+										)
+									}
+									onEachFeature={handleEachFeature}
+								/>
+							)}
+						</React.Fragment>
+					);
+				})}
+		</>
+	);
 }

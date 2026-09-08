@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import evaluateFeature from "../utils/evaluateFeatures";
+import { useMemo } from 'react';
+import evaluateFeature from '../utils/evaluateFeatures';
 
 /**
  * useMapFeatures
@@ -12,28 +12,26 @@ import evaluateFeature from "../utils/evaluateFeatures";
  * - GeoJSON conversion
  */
 export default function useFilteredLayers(featureLayers) {
-    return useMemo(() => {
-        console.log("[DEBUG]: useFilteredLayers ENTER:", featureLayers);
-        const result = {};
+	return useMemo(() => {
+		const result = {};
 
-        Object.entries(featureLayers).forEach(([key, layer]) => {
-            if (!layer.geojson?.features) return;
+		Object.entries(featureLayers).forEach(([key, layer]) => {
+			if (!layer.geojson?.features) return;
 
-            const filters = layer.filters ?? []
+			const filters = layer.filters ?? [];
 
-            result[key] = {
-                ...layer,
-                geojson: {
-                    ...layer.geojson,
-                    features: layer.geojson.features.map(feature => ({
-                        ...feature,
-                        _matchesFilters: evaluateFeature(feature, filters)
-                    })),
-                },
-            };
-        });
+			result[key] = {
+				...layer,
+				geojson: {
+					...layer.geojson,
+					features: layer.geojson.features.map((feature) => ({
+						...feature,
+						_matchesFilters: evaluateFeature(feature, filters),
+					})),
+				},
+			};
+		});
 
-        return result
-
-    }, [featureLayers]);
+		return result;
+	}, [featureLayers]);
 }

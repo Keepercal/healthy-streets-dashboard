@@ -1,0 +1,77 @@
+:root {
+	/* =========================
+        MAIN UI
+    ========================= */
+
+	/* Fonts */
+	--default-font: font-family: 'Google Sans Flex', sans-serif;
+
+	/* Header */
+	--header-height: 60px;
+	--colour-header-bg: #1f2d3d;
+
+	/* Sidebar */
+	--sidebar-width: 160px;
+	--sidebar-collapsed-width: 60px;
+	/* --sidebar-width: 140px; */
+	--colour-sidebar-bg: #223d57;
+
+	/* Drawer */
+	--drawer-width: 360px;
+	--colour-drawer-bg: #526d82;
+
+	/* Text Divider */
+	--colour-divider: #e5e5e5;
+
+	/* Background Dim */
+	--colour-overlay: rgba(0, 0, 0, 0.35);
+
+	/* Box Shadow */
+	--colour-box-shadow: rgba(0, 0, 0, 0.25);
+
+	/* =========================
+        MODALS
+    ========================= */
+
+	--colour-modal-bg: white;
+
+	/* =========================
+        Text
+    ========================= */
+
+	/* Headers */
+	--colour-text-h3: rgb(161, 84, 84);
+
+	/* Inline Text */
+	--colour-text-strong: rgb(161, 84, 84);
+
+	/* Danger */
+	--colour-text-danger: #d93025;
+
+	/* =========================
+        Buttons
+    ========================= */
+
+	/* Primary Button */
+	--colour-button-primary-bg: #3388ff;
+	--colour-button-primary-hover: #2878e8;
+	--colour-button-primary-text: white;
+
+	/* Secondary Button */
+	--colour-button-secondary-bg: white;
+	--colour-button-secondary-hover: #f5f5f5;
+	--colour-button-secondary-text: #555;
+	--colour-button-secondary-border: #ccc;
+
+	/* Danger Button */
+	--colour-button-danger-bg: rgb(212, 50, 21);
+	--colour-button-danger-hover: rgb(196, 43, 16);
+	--colour-button-danger-text: white;
+
+	--colour-button-danger-bg-disabled: rgba(234, 49, 16, 0.35);
+	--colour-button-danger-text-disabled: rgba(255, 255, 255, 0.45);
+	--colour-button-danger-border-disabled: rgba(255, 255, 255, 0.1);
+
+	/* Warning Button */
+	--colour-button-warning-hover: rgb(255, 226, 224);
+}

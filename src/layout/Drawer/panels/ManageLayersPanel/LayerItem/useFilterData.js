@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 /**
  * useFilterData
@@ -14,55 +14,52 @@ import { useMemo } from "react";
  * This hook memoises results to avoid recomputation unless `features` or `filters` change.
  */
 const OSM_METADATA_KEYS = new Set([
-    "id",
-    "relations",
-    "tainted",
-    "timestamp",
-    "version",
-    "changeset",
-    "uid",
+	'id',
+	'relations',
+	'tainted',
+	'timestamp',
+	'version',
+	'changeset',
+	'uid',
 ]);
 
 export default function useFilterData(features) {
-    return useMemo(() => {
-        // Unique set of all property keys across all features
-        const tagSet = new Set();
+	return useMemo(() => {
+		// Unique set of all property keys across all features
+		const tagSet = new Set();
 
-        // Maps each property key → Set of unique values
-        const tagValueMap = {};
+		// Maps each property key → Set of unique values
+		const tagValueMap = {};
 
-        // Extract metadata from GeoJSON features
-        features?.features?.forEach(feature => {
-            const properties = feature?.properties || {};
+		// Extract metadata from GeoJSON features
+		features?.features?.forEach((feature) => {
+			const properties = feature?.properties || {};
 
-            Object.entries(properties).forEach(([key, value]) => {
-                if (OSM_METADATA_KEYS.has(key)) return;
-                tagSet.add(key);
+			Object.entries(properties).forEach(([key, value]) => {
+				if (OSM_METADATA_KEYS.has(key)) return;
+				tagSet.add(key);
 
-                if (!tagValueMap[key]) {
-                    tagValueMap[key] = new Set();
-                }
+				if (!tagValueMap[key]) {
+					tagValueMap[key] = new Set();
+				}
 
-                if (value !== null && value !== undefined){
-                    tagValueMap[key].add(value);    
-                }
-                
-            });
-        });
+				if (value !== null && value !== undefined) {
+					tagValueMap[key].add(value);
+				}
+			});
+		});
 
-        // Available (unused) tags sorted alphabetically
-        const tags = [...tagSet].sort();
+		// Available (unused) tags sorted alphabetically
+		const tags = [...tagSet].sort();
 
-        // Helper: return sorted list of values for a given tag
-        const getValues = (key) =>
-            tagValueMap[key]
-                ? [...tagValueMap[key]].sort()
-                : [];
+		// Helper: return sorted list of values for a given tag
+		const getValues = (key) =>
+			tagValueMap[key] ? [...tagValueMap[key]].sort() : [];
 
-        return {
-            tags,
-            tagValueMap,
-            getValues,
-        };
-    }, [features]);
+		return {
+			tags,
+			tagValueMap,
+			getValues,
+		};
+	}, [features]);
 }

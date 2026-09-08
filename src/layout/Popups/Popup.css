@@ -1,136 +1,190 @@
 /* =========================
-    POPUP OVERLAY
-========================= */
-
-.popup-overlay {
-    position: fixed;
-    inset: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgba(0, 0, 0, 0.35);
-
-    z-index: 9999;
-}
-
-
-/* =========================
-    PANEL CONTAINER
+    POPUP
 ========================= */
 
 .popup {
-    width: 100%;
-    max-width: 640px;
+	position: fixed;
 
-    background: white;
+	/* Leave room for your sidebar + drawer */
+	right: 10px;
+	bottom: 0;
 
-    border-radius: 10px;
+	width: 320px;
+	max-width: calc(100vw - var(--sidebar-width) - 40px);
 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+	background: #fff;
+	border-radius: 12px 12px 0 0;
 
-    overflow: hidden;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+
+	border-top: 3px solid var(--colour-button-primary-bg);
+
+	overflow: hidden;
+
+	z-index: 9999;
+
+	animation: slideUp 0.25s ease-out;
 }
 
+.popup.error {
+	border-top: 3px solid var(--colour-button-danger-bg);
+}
+
+.popup.closing {
+	animation: slideDown 0.25s ease-in forwards;
+}
 
 /* =========================
     PANEL HEADER
 ========================= */
 
 .popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-    padding: 14px 20px;
+	padding: 8px 14px;
 
-    border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+
+	background: #fff;
+
+	flex-shrink: 0;
 }
 
 .popup-header h3 {
-    margin: 0;
+	font-size: 15px;
+	margin: 0;
 }
 
+.popup-header.error {
+	border-top: 3px solid var(--colour-button-danger-bg);
+}
 
 /* =========================
     PANEL CONTENT
 ========================= */
 
 .popup-content {
-    padding: 10px 20px 20px 20px;
+	padding: 0px 16px 20px 16px;
+
+	flex: 1;
+
+	overflow-y: auto;
 }
 
+.popup-content p {
+	font-size: 14px;
+}
 
 /* =========================
     CLOSE BUTTON
 ========================= */
 
 .close-btn {
-    border: none;
+	border: none;
+	background: transparent;
 
-    background: transparent;
+	font-size: 24px;
+	line-height: 1;
 
-    font-size: 24px;
-    line-height: 1;
+	cursor: pointer;
 
-    cursor: pointer;
+	color: #555;
 
-    color: #555;
+	padding: 0;
 
-    transition: color 0.2s ease;
+	transition: color 0.2s ease;
 }
 
 .close-btn:hover {
-    color: #000;
+	color: #000;
 }
-
 
 /* =========================
     STATES
 ========================= */
 
-.popup-title{
-    margin: 0;
+.popup-title {
+	margin: 0;
 }
 
 .popup-title.error {
-    color: #d93025;
+	color: var(--colour-text-danger);
 }
 
 .popup-title.loading {
-    color: #333;
+	color: #333;
 }
-
 
 /* =========================
     LOADING SPINNER
 ========================= */
 
 .spinner {
-    width: 30px;
-    height: 30px;
+	width: 30px;
+	height: 30px;
 
-    margin-top: 10px;
+	margin-top: 10px;
 
-    border: 4px solid #ccc;
-    border-top-color: #333;
+	border: 4px solid #ccc;
+	border-top-color: #333;
 
-    border-radius: 50%;
+	border-radius: 50%;
 
-    animation: spin 1s linear infinite;
+	animation: spin 1s linear infinite;
 }
 
-
 /* =========================
-    ANIMATION
+    ANIMATIONS
 ========================= */
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slideDown {
+	from {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	to {
+		transform: translateY(100%);
+		opacity: 0;
+	}
+}
+
+/* =========================
+    RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+	.popup-overlay {
+		padding: 0;
+	}
+
+	.popup {
+		width: 100%;
+		max-height: 45vh;
+
+		border-radius: 16px 16px 0 0;
+	}
 }

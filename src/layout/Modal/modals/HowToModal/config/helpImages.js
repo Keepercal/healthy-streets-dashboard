@@ -1,0 +1,24 @@
+const base = import.meta.env.BASE_URL;
+
+export const helpImages = {
+	openStreetMap: `${base}help/open-street-map.webp`,
+	queryOSM: `${base}help/query-osm.webp`,
+	locateBoundary: `${base}help/locate-boundary.webp`,
+	searchBoundary: `${base}help/search-boundary.webp`,
+	addLayersDraw: `${base}help/add-layers-draw.webp`,
+	bristolPubs: `${base}help/bristol-pubs.webp`,
+	manageLayers: `${base}help/manage-layers.webp`,
+	nodesWaysRelations: `${base}help/nodes-ways-relations.webp`,
+	featureTags: `${base}help/feature-tags.webp`,
+	wheelchairAccessible: `${base}help/wheelchair-accessible.webp`,
+	wheelchairMissing: `${base}help/wheelchair-missing.webp`,
+	basemapExample: `${base}help/basemap-example.webp`,
+	lastEdited: `${base}help/last-edited.webp`,
+	heatmap: `${base}help/heatmap.webp`,
+	workspaceDirty: `${base}help/workspace-dirty.webp`,
+	saveAs: `${base}help/save-as.webp`,
+	openProject: `${base}help/open-project.webp`,
+	exportProject: `${base}help/export-project.webp`,
+	joinOperation: `${base}help/join-operation.webp`,
+	multiplLayers: `${base}help/multiple-layers.webp`,
+};

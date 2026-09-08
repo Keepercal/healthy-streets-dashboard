@@ -1,47 +1,44 @@
-.delete-boundary-btn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+.delete-boundary-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 
-    padding: 6px;
-    margin-bottom: 12px; 
+	padding: 6px;
+	margin-bottom: 12px;
 
-    background: rgb(212, 50, 21);
+	background: var(--colour-button-danger-bg);
 
-    border: none;
-    border-radius: 8px;
+	border: none;
+	border-radius: 8px;
 
-    color: white;
-    font-family: var(--default-font);
-    font-size: 14px;
-    font-weight: 400;
+	color: var(--colour-button-danger-text);
+	font-family: var(--default-font);
+	font-size: 14px;
+	font-weight: 400;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    transition:
-        background-color 0.25s ease,
-        border-color 0.15s ease,
-        transform 0.1s ease,
-        box-shadow 0.15s ease;
-
-    
+	transition:
+		background-color 0.25s ease,
+		border-color 0.15s ease,
+		transform 0.1s ease,
+		box-shadow 0.15s ease;
 }
 
-.delete-boundary-btn:not(:disabled):hover{
-    background: rgb(196, 43, 16);
+.delete-boundary-btn:not(:disabled):hover {
+	background: var(--colour-button-danger-hover);
 }
 
 /* Disabled state */
 .delete-boundary-btn:disabled {
+	background: var(--colour-button-danger-bg-disabled);
 
-    background: rgba(234,49,16,0.35);
+	border-color: var(--colour-button-danger-border-disabled);
 
-    border-color: rgba(255,255,255,0.1);
+	color: var(--colour-button-danger-text-disabled);
 
-    color: rgba(255,255,255,0.45);
+	cursor: auto;
 
-    cursor: auto;
-
-    opacity: 0.6;
+	opacity: 0.6;
 }

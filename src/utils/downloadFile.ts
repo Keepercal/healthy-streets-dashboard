@@ -1,21 +1,21 @@
 export function downloadFile(
-    content: string,
-    filename: string,
-    mimeType: string
-){
-    const blob = new Blob([content], {
-        type: mimeType,
-    });
+	content: string,
+	filename: string,
+	mimeType: string
+) {
+	const blob = new Blob([content], {
+		type: mimeType,
+	});
 
-    const url = URL.createObjectURL(blob);
+	const url = URL.createObjectURL(blob);
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = filename;
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
 
-    URL.revokeObjectURL(url);
+	URL.revokeObjectURL(url);
 }

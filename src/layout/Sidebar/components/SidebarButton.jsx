@@ -1,30 +1,29 @@
-import "./SidebarButton.css";
+import './SidebarButton.css';
 
 const SidebarButton = ({
-    label,
-    icon,
-    active,
-    disabled,
-    onClick
+	label,
+	icon,
+	isCollapsed,
+	active,
+	disabled,
+	onClick,
 }) => (
-    <button
-        className={`sidebar-button 
-            ${active ? "active" : ""}
-            ${disabled ? "disabled": ""}
+	<button
+		className={`sidebar-button 
+            ${active ? 'active' : ''}
+            ${disabled ? 'disabled' : ''}
         `}
-        disabled={disabled}
-        onClick={onClick}
-    >
-        {icon && (
-            <span className="sidebar-button-icon">
-                {icon}
-            </span>
-        )}
+		disabled={disabled}
+		onClick={onClick}
+	>
+		{icon && <span className="sidebar-button-icon">{icon}</span>}
 
-        <span className="sidebar-button-label">
-            {label}
-        </span>
-    </button>
-)
+		{!isCollapsed ? (
+			<span className="sidebar-button-label">{label}</span>
+		) : (
+			<span className="sidebar-button-label"></span>
+		)}
+	</button>
+);
 
 export default SidebarButton;

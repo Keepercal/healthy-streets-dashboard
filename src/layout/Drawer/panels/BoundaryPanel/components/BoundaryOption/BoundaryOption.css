@@ -3,47 +3,45 @@
 ========================= */
 
 .boundary-card {
-    width: 100%;
+	width: 100%;
 
-    padding: 6px 8px;
+	padding: 6px 8px;
 
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 
-    box-sizing: border-box;
+	box-sizing: border-box;
 
-    border: 2px solid rgba(255,255,255,0.15);
+	border: 2px solid rgba(255, 255, 255, 0.15);
 
-    border-radius: 6px;
+	border-radius: 6px;
 
-    background: rgba(255,255,255,0.04);
+	background: rgba(255, 255, 255, 0.04);
 
-    color: #ecf0f1;
+	color: #ecf0f1;
 
-    font-size: 14px;
+	font-size: 14px;
 
-    line-height: 1.4;
+	line-height: 1.4;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    overflow-wrap: anywhere;
+	overflow-wrap: anywhere;
 
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease;
+	transition:
+		background 0.2s ease,
+		border-color 0.2s ease;
 }
-
 
 .boundary-card:hover {
-    background: rgba(226,159,0,0.12);
+	background: rgba(226, 159, 0, 0.12);
 
-    border-color: rgba(226,159,0,0.35);
+	border-color: rgba(226, 159, 0, 0.35);
 }
 
-
 .boundary-card.selected {
-    background: rgba(226,159,0,0.18);
+	background: rgba(226, 159, 0, 0.18);
 
-    border-color: rgba(226,159,0,0.55);
+	border-color: rgba(226, 159, 0, 0.55);
 }
 
 /* =========================
@@ -51,19 +49,29 @@
 ========================= */
 
 .empty-state {
+	display: flex;
+	flex-direction: column;
 
-    display: flex;
+	justify-content: center;
+	align-items: center;
 
-    justify-content: center;
-    align-items: center;
+	flex: 1;
 
-    flex: 1;
+	padding: 30px;
 
-    padding: 30px;
+	color: rgba(255, 255, 255, 0.65);
 
-    color: rgba(255,255,255,0.65);
+	font-size: 18px;
+	font-style: italic;
+	text-align: center;
 
-    font-size: 15px;
+	gap: 8px;
+}
 
-    font-style: italic;
+.empty-state svg {
+	opacity: 0.7;
+}
+
+.empty-state p {
+	margin: 0;
 }
