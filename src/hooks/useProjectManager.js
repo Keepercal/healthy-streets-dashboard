@@ -97,7 +97,6 @@ export default function useProjectManager({
 			},
 
 			boundary: {
-				selectedBoundaryIds: workspace.selectedBoundaryIds,
 				boundaries: workspace.boundaries,
 			},
 

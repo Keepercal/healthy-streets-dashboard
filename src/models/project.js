@@ -22,7 +22,6 @@ export function createProject(overrides = {}) {
 		},
 
 		boundary: {
-			selectedBoundaryIds: 'none',
 			boundaries: null,
 			...overrides.boundary,
 		},

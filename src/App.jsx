@@ -289,10 +289,9 @@ export default function App() {
 	/*
 	 * Creates a list of projects
 	 */
-	async function loadProjects() {
-		const list = await getAllProjects(); // fetch projects from database
+	const loadProjects = useCallback(async () => {
+		const list = await getAllProjects();
 
-		// sort projects by date last modified
 		const sorted = list.sort((a, b) => {
 			return (
 				new Date(b.metadata.modified) - new Date(a.metadata.modified)
@@ -300,7 +299,7 @@ export default function App() {
 		});
 
 		setProjects(sorted);
-	}
+	}, []);
 
 	// ─────────────────────────────────────────
 	// Session
