@@ -8,7 +8,7 @@ const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
  * Handles only transport-level concerns (fetch + status logging).
  */
 async function callOverpass(query) {
-	console.log('[DEBUG] callOverpass ENTER with query:', query);
+	console.log(`[DEBUG] callOverpass ENTER with query: ${query}`);
 	const url = `${OVERPASS_URL}?data=${encodeURIComponent(query)}`;
 
 	const res = await fetch(url);
@@ -62,11 +62,11 @@ async function handleOverpassResponse(res, retryFn, retries) {
  * -------------
  * Fetches a boundary relation from Overpass by name.
  */
-export async function fetchOSMBoundary(boundaryID, boundaryType, retries = 3) {
-	if (!boundaryID || boundaryID === 'none') return null;
+export async function fetchOSMBoundary(boundaryIDs, boundaryType, retries = 3) {
+	if (!boundaryIDs || boundaryIDs === 'none') return null;
 
 	console.log('[DEBUG] fetchOSMBoundary ENTER:', {
-		boundaryID,
+		boundaryIDs,
 		boundaryType,
 	});
 
@@ -74,7 +74,7 @@ export async function fetchOSMBoundary(boundaryID, boundaryType, retries = 3) {
 
 	query = `
         [out:json][timeout:60];
-        relation(${boundaryID});
+        relation(${boundaryIDs});
         out geom meta;
     `;
 
@@ -82,7 +82,7 @@ export async function fetchOSMBoundary(boundaryID, boundaryType, retries = 3) {
 
 	return handleOverpassResponse(
 		res,
-		() => fetchOSMBoundary(boundaryID, boundaryType, retries - 1),
+		() => fetchOSMBoundary(boundaryIDs, boundaryType, retries - 1),
 		retries
 	);
 }
@@ -93,25 +93,32 @@ export async function fetchOSMBoundary(boundaryID, boundaryType, retries = 3) {
  * Fetches OSM features inside a boundary area using tag filters.
  */
 export async function fetchOSMFeature(
-	boundaryID,
+	boundaryIDs,
 	featureTag,
 	featureValue,
 	featureType
 ) {
-	if (!boundaryID || boundaryID === 'none') return null;
+	if (!boundaryIDs || boundaryIDs === 'none') return null;
 
 	console.log('[DEBUG] ENTER fetchFeatures:', {
-		boundaryID,
+		boundaryIDs,
 		featureTag,
 		featureValue,
 		featureType,
 	});
 
+	const relations = [...boundaryIDs]
+		.map((id) => `  relation(${id});`)
+		.join('\n');
+
 	const query = `
 		[out:json][timeout:60];
 
-		relation(${boundaryID})->.rels;
-		.rels map_to_area -> .area;
+		(
+	${relations}
+		);
+
+		map_to_area -> .area;
 
 		nwr(area.area)["${featureTag}"="${featureValue}"]->.features;
 
@@ -128,6 +135,6 @@ export async function fetchOSMFeature(
 	console.log(res);
 
 	return handleOverpassResponse(res, () =>
-		fetchOSMFeature(boundaryID, featureTag, featureValue, featureType)
+		fetchOSMFeature(boundaryIDs, featureTag, featureValue, featureType)
 	);
 }

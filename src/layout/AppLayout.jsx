@@ -23,7 +23,6 @@ export default function AppLayout({
 	boundaryName,
 
 	// sidebar
-	boundaryData,
 	featureLayers,
 	activeDrawer,
 	setActiveDrawer,
@@ -36,7 +35,7 @@ export default function AppLayout({
 	toggleLayerVisibility,
 	renameLayer,
 	updateLayerFilters,
-	selectedBoundaryID,
+	selectedBoundaryIds,
 	loadBoundaryResults,
 	handleSelectBoundary,
 	boundaryResults,
@@ -51,7 +50,7 @@ export default function AppLayout({
 	getCachedFeatures,
 
 	// map
-	boundaryGeojson,
+	boundaries,
 	filteredLayers,
 	focusTrigger,
 	handleScreenshotReady,
@@ -106,7 +105,7 @@ export default function AppLayout({
 
 					updateLayerFilters={updateLayerFilters}
 
-					selectedBoundaryID={selectedBoundaryID}
+					selectedBoundaryIds={selectedBoundaryIds}
 
 					loadBoundaryResults={loadBoundaryResults}
 					handleSelectBoundary={handleSelectBoundary}
@@ -123,7 +122,7 @@ export default function AppLayout({
 					handleClearBoundary={handleClearBoundary}
 					removeLayer={removeLayer}
 					clearLayers={clearLayers}
-					cachedFeatures={getCachedFeatures(selectedBoundaryID)}
+					cachedFeatures={getCachedFeatures(selectedBoundaryIds)}
 				/>
 
 				<div className="main-content">
@@ -134,8 +133,8 @@ export default function AppLayout({
 
 						<Map
 							// boundary
-							boundary={boundaryGeojson}
-							boundaryID={selectedBoundaryID}
+							boundaries={boundaries}
+							boundaryIDs={selectedBoundaryIds}
 
 							// features
 							featureLayers={filteredLayers}

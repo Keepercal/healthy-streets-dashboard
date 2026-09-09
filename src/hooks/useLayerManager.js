@@ -142,12 +142,12 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 	/* Array indicating what features are in the cache */
 	// Used in the UI to indicate cached features
-	const getCachedFeatures = (boundaryID) => {
+	const getCachedFeatures = (boundaryIDs) => {
 		return Array.from(cache.current.entries())
 			.filter(([cacheKey]) => {
 				const [cachedBoundary] = JSON.parse(cacheKey);
 
-				return cachedBoundary === boundaryID;
+				return cachedBoundary === boundaryIDs;
 			})
 			.map(([_, layer]) => layer.sourceKey);
 	};
@@ -191,7 +191,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 		layerID,
 		cacheKey,
 		featureKey,
-		boundaryID,
+		boundaryIDs,
 		featureTag,
 		featureValue,
 		featureType,
@@ -199,7 +199,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 	}) {
 		// Fetch OSM feature from Overpass API
 		const payload = await fetchOSMFeature(
-			boundaryID,
+			boundaryIDs,
 			featureTag,
 			featureValue,
 			featureType
@@ -228,7 +228,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 			geojson,
 			colour,
 			query: {
-				boundaryID,
+				boundaryIDs,
 				featureTag,
 				featureValue,
 				featureType,
@@ -282,7 +282,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 	/* Orchestrate loading a new map layer */
 	const loadLayer = async ({
 		featureKey,
-		boundaryID,
+		boundaryIDs,
 		featureTag,
 		featureValue,
 		featureType,
@@ -294,7 +294,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 			featureValue,
 		});
 
-		if (!featureKey || !boundaryID || !featureTag) {
+		if (!featureKey || !boundaryIDs || !featureTag) {
 			throw new Error('Missing required feature parameters');
 		}
 
@@ -309,7 +309,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 		// Create a cache key for the layer
 		const cacheKey = JSON.stringify([
-			boundaryID,
+			boundaryIDs,
 			featureTag,
 			featureValue,
 			featureType,
@@ -337,7 +337,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 				layerID,
 				cacheKey,
 				featureKey,
-				boundaryID,
+				boundaryIDs,
 				featureTag,
 				featureValue,
 				featureType,

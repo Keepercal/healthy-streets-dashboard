@@ -33,8 +33,8 @@ export default function useSession({
 		if (!session?.data) return false;
 
 		const hasBoundary =
-			session.data.boundary?.selectedBoundaryID &&
-			session.data.boundary.selectedBoundaryID !== 'none';
+			session.data.boundary?.selectedBoundaryIds &&
+			session.data.boundary.selectedBoundaryIds !== 'none';
 
 		const hasLayers =
 			Array.isArray(session.data.layers) &&

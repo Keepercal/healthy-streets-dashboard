@@ -3,10 +3,9 @@ import { GeoJSON } from 'react-leaflet';
 /**
  * BoundaryLayer
  * --------------
- * Renders a GeoJSON boundary overlay on the map.
- * Styled as a subtle red outline with low fill opacity.
+ * Renders boundary GeoJSON overlays on the map.
  */
-export default function BoundaryLayer({ boundary }) {
+export default function BoundaryLayer({ boundaries }) {
 	const style = {
 		color: 'red',
 		dashArray: '5, 5',
@@ -16,5 +15,16 @@ export default function BoundaryLayer({ boundary }) {
 		interactive: false,
 	};
 
-	return <GeoJSON data={boundary} style={style} pointToLayer={() => null} />;
+	return (
+		<>
+			{boundaries.map((boundary) => (
+				<GeoJSON
+					key={boundary.osm_id}
+					data={boundary.geojson}
+					style={style}
+					pointToLayer={() => null}
+				/>
+			))}
+		</>
+	);
 }

@@ -3,8 +3,7 @@ import MODALS from '@/config/modalTypes.js';
 
 export default function useWorkspaceActions({
 	// boundary
-	selectedBoundaryID,
-	setSelectedBoundaryID,
+	selectedBoundaryIds,
 	setBoundary,
 	clearBoundary,
 
@@ -23,7 +22,6 @@ export default function useWorkspaceActions({
 	 * Handle input for boundary search
 	 */
 	const handleSelectBoundary = (boundaryData) => {
-		setSelectedBoundaryID(boundaryData.osm_id);
 		setBoundary(boundaryData);
 	};
 
@@ -31,9 +29,10 @@ export default function useWorkspaceActions({
 	 * Handle resetting boundary and wiping features
 	 */
 	const handleClearBoundary = () => {
-		setSelectedBoundaryID('none');
 		clearBoundary();
 		clearLayers();
+
+		setIsDirty(false);
 	};
 
 	/**
@@ -56,12 +55,12 @@ export default function useWorkspaceActions({
 		featureLabel
 	) => {
 		console.log(
-			`Calling loadLayer with boundary key: ${selectedBoundaryID}`
+			`Calling loadLayer with boundary ID: ${selectedBoundaryIds}`
 		);
 
 		const preparedLayer = await loadLayer({
 			featureKey,
-			boundaryID: selectedBoundaryID,
+			boundaryIDs: selectedBoundaryIds,
 			featureTag,
 			featureValue,
 			featureType,

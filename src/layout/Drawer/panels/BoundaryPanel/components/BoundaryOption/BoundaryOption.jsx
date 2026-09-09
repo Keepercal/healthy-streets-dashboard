@@ -3,7 +3,7 @@ import { Ghost } from 'lucide-react';
 
 const BoundaryOption = ({
 	boundaryResults,
-	selectedBoundaryID,
+	selectedBoundaryIds,
 	handleSelectBoundary,
 	clearLayers,
 }) => {
@@ -12,7 +12,7 @@ const BoundaryOption = ({
 			<div
 				key={result.osm_id}
 				className={`boundary-card ${
-					selectedBoundaryID === result.osm_id ? 'selected' : ''
+					selectedBoundaryIds === result.osm_id ? 'selected' : ''
 				}`}
 				onClick={() => {
 					handleSelectBoundary(result);

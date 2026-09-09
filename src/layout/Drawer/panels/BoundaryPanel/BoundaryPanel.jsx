@@ -26,7 +26,7 @@ const BoundaryPanel = ({
 	clearLayers,
 
 	boundaryResults,
-	selectedBoundaryID,
+	selectedBoundaryIds,
 	handleSelectBoundary,
 }) => {
 	const [hasSearched, setHasSearched] = useState(false);
@@ -34,18 +34,18 @@ const BoundaryPanel = ({
 	return (
 		<>
 			<div className="panel-header">
-				<DeleteButton
-					icon={<Trash2 size={18} />}
-					label="Remove Boundary"
-					onClick={handleClearBoundary}
-					disabled={!hasBoundary}
-				/>
 				<InputItem
 					onSearch={loadBoundaryResults}
 					setHasSearched={setHasSearched}
 
 					clearBoundaryResults={clearBoundaryResults}
 					clearLayers={clearLayers}
+				/>
+				<DeleteButton
+					icon={<Trash2 size={18} />}
+					label="Remove All Boundaries"
+					onClick={handleClearBoundary}
+					disabled={!hasBoundary}
 				/>
 			</div>
 
@@ -55,7 +55,7 @@ const BoundaryPanel = ({
 						<BoundaryOption
 							boundaryResults={boundaryResults}
 							handleSelectBoundary={handleSelectBoundary}
-							selectedBoundaryID={selectedBoundaryID}
+							selectedBoundaryIds={selectedBoundaryIds}
 							clearLayers={clearLayers}
 						/>
 					</div>

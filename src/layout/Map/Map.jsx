@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import './Map.css';
 
 import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import BoundaryLayer from './layers/BoundaryLayer';
 import FeatureLayer from './layers/FeatureLayer';
@@ -24,14 +24,19 @@ import BASEMAPS from '@/config/basemaps';
  */
 
 function Map({
-	boundary,
-	boundaryID,
+	boundaries,
+	boundaryIDs,
 	featureLayers,
 	displayMode,
 	basemap,
 	focusTrigger,
 	onScreenshot,
 }) {
+	const geojsons = useMemo(
+		() => boundaries.map((boundary) => boundary.geojson),
+		[boundaries]
+	);
+
 	//const position = [54.0182, -2.5471]; // Bristol
 	const position = [54.0182, -2.5471]; // UK
 	//const position = [0, 0]; // Globe
@@ -50,7 +55,7 @@ function Map({
 	return (
 		<>
 			<MapContainer
-				key={boundaryID}
+				key={boundaryIDs}
 				center={position}
 				//zoom={13} // Bristol
 				zoom={6} // UK
@@ -83,10 +88,13 @@ function Map({
 				)}
 
 				{/* Boundary + auto-fit */}
-				{boundary && (
+				{boundaries.length > 0 && (
 					<>
-						<BoundaryLayer boundary={boundary} />
-						<FitBounds boundary={boundary} trigger={focusTrigger} />
+						<BoundaryLayer boundaries={boundaries} />
+						<FitBounds
+							boundaries={geojsons}
+							trigger={focusTrigger}
+						/>
 					</>
 				)}
 			</MapContainer>

@@ -44,7 +44,6 @@ export default function App() {
 	const [isDirty, setIsDirty] = useState(false);
 	const [basemap, setBasemap] = useState('carto');
 	const [displayMode, setDisplayMode] = useState('default');
-	const [selectedBoundaryID, setSelectedBoundaryID] = useState('none');
 
 	// UI
 	const [activeDrawer, setActiveDrawer] = useState(null);
@@ -77,8 +76,7 @@ export default function App() {
 	/* Manages states for boundaries */
 	const {
 		// boundary data
-		boundaryData,
-		boundaryGeojson,
+		boundaries,
 
 		// boundary
 		boundaryResults,
@@ -145,11 +143,9 @@ export default function App() {
 	 */
 	const boundaryState = useMemo(
 		() => ({
-			selectedBoundaryID,
-			data: boundaryData,
-			geojson: boundaryGeojson,
+			boundaries,
 		}),
-		[selectedBoundaryID, boundaryData, boundaryGeojson]
+		[boundaries]
 	);
 
 	// ─────────────────────────────────────────
@@ -188,9 +184,7 @@ export default function App() {
 		// restore workspace settings
 		setBasemap(sessionData.settings?.basemap ?? 'carto');
 		setDisplayMode(sessionData.settings?.displayMode ?? 'default');
-		setSelectedBoundaryID(
-			sessionData.boundary?.selectedBoundaryID ?? 'none'
-		);
+		restoreBoundary(sessionData.boundary);
 
 		restoreBoundary(sessionData.boundary);
 		restoreLayers(sessionData.layers ?? []);
@@ -216,8 +210,6 @@ export default function App() {
 		clearBoundary();
 		clearLayers();
 		clearCache();
-
-		setSelectedBoundaryID('none');
 
 		setBasemap('carto');
 		setDisplayMode('default');
@@ -247,9 +239,7 @@ export default function App() {
 			basemap,
 			displayMode,
 
-			selectedBoundaryID,
-			boundaryData,
-			boundaryGeojson,
+			boundaries,
 
 			exportLayers,
 		},
@@ -353,13 +343,20 @@ export default function App() {
 	// ─────────────────────────────────────────
 
 	//const hasBoundary = Object.keys(boundaryData ?? {}).length > 0; // Flag to check if boundary exists
-	const hasBoundary = !!boundaryGeojson;
+	const hasBoundary = boundaries.length > 0;
 	const hasFeatures = Object.keys(featureLayers).length > 0; // Flag to check if features exist
 	const hasSavedProjects = Object.keys(projects).length > 0;
 	const filteredLayers = useFilteredLayers(featureLayers);
 
-	const boundaryName = boundaryData?.name ?? 'None'; // human readable name
+	const boundaryName = boundaries.length
+		? boundaries.map((boundary) => boundary.name).join(', ')
+		: 'None';
+
 	const projectName = project?.metadata.name;
+
+	const selectedBoundaryIds = new Set(
+		boundaries.map((boundary) => boundary.osm_id) // derive the selected boundary IDs from the boundary Set
+	);
 
 	// ─────────────────────────────────────────
 	// Managers
@@ -389,8 +386,7 @@ export default function App() {
 		renameLayer,
 		handleAddLayer,
 	} = useWorkspaceActions({
-		selectedBoundaryID,
-		setSelectedBoundaryID,
+		selectedBoundaryIds,
 
 		setBoundary,
 		clearBoundary,
@@ -425,7 +421,7 @@ export default function App() {
 				setPendingLayer={setPendingLayer}
 				isDirty={isDirty}
 				setIsDirty={setIsDirty}
-				boundaryGeojson={boundaryGeojson}
+				boundaryies={boundaries}
 				filteredLayers={filteredLayers}
 				sessionManager={sessionManager}
 				restoreSession={restoreSession}
@@ -462,7 +458,6 @@ export default function App() {
 				projectName={projectName}
 
 				// sidebar
-				boundaryData={boundaryData}
 				featureLayers={featureLayers}
 				activeDrawer={activeDrawer}
 				setActiveDrawer={setActiveDrawer}
@@ -475,7 +470,7 @@ export default function App() {
 				toggleLayerVisibility={toggleLayerVisibility}
 				renameLayer={renameLayer}
 				updateLayerFilters={updateLayerFilters}
-				selectedBoundaryID={selectedBoundaryID}
+				selectedBoundaryIds={selectedBoundaryIds}
 				loadBoundaryResults={loadBoundaryResults}
 				handleSelectBoundary={handleSelectBoundary}
 				boundaryResults={boundaryResults}
@@ -490,7 +485,7 @@ export default function App() {
 				getCachedFeatures={getCachedFeatures}
 
 				// map
-				boundaryGeojson={boundaryGeojson}
+				boundaries={boundaries}
 				filteredLayers={filteredLayers}
 				focusTrigger={focusTrigger}
 				handleScreenshotReady={handleScreenshotReady}

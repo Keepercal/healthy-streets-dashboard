@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import osmtogeojson from 'osmtogeojson';
+import { useState, useRef, useEffect } from 'react';
+//import osmtogeojson from 'osmtogeojson';
 
-import { fetchOSMBoundary } from '../services/overpass/overpass';
+//import { fetchOSMBoundary } from '../services/overpass/overpass';
 import searchBoundaries from '../services/nominatim/searchBoundaries';
 
 /**
@@ -19,8 +19,7 @@ import searchBoundaries from '../services/nominatim/searchBoundaries';
 export default function useBoundaryManager({ onChange = () => {} } = {}) {
 	const [boundaryResults, setBoundaryResults] = useState([]);
 
-	const [boundaryData, setBoundaryData] = useState(null);
-	const [boundaryGeojson, setBoundaryGeojson] = useState(null);
+	const [boundaries, setBoundaries] = useState([]);
 
 	const [status, setStatus] = useState('idle');
 	const [error, setError] = useState(null);
@@ -30,6 +29,10 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 	function markDirty() {
 		onChange?.();
 	}
+
+	useEffect(() => {
+		console.log('[DEBUG] boundaries changed:', boundaries);
+	}, [boundaries]);
 
 	/* Find a list of boundaries from Nominatim from a given boundary name */
 	const loadBoundaryResults = async (boundaryName) => {
@@ -68,19 +71,19 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 	 */
 
 	/* Load boundary by fetching from Overpass API */
-	/*const setBoundary = async (boundaryID, boundaryType, boundaryName) => {
+	/*const loadBoundary = async (boundaryIDs, boundaryType, boundaryName) => {
 		clearBoundary();
 
 		console.log('[DEBUG] setBoundary ENTER:', {
-			boundaryID,
+			boundaryIDs,
 			boundaryType,
 			boundaryName,
 		});
 
 		const currentId = ++requestId.current;
 
-		if (boundaryID === 'none') {
-			console.error('[DEBUG] BoundaryID is empty:', boundaryID);
+		if (boundaryIDs === 'none') {
+			console.error('[DEBUG] BoundaryID is empty:', boundaryIDs);
 			return;
 		}
 
@@ -89,7 +92,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		try {
 			const result = await fetchOSMBoundary(
 				// Fetch boundary from Overpass API
-				boundaryID,
+				boundaryIDs,
 				boundaryType
 			);
 
@@ -114,24 +117,25 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		}
 	};*/
 
-	const setBoundary = (boundaryData) => {
-		clearBoundary();
-
-		if (boundaryData.osm_id === 'none') {
-			console.error('[DEBUG] BoundaryID is empty:', boundaryData.osm_id);
+	const setBoundary = (boundary) => {
+		if (boundary.osm_id === 'none') {
 			return;
 		}
 
-		setBoundaryData(boundaryData);
-		setBoundaryGeojson(boundaryData.geojson);
+		setBoundaries((prev) => {
+			if (prev.some((item) => item.osm_id === boundary.osm_id)) {
+				return prev;
+			}
+
+			return [...prev, boundary];
+		});
 
 		setStatus('success');
 	};
 
 	/* Clear the current boundary  from state */
 	const clearBoundary = () => {
-		setBoundaryData(null);
-		setBoundaryGeojson(null);
+		setBoundaries([]);
 
 		setStatus('idle');
 		setError(null);
@@ -141,8 +145,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 	/* Export the boundary data as an object */
 	function exportBoundary() {
 		return {
-			data: boundaryData,
-			geojson: boundaryGeojson,
+			boundaries,
 		};
 	}
 
@@ -155,22 +158,20 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 			return;
 		}
 
-		setBoundaryData(boundary.data);
-		setBoundaryGeojson(boundary.geojson);
+		setBoundaries(boundary.boundaries ?? []);
 
 		setStatus('success');
 		setError(null);
 	}
 
 	return {
-		// boundary data
-		boundaryData,
-		boundaryGeojson,
-
 		// boundary results
 		boundaryResults,
 		loadBoundaryResults,
 		clearBoundaryResults,
+
+		// boundary data
+		boundaries,
 
 		// boundary handling
 		setBoundary,
