@@ -63,8 +63,7 @@ export default function useProjectManager({
 
 			boundary: {
 				selectedBoundaryIds: workspace.selectedBoundaryIds,
-				data: workspace.boundaryData,
-				geojson: workspace.boundaryGeojson,
+				boundaries: workspace.boundaries,
 			},
 
 			layers: workspace.exportLayers(),
@@ -99,8 +98,7 @@ export default function useProjectManager({
 
 			boundary: {
 				selectedBoundaryIds: workspace.selectedBoundaryIds,
-				data: workspace.boundaryData,
-				geojson: workspace.boundaryGeojson,
+				boundaries: workspace.boundaries,
 			},
 
 			layers: workspace.exportLayers(),

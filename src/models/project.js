@@ -23,8 +23,7 @@ export function createProject(overrides = {}) {
 
 		boundary: {
 			selectedBoundaryIds: 'none',
-			data: null,
-			geojson: null,
+			boundaries: null,
 			...overrides.boundary,
 		},
 
