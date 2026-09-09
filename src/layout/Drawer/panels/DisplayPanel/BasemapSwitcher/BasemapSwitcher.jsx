@@ -1,4 +1,5 @@
 import './BasemapSwitcher.css';
+import BASEMAPS from '@/config/basemaps';
 
 /**
  * BasemapSwitcher
@@ -7,50 +8,24 @@ import './BasemapSwitcher.css';
  * Displays the active basemap as a thumbnail and allows switching layers.
  */
 
-const basemaps = [
-	{
-		id: 'carto',
-		label: 'CARTO',
-		preview: '/streets-dashboard/images/carto.png',
-	},
-	{
-		id: 'carto_grey',
-		label: 'CARTO (Grey)',
-		preview: '/streets-dashboard/images/carto_grey.png',
-	},
-	{
-		id: 'carto_dark',
-		label: 'CARTO (Dark)',
-		preview: '/streets-dashboard/images/carto_dark.png',
-	},
-	{
-		id: 'openstreetmap',
-		label: 'OSM',
-		preview: '/streets-dashboard/images/osm.png',
-	},
-	{
-		id: 'satellite',
-		label: 'Satellite',
-		preview: '/streets-dashboard/images/satellite.png',
-	},
-];
-
 function BasemapSwitcher({ basemap, setBasemap }) {
 	return (
 		<div className="basemap-options">
-			{basemaps.map((layer) => (
+			{Object.entries(BASEMAPS).map(([id, layer]) => (
 				<button
-					key={layer.id}
+					key={id}
 					className={
-						basemap === layer.id
+						basemap === id
 							? 'basemap-option active'
 							: 'basemap-option'
 					}
-					onClick={() => setBasemap(layer.id)}
+					onClick={() => setBasemap(id)}
 				>
-					<img src={layer.preview} alt={layer.label} />
+					{layer.preview && (
+						<img src={layer.preview} alt={layer.name} />
+					)}
 
-					<span>{layer.label}</span>
+					<span>{layer.name}</span>
 				</button>
 			))}
 		</div>

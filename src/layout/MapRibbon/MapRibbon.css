@@ -14,14 +14,18 @@
 
 .map-ribbon-content {
 	display: flex;
-	flex-direction: row;
-	gap: 20px;
+	align-items: center;
+	width: 100%;
 }
 
 /* Text */
 .map-ribbon-content p {
-	margin: 4px;
+	margin: 0;
 	font-size: 12px;
+}
+
+.current-project {
+	display: flex;
 }
 
 /* =========================
@@ -31,5 +35,6 @@
 .feature-counter {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 12px;
+	margin-left: auto;
 }

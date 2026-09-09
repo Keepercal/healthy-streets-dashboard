@@ -11,15 +11,14 @@ const MapRibbon = ({ features, projectName }) => {
 
 	return (
 		<div className="map-ribbon-content">
-			<div className="feature-counter">
-				<p>Nodes {nodeCount}</p>
-
-				<p>Ways {wayCount}</p>
-
-				<p>Relations {relationCount}</p>
-			</div>
 			<div className="current-project">
 				<p>Current Project: {projectName}</p>
+			</div>
+
+			<div className="feature-counter">
+				<p>Nodes {nodeCount}</p>
+				<p>Ways {wayCount}</p>
+				<p>Relations {relationCount}</p>
 			</div>
 		</div>
 	);

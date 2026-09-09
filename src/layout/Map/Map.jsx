@@ -11,7 +11,7 @@ import FitBounds from './controls/FitBounds';
 import ZoomTracker from './controls/ZoomTracker';
 import MapScreenshot from './components/MapScreenshot';
 
-import BASEMAPS from './config/basemaps';
+import BASEMAPS from '@/config/basemaps';
 
 /**
  * Map

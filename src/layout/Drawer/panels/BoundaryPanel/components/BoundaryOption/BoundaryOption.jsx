@@ -19,7 +19,8 @@ const BoundaryOption = ({
 					clearLayers();
 				}}
 			>
-				{result.display_name}
+				{result.display_name} (
+				{result.type.charAt(0).toUpperCase() + result.type.slice(1)}){}
 			</div>
 		))
 	) : (
