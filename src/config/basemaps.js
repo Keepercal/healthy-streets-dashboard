@@ -17,11 +17,6 @@ const BASEMAPS = {
 		attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
 		preview: '/streets-dashboard/images/carto_dark.png',
 	},
-	esri_dark: {
-		name: 'ESRI Dark',
-		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-		attribution: '&copy; Esri',
-	},
 	world_topo: {
 		name: 'World Topo',
 		url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',

@@ -19,14 +19,17 @@ import ModalManager from './layout/Modal/ModalManager.jsx';
 import MODALS from './config/modalTypes.js';
 
 /* Hooks */
+import useWorkspaceActions from './hooks/useWorkspaceActions.js';
 import useBoundaryManager from './hooks/useBoundaryManager.js';
 import useLayerManager from './hooks/useLayerManager.js';
-import useFilteredLayers from './hooks/useFilteredLayers.js';
-import useStatusPopup from './hooks/useStatusPopup.js';
-import useSession from './hooks/useSession.js';
 import useProjectManager from './hooks/useProjectManager.js';
+
+import useFilteredLayers from './hooks/useFilteredLayers.js';
+
+import useSession from './hooks/useSession.js';
 import useUnsavedChanges from './hooks/useUnsavedChanges.js';
-import useWorkspaceActions from './hooks/useWorkspaceActions.js';
+
+import useStatusPopup from './hooks/useStatusPopup.js';
 
 /* Session & Database */
 import { createSession } from './models/session.js';
