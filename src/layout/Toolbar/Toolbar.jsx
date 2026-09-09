@@ -116,8 +116,8 @@ export default function Toolbar({
 					disabled={!onScreenshot}
 					onClick={onScreenshot}
 				/>
-				<BoundaryIndicator boundaryName={boundaryName} />
-				{/*<a
+				{/*<BoundaryIndicator boundaryName={boundaryName} />
+				<a
 					href="https://github.com/Keepercal/streets-dashboard"
 					target="_blank"
 					rel="noopener noreferrer"

@@ -1,19 +1,19 @@
 const BASEMAPS = {
 	carto: {
 		name: 'CARTO',
-		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_33nq_1_546fcbaf7443758ee25faca8',
 		attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
 		preview: '/streets-dashboard/images/carto.png',
 	},
 	carto_grey: {
 		name: 'CARTO Grey',
-		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png',
+		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png?key=cb1_33nq_1_546fcbaf7443758ee25faca8',
 		attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
 		preview: '/streets-dashboard/images/carto_grey.png',
 	},
 	carto_dark: {
 		name: 'CARTO Dark',
-		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png',
+		url: 'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key=cb1_33nq_1_546fcbaf7443758ee25faca8',
 		attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
 		preview: '/streets-dashboard/images/carto_dark.png',
 	},

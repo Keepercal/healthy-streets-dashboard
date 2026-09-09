@@ -352,7 +352,7 @@ export default function App() {
 		? boundaries.map((boundary) => boundary.name).join(', ')
 		: 'None';
 
-	const projectName = project?.metadata.name;
+	const projectName = project?.metadata.name ?? 'None';
 
 	const selectedBoundaryIds = new Set(
 		boundaries.map((boundary) => boundary.osm_id) // derive the selected boundary IDs from the boundary Set

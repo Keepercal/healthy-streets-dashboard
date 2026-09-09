@@ -26,11 +26,7 @@ export default function InputItem({
 	};
 
 	return (
-		<form
-			className="boundary-form"
-			onSubmit={handleSubmit}
-			onSubmit={handleSubmit}
-		>
+		<form className="boundary-form" onSubmit={handleSubmit}>
 			<input
 				className="input-item"
 				name="boundaryName"

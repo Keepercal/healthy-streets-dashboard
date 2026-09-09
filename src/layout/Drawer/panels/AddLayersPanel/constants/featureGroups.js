@@ -1,5 +1,6 @@
 /* Human-readable group labels */
 const GROUP_LABELS = {
+	// Transport
 	public_transport_networks: 'Public Transport Networks',
 	active_travel_networks: 'Active Travel Networks',
 	vehicle_highways: 'Vehicle Highways',
@@ -8,17 +9,26 @@ const GROUP_LABELS = {
 	transport: 'Transport',
 	driving: 'Driving',
 	cycling: 'Cycling',
-	healthcare: 'Healthcare',
+
+	// Services & civic infrastructure
 	emergency: 'Emergency',
+	healthcare: 'Healthcare',
 	education: 'Education',
 	publicServices: 'Public Services',
 	streetFurniture: 'Street Furniture',
+
+	// Places & everyday destinations
+	places: 'Places',
 	poi: 'Points of Interest',
 	shopping: 'Shopping',
 	fooddrink: 'Food & Drink',
+	accommodation: 'Accommodation',
+
+	// Leisure & tourism
 	leisure: 'Leisure',
 	tourism: 'Tourism',
-	accommodation: 'Accommodation',
+
+	// Physical environment
 	landuse: 'Land Use',
 	buildings: 'Buildings',
 	naturalFeatures: 'Natural Features',

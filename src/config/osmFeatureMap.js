@@ -1,4 +1,5 @@
 export const FEATURE_MAP = {
+	// Transport
 	public_transport_networks: {
 		bus: {
 			tag: 'route',
@@ -21,6 +22,7 @@ export const FEATURE_MAP = {
 			label: 'Tram Network',
 		},
 	},
+
 	active_travel_networks: {
 		lcn: {
 			tag: 'network',
@@ -158,39 +160,6 @@ export const FEATURE_MAP = {
 		},
 	},
 
-	streetFurniture: {
-		toilets: {
-			tag: 'amenity',
-			label: 'Toilets',
-			type: 'node',
-		},
-		bench: {
-			tag: 'amenity',
-			label: 'Benches',
-			type: 'node',
-		},
-		waste_basket: {
-			tag: 'amenity',
-			label: 'Waste Bins',
-			type: 'node',
-		},
-		recycling: {
-			tag: 'amenity',
-			label: 'Recycling',
-			type: 'node',
-		},
-		drinking_water: {
-			tag: 'amenity',
-			label: 'Drinking Water',
-			type: 'node',
-		},
-		picnic_site: {
-			tag: 'amenity',
-			label: 'Picnic Tables',
-			type: 'node',
-		},
-	},
-
 	transport: {
 		station: {
 			tag: 'railway',
@@ -280,6 +249,30 @@ export const FEATURE_MAP = {
 		},
 	},
 
+	// Services & civic infrastructure
+	emergency: {
+		police: {
+			tag: 'amenity',
+			label: 'Police',
+			type: 'way',
+		},
+		fire_station: {
+			tag: 'amenity',
+			label: 'Fire Stations',
+			type: 'way',
+		},
+		ambulance_station: {
+			tag: 'amenity',
+			label: 'Ambulance Stations',
+			type: 'way',
+		},
+		phone: {
+			tag: 'emergency',
+			label: 'Emergency Phones',
+			type: 'way',
+		},
+	},
+
 	healthcare: {
 		hospital: {
 			tag: 'amenity',
@@ -314,29 +307,6 @@ export const FEATURE_MAP = {
 		defibrillator: {
 			tag: 'amenity',
 			label: 'Defibrillators',
-			type: 'way',
-		},
-	},
-
-	emergency: {
-		police: {
-			tag: 'amenity',
-			label: 'Police',
-			type: 'way',
-		},
-		fire_station: {
-			tag: 'amenity',
-			label: 'Fire Stations',
-			type: 'way',
-		},
-		ambulance_station: {
-			tag: 'amenity',
-			label: 'Ambulance Stations',
-			type: 'way',
-		},
-		phone: {
-			tag: 'emergency',
-			label: 'Emergency Phones',
 			type: 'way',
 		},
 	},
@@ -394,6 +364,59 @@ export const FEATURE_MAP = {
 			tag: 'amenity',
 			label: 'Prisons',
 			type: 'way',
+		},
+	},
+
+	streetFurniture: {
+		toilets: {
+			tag: 'amenity',
+			label: 'Toilets',
+			type: 'node',
+		},
+		bench: {
+			tag: 'amenity',
+			label: 'Benches',
+			type: 'node',
+		},
+		waste_basket: {
+			tag: 'amenity',
+			label: 'Waste Bins',
+			type: 'node',
+		},
+		recycling: {
+			tag: 'amenity',
+			label: 'Recycling',
+			type: 'node',
+		},
+		drinking_water: {
+			tag: 'amenity',
+			label: 'Drinking Water',
+			type: 'node',
+		},
+		picnic_site: {
+			tag: 'amenity',
+			label: 'Picnic Tables',
+			type: 'node',
+		},
+	},
+
+	// Places & everyday destinations
+	places: {
+		city: {
+			tag: 'place',
+			label: 'Cities',
+		},
+		town: {
+			tag: 'place',
+			label: 'Towns',
+		},
+		village: {
+			tag: 'place',
+			label: 'Villages',
+		},
+		hamlet: {
+			tag: 'place',
+			label: 'Hamlets',
 		},
 	},
 
@@ -536,6 +559,30 @@ export const FEATURE_MAP = {
 		},
 	},
 
+	accommodation: {
+		hotel: {
+			tag: 'tourism',
+			label: 'Hotels',
+			type: 'way',
+		},
+		hostel: {
+			tag: 'tourism',
+			label: 'Hostels',
+			type: 'way',
+		},
+		camp_site: {
+			tag: 'tourism',
+			label: 'Camp Sites',
+			type: 'way',
+		},
+		caravan_site: {
+			tag: 'tourism',
+			label: 'Caravan Sites',
+			type: 'way',
+		},
+	},
+
+	// Leisure & tourism
 	leisure: {
 		playground: {
 			tag: 'leisure',
@@ -632,29 +679,7 @@ export const FEATURE_MAP = {
 		},
 	},
 
-	accommodation: {
-		hotel: {
-			tag: 'tourism',
-			label: 'Hotels',
-			type: 'way',
-		},
-		hostel: {
-			tag: 'tourism',
-			label: 'Hostels',
-			type: 'way',
-		},
-		camp_site: {
-			tag: 'tourism',
-			label: 'Camp Sites',
-			type: 'way',
-		},
-		caravan_site: {
-			tag: 'tourism',
-			label: 'Caravan Sites',
-			type: 'way',
-		},
-	},
-
+	// Physical environment
 	landuse: {
 		residential: {
 			tag: 'landuse',

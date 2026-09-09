@@ -5,7 +5,7 @@ import { Trash2 } from 'lucide-react';
 
 /* UI Components */
 import InputItem from './components/InputItem/InputItem';
-import BoundaryOption from './components/BoundaryOption/BoundaryOption';
+import BoundaryResults from './components/BoundaryResults/BoundaryResults';
 import BoundaryIndicator from '../../../../components/BoundaryIndicator/BoundaryIndicator';
 import DeleteButton from '../../../../components/DeleteButton/DeleteButton.jsx';
 
@@ -52,7 +52,7 @@ const BoundaryPanel = ({
 			<div className="panel-body">
 				{hasSearched ? (
 					<div className="boundary-results">
-						<BoundaryOption
+						<BoundaryResults
 							boundaryResults={boundaryResults}
 							handleSelectBoundary={handleSelectBoundary}
 							selectedBoundaryIds={selectedBoundaryIds}

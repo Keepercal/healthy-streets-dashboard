@@ -1,6 +1,12 @@
 const LARGE_DATASET_LIMIT = 5000;
 import MODALS from '@/config/modalTypes.js';
 
+/**
+ * useWorkspaceActions
+ * -----------
+ * Handles actions taken within the UI of the application, such as selecting a boundary or renaming a layer
+ *
+ */
 export default function useWorkspaceActions({
 	// boundary
 	selectedBoundaryIds,

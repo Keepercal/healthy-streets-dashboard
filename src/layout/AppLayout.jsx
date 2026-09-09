@@ -4,7 +4,7 @@ import Map from './Map/Map.jsx';
 import Toolbar from './Toolbar/Toolbar';
 import Sidebar from './Sidebar/Sidebar';
 import Drawer from './Drawer/Drawer';
-import MapRibbon from './MapRibbon/MapRibbon.jsx';
+import MapFooter from './MapFooter/MapFooter.jsx';
 
 import Legend from '@/components/Legend/Legend.jsx';
 
@@ -148,7 +148,7 @@ export default function AppLayout({
 					</div>
 
 					<div className="map-ribbon">
-						<MapRibbon
+						<MapFooter
 							features={featureLayers}
 							projectName={projectName}
 						/>

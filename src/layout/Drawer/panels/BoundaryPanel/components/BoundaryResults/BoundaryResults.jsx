@@ -1,7 +1,7 @@
-import './BoundaryOption.css';
+import './BoundaryResults.css';
 import { Ghost } from 'lucide-react';
 
-const BoundaryOption = ({
+const BoundaryResults = ({
 	boundaryResults,
 	selectedBoundaryIds,
 	handleSelectBoundary,
@@ -31,4 +31,4 @@ const BoundaryOption = ({
 	);
 };
 
-export default BoundaryOption;
+export default BoundaryResults;

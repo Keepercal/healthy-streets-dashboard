@@ -1,4 +1,4 @@
-import './MapRibbon.css';
+import './MapFooter.css';
 import countFeatures from '../../utils/countFeatures';
 
 /**
@@ -6,7 +6,7 @@ import countFeatures from '../../utils/countFeatures';
  * ------------
  * Displays a summary count across all loaded feature layers.
  */
-const MapRibbon = ({ features, projectName }) => {
+const MapFooter = ({ features, projectName }) => {
 	const { nodeCount, wayCount, relationCount } = countFeatures(features);
 
 	return (
@@ -24,4 +24,4 @@ const MapRibbon = ({ features, projectName }) => {
 	);
 };
 
-export default MapRibbon;
+export default MapFooter;
