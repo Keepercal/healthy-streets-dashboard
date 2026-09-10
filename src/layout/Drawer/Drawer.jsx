@@ -34,7 +34,8 @@ function Drawer({
 	setDisplayMode,
 
 	clearBoundaryResults,
-	handleClearBoundary,
+	handleRemoveBoundary,
+	handleClearBoundaries,
 	removeLayer,
 	clearLayers,
 	cachedFeatures,
@@ -67,7 +68,7 @@ function Drawer({
 						hasBoundary={hasBoundary}
 						loadBoundaryResults={loadBoundaryResults}
 						clearBoundaryResults={clearBoundaryResults}
-						handleClearBoundary={handleClearBoundary}
+						handleClearBoundaries={handleClearBoundaries}
 						clearLayers={clearLayers}
 
 						boundaryResults={boundaryResults}
@@ -80,7 +81,8 @@ function Drawer({
 					<ManageBoundaryPanel
 						boundaries={boundaries}
 						hasBoundary={hasBoundary}
-						handleClearBoundary={handleClearBoundary}
+						handleRemoveBoundary={handleRemoveBoundary}
+						handleClearBoundaries={handleClearBoundaries}
 					/>
 				)}
 

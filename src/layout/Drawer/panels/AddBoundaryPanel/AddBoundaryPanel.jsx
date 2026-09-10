@@ -6,12 +6,11 @@ import { Ghost } from 'lucide-react';
 /* UI Components */
 import InputItem from './components/InputItem/InputItem.jsx';
 import BoundaryItem from '@/components/BoundaryItem/BoundaryItem.jsx';
-import DeleteButton from '@/components/DeleteButton/DeleteButton.jsx';
 
 /**
  * AddBoundaryPanel
  * ------------
- * For adding boundaries into the workspace.
+ * User can search and add boundaries into the workspace.
  *
  * Selected boundaries are passed back to App, which then constructs OSM queries using the osm_id's of selected boundaries.
  */

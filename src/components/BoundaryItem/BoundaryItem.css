@@ -30,6 +30,7 @@
 
 	transition:
 		background 0.2s ease,
+		color 0.2s ease,
 		border-color 0.2s ease;
 }
 
@@ -68,10 +69,7 @@
 }
 
 .boundary-card-delete:hover {
-	border: 1px solid var(--border-colour);
-
-	color: #dc2626;
-	border-color: #fca5a5;
+	color: #ff645e;
 }
 
 /* =========================

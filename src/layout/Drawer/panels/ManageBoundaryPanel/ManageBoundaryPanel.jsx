@@ -6,10 +6,18 @@ import BoundaryItem from '@/components/BoundaryItem/BoundaryItem';
 
 import { Trash2 } from 'lucide-react';
 
+/**
+ * AddBoundaryPanel
+ * ------------
+ * For adding boundaries into the workspace.
+ *
+ * Selected boundaries are passed back to App, which then constructs OSM queries using the osm_id's of selected boundaries.
+ */
 const ManageBoundaryPanel = ({
 	boundaries,
 	hasBoundary,
-	handleClearBoundary,
+	handleRemoveBoundary,
+	handleClearBoundaries,
 }) => {
 	return (
 		<>
@@ -17,7 +25,7 @@ const ManageBoundaryPanel = ({
 				<DeleteButton
 					icon={<Trash2 size={18} />}
 					label="Remove All Boundaries"
-					onClick={handleClearBoundary}
+					onClick={handleClearBoundaries}
 					disabled={!hasBoundary}
 				/>
 			</div>
@@ -27,6 +35,7 @@ const ManageBoundaryPanel = ({
 						key={boundary.osm_id}
 						boundary={boundary}
 						actionButtons={true}
+						onDelete={() => handleRemoveBoundary(boundary.osm_id)}
 					/>
 				))}
 			</div>

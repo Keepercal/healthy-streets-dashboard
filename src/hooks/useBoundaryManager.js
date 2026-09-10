@@ -72,7 +72,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 
 	/* Load boundary by fetching from Overpass API */
 	/*const loadBoundary = async (boundaryIDs, boundaryType, boundaryName) => {
-		clearBoundary();
+		clearBoundaries();
 
 		console.log('[DEBUG] setBoundary ENTER:', {
 			boundaryIDs,
@@ -133,8 +133,14 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setStatus('success');
 	};
 
+	const removeBoundary = (osmId) => {
+		setBoundaries((prev) =>
+			prev.filter((boundary) => boundary.osm_id !== osmId)
+		);
+	};
+
 	/* Clear the current boundary  from state */
-	const clearBoundary = () => {
+	const clearBoundaries = () => {
 		setBoundaries([]);
 
 		setStatus('idle');
@@ -154,7 +160,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		requestId.current++;
 
 		if (!boundary) {
-			clearBoundary();
+			clearBoundaries();
 			return;
 		}
 
@@ -175,7 +181,8 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 
 		// boundary handling
 		setBoundary,
-		clearBoundary,
+		removeBoundary,
+		clearBoundaries,
 		restoreBoundary,
 		exportBoundary,
 

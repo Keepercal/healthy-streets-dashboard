@@ -85,7 +85,8 @@ export default function App() {
 
 		// boundary handling
 		setBoundary,
-		clearBoundary,
+		removeBoundary,
+		clearBoundaries,
 		restoreBoundary,
 		//exportBoundary,
 
@@ -207,7 +208,7 @@ export default function App() {
 		setSessionInfo(createSession());
 
 		clearBoundaryResults();
-		clearBoundary();
+		clearBoundaries();
 		clearLayers();
 		clearCache();
 
@@ -381,14 +382,16 @@ export default function App() {
 	 */
 	const {
 		handleSelectBoundary,
-		handleClearBoundary,
+		handleRemoveBoundary,
+		handleClearBoundaries,
 		renameLayer,
 		handleAddLayer,
 	} = useWorkspaceActions({
 		selectedBoundaryIds,
 
 		setBoundary,
-		clearBoundary,
+		removeBoundary,
+		clearBoundaries,
 
 		clearLayers,
 		updateLayer,
@@ -478,7 +481,8 @@ export default function App() {
 				displayMode={displayMode}
 				setDisplayMode={setDisplayMode}
 				clearBoundaryResults={clearBoundaryResults}
-				handleClearBoundary={handleClearBoundary}
+				handleRemoveBoundary={handleRemoveBoundary}
+				handleClearBoundaries={handleClearBoundaries}
 				removeLayer={removeLayer}
 				clearLayers={clearLayers}
 				getCachedFeatures={getCachedFeatures}

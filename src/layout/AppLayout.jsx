@@ -44,7 +44,8 @@ export default function AppLayout({
 	displayMode,
 	setDisplayMode,
 	clearBoundaryResults,
-	handleClearBoundary,
+	handleRemoveBoundary,
+	handleClearBoundaries,
 	removeLayer,
 	clearLayers,
 	getCachedFeatures,
@@ -121,7 +122,8 @@ export default function AppLayout({
 					setDisplayMode={setDisplayMode}
 
 					clearBoundaryResults={clearBoundaryResults}
-					handleClearBoundary={handleClearBoundary}
+					handleRemoveBoundary={handleRemoveBoundary}
+					handleClearBoundaries={handleClearBoundaries}
 					removeLayer={removeLayer}
 					clearLayers={clearLayers}
 					cachedFeatures={getCachedFeatures(selectedBoundaryIds)}

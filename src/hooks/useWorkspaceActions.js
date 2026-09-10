@@ -11,7 +11,8 @@ export default function useWorkspaceActions({
 	// boundary
 	selectedBoundaryIds,
 	setBoundary,
-	clearBoundary,
+	removeBoundary,
+	clearBoundaries,
 
 	// layers
 	clearLayers,
@@ -32,10 +33,19 @@ export default function useWorkspaceActions({
 	};
 
 	/**
-	 * Handle resetting boundary and wiping features
+	 * Removes a single boundary from the workspace
 	 */
-	const handleClearBoundary = () => {
-		clearBoundary();
+	const handleRemoveBoundary = (osmId) => {
+		removeBoundary(osmId);
+
+		setIsDirty(false);
+	};
+
+	/**
+	 * Removes all boundaries from the workspace
+	 */
+	const handleClearBoundaries = () => {
+		clearBoundaries();
 		clearLayers();
 
 		setIsDirty(false);
@@ -87,7 +97,8 @@ export default function useWorkspaceActions({
 
 	return {
 		handleSelectBoundary,
-		handleClearBoundary,
+		handleRemoveBoundary,
+		handleClearBoundaries,
 		renameLayer,
 		handleAddLayer,
 	};
