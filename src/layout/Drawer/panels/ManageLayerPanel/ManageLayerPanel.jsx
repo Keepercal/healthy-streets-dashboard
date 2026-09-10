@@ -1,10 +1,10 @@
-import './ManageLayersPanel.css';
-import LayerItem from './LayerItem/LayerItem';
+import './ManageLayerPanel.css';
+import LayerItem from './LayerItem/LayerItem.jsx';
 import { Ghost, Trash2 } from 'lucide-react';
 
 import DeleteButton from '../../../../components/DeleteButton/DeleteButton.jsx';
 
-export default function ManageLayersPanel({
+export default function ManageLayerPanel({
 	featureLayers,
 	toggleLayerVisibility,
 	updateLayer,

@@ -1,5 +1,5 @@
-import './AddLayersPanel.css';
-import FeatureItem from './FeatureItem';
+import './AddLayerPanel.css';
+import FeatureItem from './components/FeatureItem/FeatureItem.jsx';
 
 /* HOOKS */
 import useFeatureGroups from './hooks/useFeatureGroups.js';
@@ -8,14 +8,14 @@ import useFeatureGroups from './hooks/useFeatureGroups.js';
 import GROUP_LABELS from './constants/featureGroups.js';
 
 /**
- * AddLayersPanel.jsx
+ * AddLayerPanel.jsx
  * ------------
  * UI component in sidebar which contains feature options
  *
  * Features:
  * - Load features from a preselect list
  */
-const AddLayersPanel = ({ featureOptions, handleAddLayer, cachedFeatures }) => {
+const AddLayerPanel = ({ featureOptions, handleAddLayer, cachedFeatures }) => {
 	const { groupedFeatures, openGroups, toggleGroup } =
 		useFeatureGroups(featureOptions);
 
@@ -52,4 +52,4 @@ const AddLayersPanel = ({ featureOptions, handleAddLayer, cachedFeatures }) => {
 	);
 };
 
-export default AddLayersPanel;
+export default AddLayerPanel;
