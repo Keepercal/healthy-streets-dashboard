@@ -4,7 +4,6 @@ import { Trash2, Plus } from 'lucide-react';
 
 const BoundaryItem = ({
 	boundary,
-	onClick,
 	addButton = false,
 	deleteButton = false,
 	onPreview,
@@ -16,6 +15,12 @@ const BoundaryItem = ({
 			handleDeleteProject(project.metadata.id);
 		}
 	};*/
+
+	const parts = boundary.display_name.split(', ');
+
+	const name = parts[0];
+	const location = parts.slice(1).join(', ');
+	const type = boundary.type.charAt(0).toUpperCase() + boundary.type.slice(1);
 	return (
 		<div className="boundary-item">
 			<div
@@ -26,9 +31,11 @@ const BoundaryItem = ({
 					onPreview?.(boundary);
 				}}
 			>
-				{boundary.display_name} (
-				{boundary.type.charAt(0).toUpperCase() + boundary.type.slice(1)}
-				){}
+				<div className="boundary-name">
+					{name} <span className="boundary-type">({type})</span>
+				</div>
+
+				<div className="boundary-location">{location}</div>
 			</div>
 			{addButton && (
 				<button

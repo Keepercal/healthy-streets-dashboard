@@ -29,15 +29,21 @@ const ManageBoundaryPanel = ({
 				/>
 			</div>
 			<div className="panel-body">
-				{boundaries.map((boundary) => (
-					<BoundaryItem
-						key={boundary.osm_id}
-						boundary={boundary}
-						deleteButton={true}
-						onPreview={() => handlePreviewBoundary(boundary)}
-						onDelete={() => handleRemoveBoundary(boundary.osm_id)}
-					/>
-				))}
+				{[...boundaries]
+					.sort((a, b) =>
+						a.display_name.localeCompare(b.display_name)
+					)
+					.map((boundary) => (
+						<BoundaryItem
+							key={boundary.osm_id}
+							boundary={boundary}
+							deleteButton={true}
+							onPreview={() => handlePreviewBoundary(boundary)}
+							onDelete={() =>
+								handleRemoveBoundary(boundary.osm_id)
+							}
+						/>
+					))}
 			</div>
 		</>
 	);

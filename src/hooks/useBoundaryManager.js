@@ -140,11 +140,14 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setBoundaries((prev) =>
 			prev.filter((boundary) => boundary.osm_id !== osmId)
 		);
+
+		setPreviewBoundary(null);
 	};
 
 	/* Clear all boundaries from array */
 	const clearBoundaries = () => {
 		setBoundaries([]);
+		setPreviewBoundary(null);
 
 		setStatus('idle');
 		setError(null);
