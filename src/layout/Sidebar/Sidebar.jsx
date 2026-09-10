@@ -3,12 +3,10 @@ import './Sidebar.css';
 /* UI COMPONENTS */
 import SidebarButton from './components/SidebarButton';
 
-/* CONSTANTS */
-import GROUP_LABELS from '../Drawer/panels/AddLayersPanel/constants/featureGroups';
-
 /* API imports */
 import {
 	Map,
+	MapPlus,
 	LayersPlus,
 	Layers,
 	MonitorCog,
@@ -27,7 +25,6 @@ import {
  */
 const Sidebar = ({
 	hasBoundary,
-	featureLayers,
 
 	activeDrawer,
 	setActiveDrawer,
@@ -38,18 +35,27 @@ const Sidebar = ({
 	const openDrawer = (name) => {
 		setActiveDrawer((prev) => (prev === name ? null : name));
 	};
-	//const hasFeatures =  featureLayers && Object.keys(featureLayers).length > 0;
 
 	return (
 		<div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
 			<div className="sidebar-content">
 				<SidebarButton
-					label="Boundary"
+					label="Add Boundary"
 					title="Search for a OSM boundary"
+					icon={<MapPlus />}
+					isCollapsed={collapsed}
+					active={activeDrawer === 'addBoundary'}
+					onClick={() => openDrawer('addBoundary')}
+				/>
+
+				<SidebarButton
+					label="Manage Boundaries"
+					title="Manage boundaries within workspace"
 					icon={<Map />}
 					isCollapsed={collapsed}
-					active={activeDrawer === 'boundary'}
-					onClick={() => openDrawer('boundary')}
+					//disabled={!hasBoundary}
+					active={activeDrawer === 'manageBoundary'}
+					onClick={() => openDrawer('manageBoundary')}
 				/>
 
 				<SidebarButton

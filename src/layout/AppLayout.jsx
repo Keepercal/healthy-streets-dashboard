@@ -90,7 +90,9 @@ export default function AppLayout({
 				/>
 
 				<Drawer
+					boundaries={boundaries}
 					hasBoundary={hasBoundary}
+
 					activeDrawer={activeDrawer}
 					setActiveDrawer={setActiveDrawer}
 

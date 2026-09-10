@@ -29,6 +29,9 @@
 	/* Box Shadow */
 	--colour-box-shadow: rgba(0, 0, 0, 0.25);
 
+	--surface-colour: rgba(255, 255, 255, 0.04);
+	--border-colour: rgba(255, 255, 255, 0.15);
+
 	/* =========================
         MODALS
     ========================= */

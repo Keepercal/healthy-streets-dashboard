@@ -1,12 +1,15 @@
 import './Drawer.css';
 
-import BoundaryPanel from './panels/BoundaryPanel/BoundaryPanel';
-import AddLayersPanel from './panels/AddLayersPanel/AddLayersPanel';
-import ManageLayersPanel from './panels/ManageLayersPanel/ManageLayersPanel';
+import AddBoundaryPanel from './panels/AddBoundaryPanel/AddBoundaryPanel';
+import ManageBoundaryPanel from './panels/ManageBoundaryPanel/ManageBoundaryPanel';
+import AddLayerPanel from './panels/AddLayerPanel/AddLayerPanel';
+import ManageLayerPanel from './panels/ManageLayerPanel/ManageLayerPanel';
 import DisplayPanel from './panels/DisplayPanel/DisplayPanel';
 
 function Drawer({
+	boundaries,
 	hasBoundary,
+
 	activeDrawer,
 	setActiveDrawer,
 
@@ -37,7 +40,8 @@ function Drawer({
 	cachedFeatures,
 }) {
 	const DRAWER_TITLES = {
-		boundary: 'Search for Boundary',
+		addBoundary: 'Search for Boundary',
+		manageBoundary: 'Manage Active Boundaries',
 		addLayers: 'Add Layers',
 		manageLayers: 'Manage Layers',
 		display: 'Display',
@@ -58,8 +62,8 @@ function Drawer({
 			</div>
 
 			<div className="drawer-content">
-				{activeDrawer === 'boundary' && (
-					<BoundaryPanel
+				{activeDrawer === 'addBoundary' && (
+					<AddBoundaryPanel
 						hasBoundary={hasBoundary}
 						loadBoundaryResults={loadBoundaryResults}
 						clearBoundaryResults={clearBoundaryResults}
@@ -72,8 +76,16 @@ function Drawer({
 					/>
 				)}
 
+				{activeDrawer === 'manageBoundary' && (
+					<ManageBoundaryPanel
+						boundaries={boundaries}
+						hasBoundary={hasBoundary}
+						handleClearBoundary={handleClearBoundary}
+					/>
+				)}
+
 				{activeDrawer === 'addLayers' && (
-					<AddLayersPanel
+					<AddLayerPanel
 						featureOptions={featureOptions}
 						handleAddLayer={handleAddLayer}
 						cachedFeatures={cachedFeatures}
@@ -81,7 +93,7 @@ function Drawer({
 				)}
 
 				{activeDrawer === 'manageLayers' && (
-					<ManageLayersPanel
+					<ManageLayerPanel
 						featureLayers={featureLayers}
 						toggleLayerVisibility={toggleLayerVisibility}
 						updateLayer={updateLayer}

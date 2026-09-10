@@ -484,10 +484,11 @@ export default function App() {
 				getCachedFeatures={getCachedFeatures}
 
 				// map
-				boundaries={boundaries}
 				filteredLayers={filteredLayers}
 				focusTrigger={focusTrigger}
 				handleScreenshotReady={handleScreenshotReady}
+
+				boundaries={boundaries}
 			/>
 		</div>
 	);
