@@ -1,4 +1,4 @@
-export default async function searchBoundaries(boundaryName) {
+export default async function searchNomiBoundaries(boundaryName) {
 	const url =
 		`https://nominatim.openstreetmap.org/search?` +
 		new URLSearchParams({

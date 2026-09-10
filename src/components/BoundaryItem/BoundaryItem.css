@@ -47,7 +47,7 @@
 }/*
 
 /* Delete action */
-.boundary-card-delete {
+.boundary-action-delete {
 	flex: 0 0 44px;
 
 	display: flex;
@@ -68,8 +68,34 @@
 		border-color 0.2s ease;
 }
 
-.boundary-card-delete:hover {
+.boundary-action-delete:hover {
 	color: #ff645e;
+}
+
+/* Delete action */
+.boundary-action-add {
+	flex: 0 0 44px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	border: 2px solid var(--border-colour);
+	border-radius: 10px;
+
+	background: var(--surface-colour);
+	color: var(--text-secondary);
+
+	cursor: pointer;
+
+	transition:
+		background 0.2s ease,
+		color 0.2s ease,
+		border-color 0.2s ease;
+}
+
+.boundary-action-add:hover {
+	color: #6fe912;
 }
 
 /* =========================

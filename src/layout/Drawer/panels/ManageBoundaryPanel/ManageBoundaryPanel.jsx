@@ -4,8 +4,6 @@ import './ManageBoundaryPanel.css';
 import DeleteButton from '@/components/DeleteButton/DeleteButton.jsx';
 import BoundaryItem from '@/components/BoundaryItem/BoundaryItem';
 
-import { Trash2 } from 'lucide-react';
-
 /**
  * AddBoundaryPanel
  * ------------
@@ -23,8 +21,8 @@ const ManageBoundaryPanel = ({
 		<>
 			<div className="panel-header">
 				<DeleteButton
-					icon={<Trash2 size={18} />}
 					label="Remove All Boundaries"
+					title={'Remove all boundaries from the current workspace'}
 					onClick={handleClearBoundaries}
 					disabled={!hasBoundary}
 				/>
@@ -34,7 +32,8 @@ const ManageBoundaryPanel = ({
 					<BoundaryItem
 						key={boundary.osm_id}
 						boundary={boundary}
-						actionButtons={true}
+						deleteButton={true}
+						//onPreview={() => ()}
 						onDelete={() => handleRemoveBoundary(boundary.osm_id)}
 					/>
 				))}

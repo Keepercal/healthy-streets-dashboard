@@ -1,6 +1,6 @@
 import './ManageLayerPanel.css';
 import LayerItem from './LayerItem/LayerItem.jsx';
-import { Ghost, Trash2 } from 'lucide-react';
+import { Ghost } from 'lucide-react';
 
 import DeleteButton from '../../../../components/DeleteButton/DeleteButton.jsx';
 
@@ -20,8 +20,8 @@ export default function ManageLayerPanel({
 	return (
 		<>
 			<DeleteButton
-				icon={<Trash2 size={18} />}
 				label="Delete All Layers"
+				title="Delete all layers from the current workspace"
 				onClick={clearLayers}
 				disabled={!hasLayers}
 			/>
