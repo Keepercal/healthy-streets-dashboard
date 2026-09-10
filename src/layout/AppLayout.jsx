@@ -36,7 +36,7 @@ export default function AppLayout({
 	renameLayer,
 	updateLayerFilters,
 	selectedBoundaryIds,
-	loadBoundaryResults,
+	fetchBoundaryResults,
 	handleSelectBoundary,
 	boundaryResults,
 	basemap,
@@ -52,9 +52,11 @@ export default function AppLayout({
 
 	// map
 	boundaries,
+	previewBoundary,
 	filteredLayers,
 	focusTrigger,
 	handleScreenshotReady,
+	handlePreviewBoundary,
 
 	projectName,
 }) {
@@ -110,7 +112,7 @@ export default function AppLayout({
 
 					selectedBoundaryIds={selectedBoundaryIds}
 
-					loadBoundaryResults={loadBoundaryResults}
+					fetchBoundaryResults={fetchBoundaryResults}
 					handleSelectBoundary={handleSelectBoundary}
 					boundaryResults={boundaryResults}
 
@@ -122,6 +124,7 @@ export default function AppLayout({
 					setDisplayMode={setDisplayMode}
 
 					clearBoundaryResults={clearBoundaryResults}
+					handlePreviewBoundary={handlePreviewBoundary}
 					handleRemoveBoundary={handleRemoveBoundary}
 					handleClearBoundaries={handleClearBoundaries}
 					removeLayer={removeLayer}
@@ -138,6 +141,7 @@ export default function AppLayout({
 						<Map
 							// boundary
 							boundaries={boundaries}
+							previewBoundary={previewBoundary}
 							boundaryIDs={selectedBoundaryIds}
 
 							// features

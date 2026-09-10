@@ -14,6 +14,7 @@ import BoundaryItem from '@/components/BoundaryItem/BoundaryItem';
 const ManageBoundaryPanel = ({
 	boundaries,
 	hasBoundary,
+	handlePreviewBoundary,
 	handleRemoveBoundary,
 	handleClearBoundaries,
 }) => {
@@ -33,7 +34,7 @@ const ManageBoundaryPanel = ({
 						key={boundary.osm_id}
 						boundary={boundary}
 						deleteButton={true}
-						//onPreview={() => ()}
+						onPreview={() => handlePreviewBoundary(boundary)}
 						onDelete={() => handleRemoveBoundary(boundary.osm_id)}
 					/>
 				))}

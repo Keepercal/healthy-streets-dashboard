@@ -77,11 +77,14 @@ export default function App() {
 	const {
 		// boundary data
 		boundaries,
+		previewBoundary,
+		setPreviewBoundary,
 
 		// boundary
 		boundaryResults,
-		loadBoundaryResults,
+		fetchBoundaryResults,
 		clearBoundaryResults,
+		handlePreviewBoundary,
 
 		// boundary handling
 		setBoundary,
@@ -390,6 +393,7 @@ export default function App() {
 		selectedBoundaryIds,
 
 		setBoundary,
+		handlePreviewBoundary,
 		removeBoundary,
 		clearBoundaries,
 
@@ -402,6 +406,11 @@ export default function App() {
 		setActiveModal,
 		setIsDirty,
 	});
+
+	/* Remove the preview boundary if the user closes the active drawer */
+	useEffect(() => {
+		setPreviewBoundary(null);
+	}, [setPreviewBoundary, activeDrawer]);
 
 	return (
 		<div className="App">
@@ -473,7 +482,7 @@ export default function App() {
 				renameLayer={renameLayer}
 				updateLayerFilters={updateLayerFilters}
 				selectedBoundaryIds={selectedBoundaryIds}
-				loadBoundaryResults={loadBoundaryResults}
+				fetchBoundaryResults={fetchBoundaryResults}
 				handleSelectBoundary={handleSelectBoundary}
 				boundaryResults={boundaryResults}
 				basemap={basemap}
@@ -493,6 +502,8 @@ export default function App() {
 				handleScreenshotReady={handleScreenshotReady}
 
 				boundaries={boundaries}
+				previewBoundary={previewBoundary}
+				handlePreviewBoundary={handlePreviewBoundary}
 			/>
 		</div>
 	);

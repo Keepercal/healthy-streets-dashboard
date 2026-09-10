@@ -15,12 +15,13 @@ import BoundaryItem from '@/components/BoundaryItem/BoundaryItem.jsx';
  * Selected boundaries are passed back to App, which then constructs OSM queries using the osm_id's of selected boundaries.
  */
 const AddBoundaryPanel = ({
-	loadBoundaryResults,
+	fetchBoundaryResults,
 	clearBoundaryResults,
 	clearLayers,
 
 	boundaryResults,
 	handleSelectBoundary,
+	handlePreviewBoundary,
 }) => {
 	const [hasSearched, setHasSearched] = useState(false);
 
@@ -28,7 +29,7 @@ const AddBoundaryPanel = ({
 		<>
 			<div className="panel-header">
 				<InputItem
-					onSearch={loadBoundaryResults}
+					onSearch={fetchBoundaryResults}
 					setHasSearched={setHasSearched}
 
 					clearBoundaryResults={clearBoundaryResults}
@@ -44,10 +45,11 @@ const AddBoundaryPanel = ({
 								<BoundaryItem
 									key={boundary.osm_id}
 									boundary={boundary}
-									onClick={() =>
-										handleSelectBoundary(boundary)
+									addButton={true}
+									onPreview={() =>
+										handlePreviewBoundary(boundary)
 									}
-									//clearLayers={clearLayers}
+									onAdd={() => handleSelectBoundary(boundary)}
 								/>
 							))
 						) : (

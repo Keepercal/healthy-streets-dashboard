@@ -22,7 +22,7 @@ function Drawer({
 	updateLayerFilters,
 
 	selectedBoundaryIds,
-	loadBoundaryResults,
+	fetchBoundaryResults,
 	handleSelectBoundary,
 	boundaryResults,
 
@@ -34,6 +34,7 @@ function Drawer({
 	setDisplayMode,
 
 	clearBoundaryResults,
+	handlePreviewBoundary,
 	handleRemoveBoundary,
 	handleClearBoundaries,
 	removeLayer,
@@ -66,7 +67,7 @@ function Drawer({
 				{activeDrawer === 'addBoundary' && (
 					<AddBoundaryPanel
 						hasBoundary={hasBoundary}
-						loadBoundaryResults={loadBoundaryResults}
+						fetchBoundaryResults={fetchBoundaryResults}
 						clearBoundaryResults={clearBoundaryResults}
 						handleClearBoundaries={handleClearBoundaries}
 						clearLayers={clearLayers}
@@ -74,6 +75,7 @@ function Drawer({
 						boundaryResults={boundaryResults}
 						selectedBoundaryIds={selectedBoundaryIds}
 						handleSelectBoundary={handleSelectBoundary}
+						handlePreviewBoundary={handlePreviewBoundary}
 					/>
 				)}
 
@@ -83,6 +85,7 @@ function Drawer({
 						hasBoundary={hasBoundary}
 						handleRemoveBoundary={handleRemoveBoundary}
 						handleClearBoundaries={handleClearBoundaries}
+						handlePreviewBoundary={handlePreviewBoundary}
 					/>
 				)}
 

@@ -21,7 +21,9 @@ export default function FitBounds({ boundaries, trigger }) {
 		if (bounds.isValid()) {
 			map.fitBounds(bounds, {
 				padding: [20, 20],
-				maxZoom: 16,
+				maxZoom: 13,
+				animate: true,
+				duration: 0.6,
 			});
 		}
 	}, [boundaries, trigger, map]);

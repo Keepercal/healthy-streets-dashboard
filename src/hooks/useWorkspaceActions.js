@@ -11,6 +11,7 @@ export default function useWorkspaceActions({
 	// boundary
 	selectedBoundaryIds,
 	setBoundary,
+	handlePreviewBoundary,
 	removeBoundary,
 	clearBoundaries,
 
@@ -30,6 +31,7 @@ export default function useWorkspaceActions({
 	 */
 	const handleSelectBoundary = (boundaryData) => {
 		setBoundary(boundaryData);
+		handlePreviewBoundary(null);
 	};
 
 	/**
@@ -98,7 +100,9 @@ export default function useWorkspaceActions({
 	return {
 		handleSelectBoundary,
 		handleRemoveBoundary,
+
 		handleClearBoundaries,
+
 		renameLayer,
 		handleAddLayer,
 	};

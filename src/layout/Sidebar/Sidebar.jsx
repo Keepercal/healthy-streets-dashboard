@@ -12,6 +12,8 @@ import {
 	MonitorCog,
 	ArrowLeftFromLine,
 	ArrowRightFromLine,
+	LayoutDashboard,
+	MapPinned,
 } from 'lucide-react';
 
 /**
@@ -51,7 +53,7 @@ const Sidebar = ({
 				<SidebarButton
 					label="Manage Boundaries"
 					title="Manage boundaries within workspace"
-					icon={<Map />}
+					icon={<LayoutDashboard />}
 					isCollapsed={collapsed}
 					//disabled={!hasBoundary}
 					active={activeDrawer === 'manageBoundary'}
@@ -73,7 +75,7 @@ const Sidebar = ({
 				<SidebarButton
 					label="Manage Layers"
 					title="Manage the feature layers within the project"
-					icon={<Layers />}
+					icon={<MapPinned />}
 					isCollapsed={collapsed}
 					disabled={!hasBoundary}
 					active={activeDrawer === 'manageLayers'}

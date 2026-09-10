@@ -25,6 +25,7 @@ import BASEMAPS from '@/config/basemaps';
 
 function Map({
 	boundaries,
+	previewBoundary,
 	boundaryIDs,
 	featureLayers,
 	displayMode,
@@ -87,10 +88,24 @@ function Map({
 					/>
 				)}
 
+				{previewBoundary && (
+					<>
+						<BoundaryLayer
+							previewBoundary={previewBoundary}
+							colour="blue"
+							fillOpacity={0.1}
+						/>
+						<FitBounds
+							boundaries={previewBoundary.geojson}
+							trigger={focusTrigger}
+						/>
+					</>
+				)}
+
 				{/* Boundary + auto-fit */}
 				{boundaries.length > 0 && (
 					<>
-						<BoundaryLayer boundaries={boundaries} />
+						<BoundaryLayer boundaries={boundaries} colour="red" />
 						<FitBounds
 							boundaries={geojsons}
 							trigger={focusTrigger}
