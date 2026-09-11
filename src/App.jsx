@@ -5,7 +5,7 @@
  * npm run deploy: Builds and deploys to GitHub Pages
  */
 
-import { useMemo, useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import './App.css';
 
 /* High level components */
@@ -16,10 +16,9 @@ import StatusPopup from '@/layout/Popups/StatusPopup/StatusPopup.jsx';
 
 /* Modals */
 import ModalManager from './layout/Modal/ModalManager.jsx';
-import MODALS from './config/modalTypes.js';
+import MODALS from '@/config/modalTypes.js';
 
 /* Hooks */
-import useWorkspaceActions from './hooks/useWorkspaceActions.js';
 import useBoundaryManager from './hooks/useBoundaryManager.js';
 import useLayerManager from './hooks/useLayerManager.js';
 import useProjectManager from './hooks/useProjectManager.js';
@@ -92,11 +91,15 @@ export default function App() {
 		clearBoundaries,
 		restoreBoundaries,
 
+		handleSelectBoundary,
+		handleRemoveBoundary,
+
 		// status
 		status: boundaryStatus,
 		error: boundaryError,
 	} = useBoundaryManager({
 		onChange: () => setIsDirty(true),
+		setIsDirty,
 	});
 
 	/* Manages states for data displayed on map */
@@ -106,14 +109,17 @@ export default function App() {
 
 		// data operations
 		loadLayer,
-		commitLayer,
-		clearLayers,
+		updateLayer,
 		removeLayer,
+		clearLayers,
+		updateLayerFilters,
+		commitLayer,
+
+		handleAddLayer,
 
 		// layer editing
 		toggleLayerVisibility,
-		updateLayer,
-		updateLayerFilters,
+		renameLayer,
 
 		// persistence
 		exportLayers,
@@ -130,7 +136,24 @@ export default function App() {
 		error: featureError,
 	} = useLayerManager({
 		onChange: () => setIsDirty(true),
+		boundaries,
+		setPendingLayer,
+		setActiveModal,
 	});
+
+	/**
+	 * Removes all boundaries from the workspace
+	 */
+	const handleClearBoundaries = () => {
+		clearBoundaries();
+		clearLayers();
+
+		setIsDirty(false);
+	};
+
+	const selectedBoundaryIds = new Set(
+		Array.from(boundaries, (boundary) => boundary.osm_id)
+	);
 
 	const { statusPopup /*dismissPopup*/ } = useStatusPopup({
 		boundaryStatus,
@@ -348,10 +371,6 @@ export default function App() {
 
 	const projectName = project?.metadata.name ?? 'None';
 
-	const selectedBoundaryIds = new Set(
-		Array.from(boundaries, (boundary) => boundary.osm_id)
-	);
-
 	// ─────────────────────────────────────────
 	// Managers
 	// ─────────────────────────────────────────
@@ -369,33 +388,6 @@ export default function App() {
 		setActiveModal,
 		modalKey: MODALS.UNSAVED_CHANGES,
 		saveCurrentProject,
-	});
-
-	/*
-	 * Hook for managing actions within the workspace
-	 */
-	const {
-		handleSelectBoundary,
-		handleRemoveBoundary,
-		handleClearBoundaries,
-		renameLayer,
-		handleAddLayer,
-	} = useWorkspaceActions({
-		selectedBoundaryIds,
-
-		setBoundary,
-		handlePreviewBoundary,
-		removeBoundary,
-		clearBoundaries,
-
-		clearLayers,
-		updateLayer,
-		loadLayer,
-		commitLayer,
-
-		setPendingLayer,
-		setActiveModal,
-		setIsDirty,
 	});
 
 	/* Remove the preview boundary if the user closes the active drawer */

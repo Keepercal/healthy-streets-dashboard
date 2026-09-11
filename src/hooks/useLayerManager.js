@@ -5,8 +5,12 @@ import { fetchOSMFeature } from '../services/overpass/overpass';
 import generateLayerColour from '../utils/generateLayerColour';
 import countFeatures from '../utils/countFeatures';
 
+import MODALS from '@/config/modalTypes.js';
+
+const LARGE_DATASET_LIMIT = 5000;
+
 /**
- * useLayer
+ * useLayerManager
  * ------------
  * Manages loading and display of layers within the application
  *
@@ -15,7 +19,12 @@ import countFeatures from '../utils/countFeatures';
  * - request cancellation
  * - GeoJSON conversion
  */
-export default function useLayerManager({ onChange = () => {} } = {}) {
+export default function useLayerManager({
+	onChange = () => {},
+	boundaries = [],
+	setPendingLayer,
+	setActiveModal,
+}) {
 	const [featureLayers, setFeatureLayers] = useState({});
 
 	/* Status popup handling */
@@ -28,6 +37,10 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 	/* Flags */
 	const [failedFeatureKey, setFailedFeatureKey] = useState(null); // cleanup
+
+	const selectedBoundaryIds = new Set(
+		Array.from(boundaries, (boundary) => boundary.osm_id)
+	);
 
 	function markDirty() {
 		onChange?.();
@@ -68,21 +81,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 		markDirty();
 	}
 
-	/* Remove all features from map */
-	const clearLayers = ({ markDirty = true } = {}) => {
-		console.log('[DEBUG] clearing all map features');
-
-		setFeatureLayers({});
-
-		if (markDirty) {
-			onChange?.();
-		}
-
-		setError(null);
-		setStatus('idle');
-	};
-
-	/* Remove a single feature */
+	/* Remove a single layer */
 	const removeLayer = (layerID) => {
 		console.log('[DEBUG] removing feature:', { layerID });
 		setFeatureLayers((prev) => {
@@ -98,7 +97,21 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 		markDirty();
 	};
 
-	/* Show or hide features on the map */
+	/* Remove all layers from map */
+	const clearLayers = ({ markDirty = true } = {}) => {
+		console.log('[DEBUG] clearing all map features');
+
+		setFeatureLayers({});
+
+		if (markDirty) {
+			onChange?.();
+		}
+
+		setError(null);
+		setStatus('idle');
+	};
+
+	/* Show or hide layer on the map */
 	const toggleLayerVisibility = (layerID) => {
 		setFeatureLayers((prev) => {
 			const layer = prev[layerID];
@@ -142,14 +155,14 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 	/* Array indicating what features are in the cache */
 	// Used in the UI to indicate cached features
-	const getCachedFeatures = (boundaryIDs) => {
+	const getCachedFeatures = (boundaryIds) => {
 		return Array.from(cache.current.entries())
 			.filter(([cacheKey]) => {
 				const [cachedBoundary] = JSON.parse(cacheKey);
 
-				return cachedBoundary === boundaryIDs;
+				return cachedBoundary === boundaryIds;
 			})
-			.map(([_, layer]) => layer.sourceKey);
+			.map(([layer]) => layer.sourceKey);
 	};
 
 	/* Load a layer from the cache */
@@ -191,7 +204,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 		layerID,
 		cacheKey,
 		featureKey,
-		boundaryIDs,
+		boundaryIds,
 		featureTag,
 		featureValue,
 		featureType,
@@ -199,7 +212,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 	}) {
 		// Fetch OSM feature from Overpass API
 		const payload = await fetchOSMFeature(
-			boundaryIDs,
+			boundaryIds,
 			featureTag,
 			featureValue,
 			featureType
@@ -228,7 +241,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 			geojson,
 			colour,
 			query: {
-				boundaryIDs,
+				boundaryIds,
 				featureTag,
 				featureValue,
 				featureType,
@@ -282,7 +295,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 	/* Orchestrate loading a new map layer */
 	const loadLayer = async ({
 		featureKey,
-		boundaryIDs,
+		boundaryIds,
 		featureTag,
 		featureValue,
 		featureType,
@@ -290,11 +303,14 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 	}) => {
 		console.log('[DEBUG] loadLayer ENTER:', {
 			featureKey,
+			boundaryIds,
 			featureTag,
 			featureValue,
+			featureType,
+			featureLabel,
 		});
 
-		if (!featureKey || !boundaryIDs || !featureTag) {
+		if (!featureKey || !boundaryIds || !featureTag) {
 			throw new Error('Missing required feature parameters');
 		}
 
@@ -309,7 +325,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 		// Create a cache key for the layer
 		const cacheKey = JSON.stringify([
-			boundaryIDs,
+			boundaryIds,
 			featureTag,
 			featureValue,
 			featureType,
@@ -337,7 +353,7 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 				layerID,
 				cacheKey,
 				featureKey,
-				boundaryIDs,
+				boundaryIds,
 				featureTag,
 				featureValue,
 				featureType,
@@ -359,11 +375,47 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 		}
 	};
 
+	/**
+	 * Handle feature adding to project
+	 */
+	const handleAddLayer = async (
+		featureKey,
+		featureTag,
+		featureValue,
+		featureType,
+		featureLabel
+	) => {
+		console.log(
+			`Calling loadLayer with boundary ID: ${selectedBoundaryIds}`
+		);
+
+		const preparedLayer = await loadLayer({
+			featureKey,
+			boundaryIds: selectedBoundaryIds,
+			featureTag,
+			featureValue,
+			featureType,
+			featureLabel,
+		});
+
+		if (!preparedLayer) return;
+
+		if (preparedLayer.totalCount > LARGE_DATASET_LIMIT) {
+			setPendingLayer(preparedLayer);
+			setActiveModal(MODALS.LARGE_DATASET);
+			return;
+		}
+
+		commitLayer(preparedLayer);
+		//setIsDirty(true);
+	};
+
 	/* Layer inspection and updating */
 	const updateLayer = (layerID, changes) => {
 		patchLayer(layerID, changes);
 	};
 
+	/* Export layer as an object */
 	const exportLayers = () => {
 		return Object.entries(featureLayers).map(([id, layer]) => ({
 			id,
@@ -390,7 +442,15 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 		setStatus('success');
 		setError(null);
-		markDirty();
+	};
+
+	/**
+	 * Handle renaming features
+	 */
+	const renameLayer = (layerID, newLabel) => {
+		updateLayer(layerID, {
+			displayName: newLabel,
+		});
 	};
 
 	const clearStatus = () => {
@@ -405,14 +465,17 @@ export default function useLayerManager({ onChange = () => {} } = {}) {
 
 		// data operations
 		loadLayer,
-		commitLayer,
-		clearLayers,
+		updateLayer,
 		removeLayer,
+		clearLayers,
+		updateLayerFilters,
+		commitLayer,
+
+		handleAddLayer,
 
 		// layer editing
 		toggleLayerVisibility,
-		updateLayer,
-		updateLayerFilters,
+		renameLayer,
 
 		// persistence
 		exportLayers,

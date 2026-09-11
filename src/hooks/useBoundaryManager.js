@@ -16,7 +16,10 @@ import searchNomiBoundaries from '../services/nominatim/searchNomiBoundaries';
  * - resetting state
  * - exporting and restoring boundaries
  */
-export default function useBoundaryManager({ onChange = () => {} } = {}) {
+export default function useBoundaryManager({
+	onChange = () => {},
+	setIsDirty,
+} = {}) {
 	const [boundaryResults, setBoundaryResults] = useState([]);
 
 	const [boundaries, setBoundaries] = useState([]); // stores the current boundaries in the application as an array
@@ -151,7 +154,6 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 
 		setStatus('idle');
 		setError(null);
-		markDirty(false);
 	};
 
 	const handlePreviewBoundary = (boundary) => {
@@ -181,6 +183,23 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setError(null);
 	};
 
+	/**
+	 * Handle input for boundary search
+	 */
+	const handleSelectBoundary = (boundaryData) => {
+		setBoundary(boundaryData);
+		handlePreviewBoundary(null);
+	};
+
+	/**
+	 * Removes a single boundary from the workspace
+	 */
+	const handleRemoveBoundary = (osmId) => {
+		removeBoundary(osmId);
+
+		setIsDirty(false);
+	};
+
 	return {
 		// boundary results
 		boundaryResults,
@@ -198,6 +217,9 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		clearBoundaries,
 		restoreBoundaries,
 		handlePreviewBoundary,
+
+		handleSelectBoundary,
+		handleRemoveBoundary,
 
 		// status
 		status,
