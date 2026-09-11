@@ -69,7 +69,7 @@ export default function useStatusPopup({
 				source: 'feature',
 				featureKey: null,
 				title: 'Loading',
-				message: 'Loading feature data from Overpass API...',
+				message: 'Loading feature from Overpass...',
 			};
 		}
 

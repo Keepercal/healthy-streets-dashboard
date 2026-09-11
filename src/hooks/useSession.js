@@ -4,7 +4,7 @@ import {
 	loadSession,
 	clearSession,
 } from '../services/sessionService';
-import { createSession } from '../models/session';
+import { createSessionFromWorkspace } from '../models/session';
 
 /**
  * useSession
@@ -19,7 +19,7 @@ export default function useSession({
 	sessionInfo,
 	basemap,
 	displayMode,
-	boundary,
+	boundaries,
 	layers,
 	onRestore,
 }) {
@@ -33,8 +33,8 @@ export default function useSession({
 		if (!session?.data) return false;
 
 		const hasBoundary =
-			session.data.boundary?.selectedBoundaryIds &&
-			session.data.boundary.selectedBoundaryIds !== 'none';
+			Array.isArray(session.data.boundaries) &&
+			session.data.boundaries.length > 0;
 
 		const hasLayers =
 			Array.isArray(session.data.layers) &&
@@ -49,29 +49,20 @@ export default function useSession({
 
 	// Create the current session as an object
 	const currentSession = useMemo(() => {
-		if (!sessionInfo && !boundary && layers.length === 0) {
+		if (!sessionInfo && !boundaries && layers.length === 0) {
 			return null;
 		}
 
-		return createSession({
-			...(sessionInfo ?? {}),
-
-			projectId: sessionInfo?.projectId ?? null,
-
-			modified: new Date().toISOString(),
-
-			data: {
-				settings: {
-					basemap,
-					displayMode,
-				},
-
-				boundary,
-
+		return createSessionFromWorkspace(
+			{
+				basemap,
+				displayMode,
+				boundaries,
 				layers,
 			},
-		});
-	}, [sessionInfo, basemap, displayMode, boundary, layers]);
+			sessionInfo
+		);
+	}, [sessionInfo, basemap, displayMode, boundaries, layers]);
 
 	// Load saved session from storage
 	const restoreSavedSession = useCallback(() => {

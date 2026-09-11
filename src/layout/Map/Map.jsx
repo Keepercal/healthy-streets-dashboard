@@ -34,7 +34,7 @@ function Map({
 	onScreenshot,
 }) {
 	const geojsons = useMemo(
-		() => boundaries.map((boundary) => boundary.geojson),
+		() => Array.from(boundaries, (boundary) => boundary.geojson),
 		[boundaries]
 	);
 

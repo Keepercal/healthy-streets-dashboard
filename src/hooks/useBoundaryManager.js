@@ -120,7 +120,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 
 	/* Add a boundary into array */
 	const setBoundary = (boundary) => {
-		if (boundary.osm_id === 'none') {
+		if (!boundary || boundary.osm_id === 'none') {
 			return;
 		}
 
@@ -158,23 +158,24 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setPreviewBoundary(boundary);
 	};
 
-	/* Export the boundary data as an object */
-	function exportBoundary() {
-		return {
-			boundaries,
-		};
-	}
-
 	/* Restore a given boundary to state */
-	const restoreBoundary = (boundary) => {
+	const restoreBoundaries = (value) => {
 		requestId.current++;
 
-		if (!boundary) {
+		if (!value) {
 			clearBoundaries();
 			return;
 		}
 
-		setBoundaries(boundary.boundaries ?? []);
+		if (!Array.isArray(value)) {
+			console.error(
+				'[ERROR] restoreBoundaries expected an array:',
+				value
+			);
+			return;
+		}
+
+		setBoundaries(value);
 
 		setStatus('success');
 		setError(null);
@@ -195,8 +196,7 @@ export default function useBoundaryManager({ onChange = () => {} } = {}) {
 		setBoundary,
 		removeBoundary,
 		clearBoundaries,
-		restoreBoundary,
-		exportBoundary,
+		restoreBoundaries,
 		handlePreviewBoundary,
 
 		// status

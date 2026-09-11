@@ -32,7 +32,7 @@ export default function ModalManager({
 	filteredLayers,
 
 	sessionManager,
-	restoreSession,
+	restoreWorkspace,
 	resetWorkspace,
 
 	handleSaveAndContinue,
@@ -52,12 +52,12 @@ export default function ModalManager({
 }) {
 	return (
 		<>
-			{activeModal === MODALS.RESTORE_SESSION && (
+			{activeModal === MODALS.RESTORE_WORKSPACE && (
 				<RestoreSessionModal
 					onRestore={() => {
 						if (!pendingSession) return;
 
-						restoreSession(pendingSession);
+						restoreWorkspace(pendingSession);
 
 						setPendingSession(null);
 						setActiveModal(null);

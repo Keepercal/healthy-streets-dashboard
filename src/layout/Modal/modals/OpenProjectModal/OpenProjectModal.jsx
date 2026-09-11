@@ -41,6 +41,7 @@ export default function OpenProjectModal({
 						{projects.map((project) => {
 							return (
 								<ProjectCard
+									key={project.metadata.id}
 									project={project}
 									onOpen={onOpen}
 									confirmDelete={confirmDelete}

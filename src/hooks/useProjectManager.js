@@ -2,13 +2,16 @@ import { useState } from 'react';
 
 import { getProject, saveProject as saveProjectToDB } from '../db/projectDB';
 
-import { createProject } from '../models/project';
+import {
+	createProjectFromWorkspace,
+	updateProjectFromWorkspace,
+} from '../models/project';
 
 export default function useProjectManager({
 	workspace,
 	session,
 	restore,
-	resetWorkspace,
+	//resetWorkspace,
 	onSaveAsRequested,
 	onDirtyChange,
 }) {
@@ -26,13 +29,9 @@ export default function useProjectManager({
 
 		setProject(project);
 
-		restore.restoreSession({
+		restore.restoreWorkspace({
 			projectId: project.metadata.id,
-			data: {
-				settings: project.settings,
-				boundary: project.boundary,
-				layers: project.layers,
-			},
+			data: project.data,
 		});
 
 		onDirtyChange(false);
@@ -48,26 +47,7 @@ export default function useProjectManager({
 			return;
 		}
 
-		const updatedProject = {
-			...project,
-
-			metadata: {
-				...project.metadata,
-				modified: new Date().toISOString(),
-			},
-
-			settings: {
-				basemap: workspace.basemap,
-				displayMode: workspace.displayMode,
-			},
-
-			boundary: {
-				selectedBoundaryIds: workspace.selectedBoundaryIds,
-				boundaries: workspace.boundaries,
-			},
-
-			layers: workspace.exportLayers(),
-		};
+		const updatedProject = updateProjectFromWorkspace(project, workspace);
 
 		await saveProjectToDB(updatedProject);
 
@@ -76,7 +56,7 @@ export default function useProjectManager({
 		setProject(updatedProject);
 		onDirtyChange(false);
 
-		console.log('[DEBUG] Project saved:', project);
+		console.log('[DEBUG] Project saved:', updatedProject);
 
 		return true;
 	}
@@ -85,23 +65,11 @@ export default function useProjectManager({
 	 * Creates a brand new project
 	 */
 	async function saveProjectAs(name, description) {
-		const newProject = createProject({
-			metadata: {
-				name,
-				description,
-			},
-
-			settings: {
-				basemap: workspace.basemap,
-				displayMode: workspace.displayMode,
-			},
-
-			boundary: {
-				boundaries: workspace.boundaries,
-			},
-
-			layers: workspace.exportLayers(),
-		});
+		const newProject = createProjectFromWorkspace(
+			name,
+			description,
+			workspace
+		);
 
 		await saveProjectToDB(newProject);
 
@@ -118,7 +86,7 @@ export default function useProjectManager({
 
 		onDirtyChange(false);
 
-		console.log('[DEBUG] Project saved:', project);
+		console.log('[DEBUG] Project saved:', newProject);
 
 		return newProject;
 	}

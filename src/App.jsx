@@ -90,8 +90,7 @@ export default function App() {
 		setBoundary,
 		removeBoundary,
 		clearBoundaries,
-		restoreBoundary,
-		//exportBoundary,
+		restoreBoundaries,
 
 		// status
 		status: boundaryStatus,
@@ -142,27 +141,17 @@ export default function App() {
 		failedFeatureKey,
 	});
 
-	/*
-	 * Memorises the current boundary
-	 */
-	const boundaryState = useMemo(
-		() => ({
-			boundaries,
-		}),
-		[boundaries]
-	);
-
 	// ─────────────────────────────────────────
 	// Workspace
 	// ─────────────────────────────────────────
 
 	/*
-	 * Restores a saved session, including the project, map settings, boundaries, and layers.
+	 * Restores a saved workspace, including the project, map settings, boundaries, and layers.
 	 */
-	async function restoreSession(session) {
+	async function restoreWorkspace(session) {
 		if (!session) return;
 
-		console.log('[DEBUG] Restoring session:', session);
+		console.log('[DEBUG] Restoring workspace:', session);
 
 		console.log(
 			'[DEBUG] Session type:',
@@ -188,9 +177,11 @@ export default function App() {
 		// restore workspace settings
 		setBasemap(sessionData.settings?.basemap ?? 'carto');
 		setDisplayMode(sessionData.settings?.displayMode ?? 'default');
-		restoreBoundary(sessionData.boundary);
 
-		restoreBoundary(sessionData.boundary);
+		// restore boundary
+		restoreBoundaries(sessionData.boundaries);
+
+		// restore layers
 		restoreLayers(sessionData.layers ?? []);
 
 		setIsDirty(false);
@@ -254,8 +245,8 @@ export default function App() {
 		},
 
 		restore: {
-			restoreSession,
-			restoreBoundary,
+			restoreWorkspace,
+			restoreBoundaries,
 			restoreLayers,
 		},
 
@@ -270,7 +261,7 @@ export default function App() {
 	 */
 	const handleOpenProject = (projectId) => {
 		confirmUnsavedChanges(() => {
-			openProject(projectId, restoreSession);
+			openProject(projectId, restoreWorkspace);
 			setActiveModal(null);
 		});
 	};
@@ -318,13 +309,13 @@ export default function App() {
 		basemap,
 		displayMode,
 
-		boundary: boundaryState,
+		boundaries,
 
 		layers: exportLayers(),
 
 		onRestore: (session) => {
 			setPendingSession(session);
-			setActiveModal(MODALS.RESTORE_SESSION);
+			setActiveModal(MODALS.RESTORE_WORKSPACE);
 		},
 	});
 
@@ -358,7 +349,7 @@ export default function App() {
 	const projectName = project?.metadata.name ?? 'None';
 
 	const selectedBoundaryIds = new Set(
-		boundaries.map((boundary) => boundary.osm_id) // derive the selected boundary IDs from the boundary Set
+		Array.from(boundaries, (boundary) => boundary.osm_id)
 	);
 
 	// ─────────────────────────────────────────
@@ -435,7 +426,7 @@ export default function App() {
 				boundaryies={boundaries}
 				filteredLayers={filteredLayers}
 				sessionManager={sessionManager}
-				restoreSession={restoreSession}
+				restoreWorkspace={restoreWorkspace}
 				resetWorkspace={resetWorkspace}
 
 				handleSaveAndContinue={handleSaveAndContinue}

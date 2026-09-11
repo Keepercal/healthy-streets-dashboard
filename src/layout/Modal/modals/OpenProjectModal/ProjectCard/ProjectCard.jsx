@@ -4,7 +4,7 @@ import { timeAgo } from '@/utils/timeAgo';
 import { Trash2 } from 'lucide-react';
 
 export default function ProjectCard({ project, onOpen, confirmDelete }) {
-	const boundaries = project?.boundary?.boundaries ?? [];
+	const boundaries = project?.data?.boundaries ?? [];
 	return (
 		<div key={project.metadata.id} className="project-item">
 			<button
