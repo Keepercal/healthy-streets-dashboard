@@ -2,9 +2,11 @@ import Brand from '../../../../../components/Brand/Brand';
 import { aboutImages } from '../config/aboutImages';
 
 export default function OverviewPage() {
+	const currentYear = new Date().getFullYear();
 	return (
 		<>
 			<Brand />
+			<>© {currentYear} Callum Stevens </>
 			<p>
 				{__APP_NAME__} is designed for transport planners, engineers,
 				GIS analysts, mapping enthusiasts, and anyone interested in
